@@ -7,6 +7,37 @@
     <title>Todo list</title>
 </head>
 <body>
+    <header id="header">
+        <h1 id="title">Todo-list</h1>
+    </header>
+    <main id="content">
+        <nav id="tabs-list">
+            <ul id="default-tabs">
+                <li class="tabs">Today</li>
+                <li class="tabs">This week</li>
+                <li class="tabs">High priority</li>
+            </ul>
+            <ul id="projects-tabs">
+                <!-- temp -->
+                <li class="tabs project-tab">One Project</li>
+                <li class="tabs project-tab">Two Project</li>
+            </ul>
+            <button id="new-project-btn" class="add-btn">+</button>
+        </nav>
+        <div id="project-detail">
+            <header id="project-header">
+                <h2 id="project-title">
+                    Project Title
+                </h2>
+                <button id="new-task-btn" class="add-btn">+</button>
+            </header>
+            <ul id="tasks-list">
+                <!-- temp -->
+                <li class="tasks">One Taks</li>
+                <li class="tasks">Two Taks</li>
+            </ul>
+        </div>
+    </main>
     
     <script src="main.js"></script>
 </body>
