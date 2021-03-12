@@ -1,14 +1,7 @@
 import {task} from './modules/tasks-manager.js'
-import {project} from './modules/projects-manager.js'
+import {project, manageProjects} from './modules/projects-manager.js'
+import {} from './modules/init-default-projects.js'
+import {dom} from './modules/dom-integration.js'
 
+console.log(manageProjects.getProjects());
 
-let testProject = project('project Title', 'project Desc');
-console.log(testProject);
-
-testProject.createTask('task1', 45, 'desc');
-testProject.createTask('task2', 20, '', 3);
-testProject.getTask(1).setState(1);
-// console.log(testProject.getTasks());
-
-testProject.deleteTask(testProject.getTask(0));
-// console.log(testProject.getTasks());
