@@ -1,12 +1,14 @@
-import {task, taskProto} from './modules/tasks-manager.js'
+import {task} from './modules/tasks-manager.js'
+import {project} from './modules/projects-manager.js'
 
 
-let testTask = task('Test Task', 30, 'fe', 4)
-let task2 = task('task 2', 1)
+let testProject = project('project Title', 'project Desc');
+console.log(testProject);
 
-taskProto.addTaskPriority(4,'VeryLow') // with position and label of new State/priority
-taskProto.addTaskState(1,'Done Well') // function indepent from task factory
+testProject.createTask('task1', 45, 'desc');
+testProject.createTask('task2', 20, '', 3);
+testProject.getTask(1).setState(1);
+// console.log(testProject.getTasks());
 
-
-console.log(testTask, task2)
-console.log(testTask.getState(), task2.getState())
+testProject.deleteTask(testProject.getTask(0));
+// console.log(testProject.getTasks());
