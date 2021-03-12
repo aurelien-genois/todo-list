@@ -4,4 +4,5 @@ import {} from './modules/init-default-projects.js'
 import {dom} from './modules/dom-integration.js'
 
 console.log(manageProjects.getProjects());
+dom.initPageLoadTask();
 

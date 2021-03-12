@@ -8,10 +8,11 @@ const dom = ((doc) => {
 
     // integrate the list of tasks (li) #tasks-list
     const appendTasks = (projectTasks) => {
+         // todo DATE: order projectTasks by date (more recent)
         const tasksLi = projectTasks.map(task => {
             const li = doc.createElement('li');
             li.classList.add('tasks');
-            // Todo add the content to the li(with helper function)
+            // Todo add the content to the li (with helper function)
             li.textContent = task.getTitle();
             return li;
         });
@@ -23,9 +24,13 @@ const dom = ((doc) => {
         }); 
     }
 
-    // integrate the list of general tabs (li) to #general-tabs
-    // but no necessary because they never change
-    // only add an eventListener for diplay the task filtered list
+    const initPageLoadTask = () => {
+        let allTasks =  manageProjects.getProjects().reduce((tasks, proj) => {
+            return tasks.concat(proj.getTasks());
+        }, []);
+        appendTasks(allTasks);                  
+    };
+
     const _appendGeneralTabsTasks = (e) => {
         let allTasks =  manageProjects.getProjects().reduce((tasks, proj) => {
             return tasks.concat(proj.getTasks());
@@ -38,19 +43,19 @@ const dom = ((doc) => {
                 // todo DATE: select task where date = today
                 allTasksFiltered = allTasks.filter(task => task.getDueDate() === 1);
                 break;
-                case 'this-week':
+            case 'this-week':
                 // todo DATE: select task where date = this week
                 allTasksFiltered = allTasks.filter(task => task.getDueDate() > 0);
                 break;
-                case 'high-priority':
+            case 'high-priority':
                     allTasksFiltered = allTasks.filter(task => task.getPriority() === 'High');
                 break;
+            case 'all-tasks':
+                allTasksFiltered = [...allTasks];
         }
         _projectH2.textContent = e.target.textContent;
         // append all task filtered
-        // todo DATE: order by date (more recent)
-        appendTasks(allTasksFiltered)
-        console.log(e)        
+        appendTasks(allTasksFiltered);       
     }
 
     _generalTabsLis.map(genTab => genTab.addEventListener('click', _appendGeneralTabsTasks.bind(this)));
@@ -78,7 +83,7 @@ const dom = ((doc) => {
     
 
 
-    return {appendProjectsTabs, appendTasks};
+    return {appendProjectsTabs, appendTasks, initPageLoadTask};
 })(document);
 
 export {
