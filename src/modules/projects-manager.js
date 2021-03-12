@@ -52,6 +52,5 @@ const manageProjects = (() => {
 })();
 
 export {
-    project,
     manageProjects
 }
