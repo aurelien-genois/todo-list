@@ -19,7 +19,12 @@ body {
 ul, ol {
     list-style: none;
 }
+fieldset {
+    border: none;
+    display: inline;
+}
 
+/* main page */
 #header {
     height: 5rem;
     background: rgb(154, 187, 155);
@@ -34,6 +39,7 @@ ul, ol {
     display: flex;
 }
 
+/* nav tabs list */
 #tabs-list {
     width: 16rem;
     font-size: 1.3rem;
@@ -74,6 +80,7 @@ ul, ol {
     cursor: pointer;
 }
 
+/* project detail */
 #project-detail {
     width: inherit;
     background:  rgb(204, 245, 205);
@@ -90,6 +97,7 @@ ul, ol {
 
 }
 
+/* task list */
 #tasks-list {
     padding: 1rem;
 }
@@ -102,4 +110,85 @@ ul, ol {
     padding: 0.5rem;
     display: flex;
     align-items: center;
+}
+
+
+/* popup */
+.popups {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s;
+    position: fixed;
+    height: inherit;
+    width: inherit;
+    background: rgba(146, 146, 146, 0.418);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-containers {
+    box-sizing: border-box;
+    height: 40rem;
+    width: 40rem;
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    position: relative;
+}
+.popup-titles {
+    text-align: center;
+    font-size: 1.6rem;
+    margin: 0 auto 3rem;
+}
+.popup-close-btns {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    border-radius: 50%;
+    background: transparent;
+    width: 2rem;
+    height: 2rem;
+    border: transparent;
+    cursor: pointer;
+}
+.parenthesis {
+    color: grey;
+    font-weight: normal;
+}
+.popup-forms {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.popup-labels {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.popup-labels-textarea {
+    display: flex;
+    flex-direction: column;
+}
+.popup-inputs {
+    margin-left: 0.5rem;
+    margin-bottom: 2rem;
+}
+.popup-textareas {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    height: 5rem;
+    resize: none;
+}
+.popup-inputs-radio {
+    margin-right: 0.5rem;
+    position: relative;
+    top: 0.3rem;
+}
+.popup-submits {
+    position: absolute;
+    bottom: 0;
+    align-self: center;
+    width: 20rem;
 }
