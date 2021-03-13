@@ -33,6 +33,57 @@
             </ul>
         </div>
     </main>
+    <!-- NTH Create the popups with javascript -->
+    <section id="new-project-popup" class="popups">
+        <div class="popup-containers">
+            <h3 class="popup-titles">New project</h3>
+            <button class="popup-close-btns" id="new-project-close-btn">X</button>
+            <form id="new-project-form" class="popup-forms">
+                <label for="new-project-title" class="popup-labels">Project title:
+                    <input type="text" maxlength="25" name="new-project-title" class="popup-inputs popup-inputs-text" id="new-project-title" required>
+                </label>
+                <label for="new-project-desc" class="popup-labels popup-labels-textarea"><span>Project description: <span class="parenthesis">(up to 100 characters)</span></span> 
+                    <textarea name="new-project-desc"
+                    maxlength="100" id="new-project-desc" class="popup-inputs popup-textareas"></textarea>
+                </label>
+                <input type="submit" id="new-project-submit" class="popup-submits" value="Create a new project">
+        </div>
+        </form>
+    </section>
+    <section id="new-task-popup" class="popups">
+        <div class="popup-containers">
+            <h3 class="popup-titles">New task</h3>
+            <button class="popup-close-btns" id="new-task-close-btn">X</button>
+            <form id="new-task-form" class="popup-forms">
+                <label for="new-task-title" class="popup-labels">Task title:
+                    <input type="text" maxlength="25" name="new-task-title" class="popup-inputs popup-inputs-text" id="new-task-title" required>
+                </label>
+                <label for="new-task-duedate" class="popup-labels">Due date:
+                    <input type="date" name="new-task-duedate" id="new-task-duedate" class="popup-inputs popup-input-date" required>
+                </label>
+                <label for="new-task-priority" class="popup-labels">
+                    Priority: 
+                    <fieldset id="new-task-priority" class="popup-inputs">
+                        <label for="new-task-priority3" >
+                            <input type="radio" name="new-task-priority" class="popup-inputs-radio" id="new-task-priority3" value="3">Low
+                        </label>
+                        <label for="new-task-priority2">
+                            <input type="radio" name="new-task-priority" class="popup-inputs-radio" id="new-task-priority2" value="2">Medium
+                        </label>
+                        <label for="new-task-priority1">
+                            <input type="radio" name="new-task-priority" class="popup-inputs-radio" id="new-task-priority1" value="1">High
+                        </label>
+                        
+                    </fieldset>
+                </label>
+                <label for="new-task-desc" class="popup-labels popup-labels-textarea"><span>Task description: <span class="parenthesis">(up to 100 characters)</span></span> 
+                    <textarea name="new-task-desc"
+                    maxlength="100" id="new-task-desc" class="popup-inputs popup-textareas"></textarea>
+                </label>
+                <input type="submit" id="new-task-submit" class="popup-submits" value="Create a new task">
+        </div>
+        </form>
+    </section>
     
     <script src="main.js"></script>
 </body>

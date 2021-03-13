@@ -1,12 +1,55 @@
 import {manageProjects} from './projects-manager.js'
 
+const popupsUX = ((doc) => {
+        const newProjectBtn = doc.querySelector('#new-project-btn');
+        const newProjectPopup = doc.querySelector('#new-project-popup');
+        const newProjectCloseBtn = doc.querySelector('#new-project-close-btn')
+        const newProjectSubmit = doc.querySelector('#new-project-submit');
+        const newTaskBtn = doc.querySelector('#new-task-btn');
+        const newTaskPopup = doc.querySelector('#new-task-popup');
+        const newTaskCloseBtn = doc.querySelector('#new-task-close-btn')
+        const newTaskSubmit = doc.querySelector('#new-task-submit');
+        
+        newProjectBtn.addEventListener('click', () => {
+            newProjectPopup.style.opacity = 1;
+            newProjectPopup.style.visibility = 'visible';
+        });
+        newProjectCloseBtn.addEventListener('click', () => { 
+            newProjectPopup.style.opacity = 0;
+            setTimeout(() => {
+                newProjectPopup.style.visibility = 'hidden';
+            }, 500);
+        })
+        newProjectSubmit.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // todo get the inputs value Title (Desc optional)
+            // create new project with values
+        })
+        newTaskBtn.addEventListener('click', () => {
+            newTaskPopup.style.opacity = 1;
+            newTaskPopup.style.visibility = 'visible';
+        })
+        newTaskCloseBtn.addEventListener('click', () => {
+            newTaskPopup.style.opacity = 0;
+            setTimeout(() => {
+                newTaskPopup.style.visibility = 'hidden';
+            }, 500);
+        })
+        newTaskSubmit.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // todo get the inputs value Title, DueDate (Desc, Priority optionals)
+            // create new project with values
+        })
+    
+})(document);
+
+// rename dom to 'projectsViews' 'taskViews' ?
 const dom = ((doc) => {
     const _projectsUl = doc.querySelector('#projects-tabs');
     const _tasksUl = doc.querySelector('#tasks-list');
     const _projectH2 = doc.querySelector('#project-title');
     const _generalTabsLis = [...doc.querySelector('#general-tabs').children];
 
-    // integrate the list of tasks (li) #tasks-list
     const appendTasks = (projectTasks) => {
          // todo DATE: order projectTasks by date (more recent)
         const tasksLi = projectTasks.map(task => {
@@ -24,7 +67,7 @@ const dom = ((doc) => {
         }); 
     }
 
-    const initPageLoadTask = () => {
+    const initPageLoadTasks = () => {
         let allTasks =  manageProjects.getProjects().reduce((tasks, proj) => {
             return tasks.concat(proj.getTasks());
         }, []);
@@ -80,10 +123,8 @@ const dom = ((doc) => {
             _projectsUl.appendChild(projLi);
         }); 
     }
-    
 
-
-    return {appendProjectsTabs, appendTasks, initPageLoadTask};
+    return {appendProjectsTabs, appendTasks, initPageLoadTasks};
 })(document);
 
 export {
