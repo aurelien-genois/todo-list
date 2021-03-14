@@ -15,16 +15,16 @@ const project = (title, desc = '') => {
         getTask(taskId) {
             return this.tasks[taskId];
         },
-        createTask(title, dueDate, desc, priorityLevel) { 
+        createTask(title, dueDate, priorityLevel, desc) { 
             // create and keep a task in project tasks[]
-            this.tasks.push(task(title, dueDate, desc, priorityLevel));
-            // dom.appendTasks(this.tasks);
+            this.tasks.push(task(title, dueDate, priorityLevel, desc));
+            dom.appendTasks(this.tasks);
         },
         deleteTask(taskSelected) { 
             // can be optimize with unique function for both deleteTask and deleteProject with deleteItem(array, item)
             const taskId = tasks.indexOf(taskSelected);
             tasks.splice(taskId, 1);
-            // dom.appendTasks(this.tasks);
+            dom.appendTasks(this.tasks);
         }
     };
     return Object.assign(Object.create(proto), {tasks});
@@ -47,8 +47,11 @@ const manageProjects = (() => {
         return projectSelected;
     };
     const getProjects = () => _projects;
+    const getProject = (projectId) => {
+        return _projects[projectId];
+    }
 
-    return {createProject, deleteProject, getProjects};
+    return {createProject, deleteProject, getProjects, getProject};
 })();
 
 export {
