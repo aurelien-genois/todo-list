@@ -1,5 +1,5 @@
 // tasks factory
-const task = (title, dueDate, priorityLevel = 3, desc = '') => {;
+const task = (title, dueDate, priorityLevel, desc) => {;
     let stateDegree = 3;
     const proto = {
         getTitle: () => title,

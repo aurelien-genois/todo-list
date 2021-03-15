@@ -2,7 +2,7 @@ import {task} from './tasks-manager.js'
 import {dom} from './dom-integration.js'
 
 
-const project = (title, desc = '') => {
+const project = (title, desc) => {
     let tasks = [];
     const proto = {
         getTitle: () => title,
@@ -37,21 +37,24 @@ const manageProjects = (() => {
     const createProject = (title,desc) => {
         const newProject = project(title, desc);
         _projects.push(newProject)
-        dom.appendProjectsTabs(manageProjects.getProjects());
+        dom.appendProjectsTabs(_projects);
         return newProject;
     };
     const deleteProject = (projectSelected) => {
         const projectId = _projects.indexOf(projectSelected);
-        _projects.splice(projectSelected, 1);
-        dom.appendProjectsTabs(manageProjects.getProjects());
+        _projects.splice(projectId, 1);
+        dom.appendProjectsTabs(_projects);
         return projectSelected;
     };
     const getProjects = () => _projects;
     const getProject = (projectId) => {
         return _projects[projectId];
     }
+    const getAllTasks = () => _projects.reduce((tasks, proj) => {
+            return tasks.concat(proj.getTasks());
+        }, []);
 
-    return {createProject, deleteProject, getProjects, getProject};
+    return {createProject, deleteProject, getProjects, getProject, getAllTasks};
 })();
 
 export {
