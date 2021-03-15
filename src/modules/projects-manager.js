@@ -1,5 +1,5 @@
 import {task} from './tasks-manager.js'
-import {dom} from './dom-integration.js'
+import {domRender} from './dom-integration.js'
 
 
 const project = (title, desc) => {
@@ -18,13 +18,13 @@ const project = (title, desc) => {
         createTask(title, dueDate, priorityLevel, desc) { 
             // create and keep a task in project tasks[]
             this.tasks.push(task(title, dueDate, priorityLevel, desc));
-            dom.appendTasks(this.tasks);
+            domRender.renderTasks(this.tasks);
         },
         deleteTask(taskSelected) { 
             // can be optimize with unique function for both deleteTask and deleteProject with deleteItem(array, item)
             const taskId = tasks.indexOf(taskSelected);
             tasks.splice(taskId, 1);
-            dom.appendTasks(this.tasks);
+            domRender.renderTasks(this.tasks);
         }
     };
     return Object.assign(Object.create(proto), {tasks});
@@ -37,13 +37,13 @@ const manageProjects = (() => {
     const createProject = (title,desc) => {
         const newProject = project(title, desc);
         _projects.push(newProject)
-        dom.appendProjectsTabs(_projects);
+        domRender.renderProjectsTabs(_projects);
         return newProject;
     };
     const deleteProject = (projectSelected) => {
         const projectId = _projects.indexOf(projectSelected);
         _projects.splice(projectId, 1);
-        dom.appendProjectsTabs(_projects);
+        domRender.renderProjectsTabs(_projects);
         return projectSelected;
     };
     const getProjects = () => _projects;
