@@ -90,10 +90,11 @@ fieldset {
     display: flex;
     justify-content: space-between;
 }
-#new-task-btn {
+#new-task-btn, #edit-project-btn {
     border: 0.2rem solid rgb(158, 206, 94);;
     color: rgb(158, 206, 94);
     margin: 0;
+    visibility: hidden;
 
 }
 
@@ -115,7 +116,7 @@ fieldset {
 
 /* popup */
 .popups {
-    visibility: hidden;
+    visibility: visible;
     opacity: 0;
     transition: opacity 0.5s;
     position: fixed;
@@ -185,6 +186,9 @@ fieldset {
     margin-right: 0.5rem;
     position: relative;
     top: 0.3rem;
+}
+#new-task-priority label {
+    margin-left: 1rem;
 }
 .popup-submits {
     position: absolute;

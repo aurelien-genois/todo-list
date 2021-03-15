@@ -50,11 +50,21 @@ const manageProjects = (() => {
     const getProject = (projectId) => {
         return _projects[projectId];
     }
+    const getProjectByTitle = (title) => {
+        return _projects.find(project => project.getTitle() === title);
+    }
+    const getProjectIdByTitle = (title) => {
+        _projects.map((project, id) => {
+            if (project.getTitle() === title) {
+                return id;
+            }
+        })
+    }
     const getAllTasks = () => _projects.reduce((tasks, proj) => {
             return tasks.concat(proj.getTasks());
         }, []);
 
-    return {createProject, deleteProject, getProjects, getProject, getAllTasks};
+    return {createProject, deleteProject, getProjects, getProject, getAllTasks, getProjectByTitle, getProjectIdByTitle};
 })();
 
 export {
