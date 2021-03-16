@@ -1,4 +1,6 @@
 import {manageProjects} from './projects-manager.js'
+import {dom} from './dom-elements.js'
+
 
 // rename dom to 'projectsViews' 'taskViews' ?
 const domRender = ((doc) => {
@@ -114,6 +116,10 @@ const domRender = ((doc) => {
             case 'all-tasks':
                 allTasksFiltered = [...allTasks];
         }
+        // 'project' details for general tabs
+        if(doc.querySelector('#edit-project-form')) {
+            doc.querySelector('#edit-project-form').replaceWith(projectInfos);
+        } 
         _projectH2.textContent = e.target.textContent;
         _projectDesc.textContent = '';
         projectDetail.removeAttribute('data-project-id');
@@ -130,14 +136,22 @@ const domRender = ((doc) => {
     const _projectDesc = doc.querySelector('#project-desc');
     const newTaskBtn = doc.querySelector('#new-task-btn');
     const editProjectBtn = doc.querySelector('#edit-project-btn');
-     // todo edit project function
+    newTaskBtn.style.visibility = "hidden";
+    editProjectBtn.style.visibility = "hidden";
+
+    const projectInfos = doc.querySelector('#project-infos');
       // todo delete project function
 
-    const renderProjectsDetails = (project, projectId) => {
-        renderTasks(project.getTasks()); 
+    const renderProjectsDetails = (project) => {
+        renderTasks(project.getTasks());
+        // if editProjectForm is open, replace it with projectInfos
+        if(doc.querySelector('#edit-project-form')) {
+            doc.querySelector('#edit-project-form').replaceWith(projectInfos);
+        } 
         _projectH2.textContent = project.getTitle();
         _projectDesc.textContent = project.getDesc();
-        projectDetail.setAttribute('data-project-id', projectId);
+        const projId = manageProjects.getProjectId(project);
+        projectDetail.setAttribute('data-project-id', projId);
         newTaskBtn.style.visibility = "visible";
         editProjectBtn.style.visibility = "visible";
     }
@@ -156,9 +170,52 @@ const domRender = ((doc) => {
             _projectsUl.appendChild(projLi);
         }); 
     }
-    editProjectBtn.addEventListener('click', () => {
-        // todo open a popup with form or expend the form
-    })
+
+    const editProjectSubmit = (e, project) => {
+        const data = new FormData(e.target);
+        for (const entry of data) { // get values
+            switch(entry[0]) {
+                case 'edit-project-title':
+                    var titleValue = entry[1];
+                    break;
+                case 'edit-project-desc':
+                    var descValue = entry[1];
+                break;
+                };
+        };
+        e.target.reset(); // reset form
+        project.setTitle(titleValue);
+        project.setDesc(descValue);
+        const projId = manageProjects.getProjectId(project);
+        renderProjectsDetails(project);
+        e.preventDefault();
+    }
+
+    const editProject = () => {
+        const thisProject = manageProjects.getProject(projectDetail.dataset.projectId);
+        const thisProjectTitle = thisProject.getTitle(); 
+        const thisProjectDesc = thisProject.getDesc(); 
+        // create edit form
+        const editForm = doc.createElement('form');
+        editForm.setAttribute('id', 'edit-project-form');
+        const editFormInputs = doc.createElement('fieldset');
+        editFormInputs.setAttribute('id', 'edit-project-inputs');
+        const editTitleInput = dom.createTextInput('edit-project-title', 'edit-project-title',25, []);
+        editTitleInput.value = thisProjectTitle;
+        const editDescTextarea = dom.createTextarea('edit-project-desc','edit-project-desc', 100, []);
+        editDescTextarea.value = thisProjectDesc;
+        editFormInputs.append(editTitleInput, editDescTextarea);
+        // create submit and append
+        const editSubmit = dom.createSubmit('OK', ['round-btn']);
+        editForm.addEventListener('submit', (e) => {
+            editProjectSubmit(e, thisProject);
+        });
+        editForm.append(editFormInputs, editSubmit);
+        // replace current infos
+        projectInfos.replaceWith(editForm);
+    };
+
+    editProjectBtn.addEventListener('click', editProject);
     
 
     // GENERAL TABS

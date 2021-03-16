@@ -53,18 +53,14 @@ const manageProjects = (() => {
     const getProjectByTitle = (title) => {
         return _projects.find(project => project.getTitle() === title);
     }
-    const getProjectIdByTitle = (title) => {
-        _projects.map((project, id) => {
-            if (project.getTitle() === title) {
-                return id;
-            }
-        })
+    const getProjectId = (project) => {
+        return _projects.indexOf(project)
     }
     const getAllTasks = () => _projects.reduce((tasks, proj) => {
             return tasks.concat(proj.getTasks());
         }, []);
 
-    return {createProject, deleteProject, getProjects, getProject, getAllTasks, getProjectByTitle, getProjectIdByTitle};
+    return {createProject, deleteProject, getProjects, getProject, getAllTasks, getProjectByTitle, getProjectId};
 })();
 
 export {

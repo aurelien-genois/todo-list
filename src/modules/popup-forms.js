@@ -1,5 +1,6 @@
 import {manageProjects} from './projects-manager.js'
 import {domRender} from './dom-integration.js'
+import {dom} from './dom-elements.js'
 
 // popupUX
 const popupsManager = ((doc) => {
@@ -10,14 +11,8 @@ const popupsManager = ((doc) => {
         switch(inputType) {
             case 'text':
                 label.textContent = labelText;
-                const inputText = doc.createElement('input');
-                inputText.setAttribute('type', 'text');
-                inputText.setAttribute('maxlength', 25);
-                inputText.setAttribute('name', inputId);
-                inputText.setAttribute('id', inputId);
-                inputText.classList.add('popup-inputs', 'popup-inputs-text');
-                inputText.setAttribute('required', true);
-                label.appendChild(inputText);
+                const titleInput = dom.createTextInput(inputId, inputId, 25, ['popup-inputs', 'popup-inputs-text'])
+                label.appendChild(titleInput);
                 break;
             case 'date':
                 label.textContent = labelText;
@@ -37,12 +32,8 @@ const popupsManager = ((doc) => {
                 parenthesis.classList.add('parenthesis');
                 parenthesis.textContent = ' (up to 100 characters)';
                 span.appendChild(parenthesis);
-                const textarea = doc.createElement('textarea');
-                textarea.setAttribute('maxlength', 100);
-                textarea.setAttribute('name', inputId);
-                textarea.setAttribute('id', inputId);
-                textarea.classList.add('popup-inputs', 'popup-textarea');
-                label.append(span, textarea);
+                const descTextarea = dom.createTextarea(inputId, inputId, 100, ['popup-inputs', 'popup-textareas']);
+                label.append(span, descTextarea);
                 break;
             case 'fieldset':
                 label.textContent = labelText;
@@ -80,11 +71,8 @@ const popupsManager = ((doc) => {
         inputs.map(input => {
             form.appendChild(input);
         });
-        const submit = doc.createElement('input');
-        submit.setAttribute('type', 'submit');
-        submit.classList.add('popup-submits');
-        submit.setAttribute('value', submitValue);
-        form.appendChild(submit);
+        const formSubmit = dom.createSubmit(submitValue, ['popup-submits']);
+        form.appendChild(formSubmit);
         return form;
     }
 
@@ -126,38 +114,36 @@ const popupsManager = ((doc) => {
 })(document);
 
     // new project popup
+const newProjectSubmit = (e, popup) => {
+    const data = new FormData(e.target);
+    for (const entry of data) { // get values
+        switch(entry[0]) {
+            case 'new-project-title':
+                var titleValue = entry[1];
+                break;
+            case 'new-project-desc':
+                var descValue = entry[1];
+            break;
+            };
+    };
+    e.target.reset(); // reset form 
+    manageProjects.createProject(titleValue, descValue); // create project
+    const project  = manageProjects.getProjectByTitle(titleValue);
+
+    domRender.renderProjectsDetails(project);
+    e.preventDefault();
+    popupsManager.closePopup(popup);
+}
 const newProjectPopup = () => {
     let inputs = [];
     const titleInput = popupsManager.createFormInput('Project title:', 'new-project-title', 'text');
     const descTextarea = popupsManager.createFormInput('Project description:','new-project-desc', 'textarea');
     inputs.push(titleInput, descTextarea);
     const newProjectForm = popupsManager.createForm('new-project-form', 'Create a new project', inputs); 
-    newProjectForm.addEventListener('submit', (e) => {
-        const data = new FormData(newProjectForm);
-        for (const entry of data) { // get values
-            switch(entry[0]) {
-                case 'new-project-title':
-                    var titleValue = entry[1];
-                    break;
-                case 'new-project-desc':
-                    var descValue = entry[1];
-                break;
-                };
-            };
-            newProjectForm.reset(); // reset form 
-            manageProjects.createProject(titleValue, descValue); // create project
-            const project  = manageProjects.getProjectByTitle(titleValue);
-            let projId = 0;
-            manageProjects.getProjects().map((project, id) => {
-                if (project.getTitle() === titleValue) {
-                    projId = id;
-                };
-            });
-            domRender.renderProjectsDetails(project,projId);
-            e.preventDefault();
-            popupsManager.closePopup(popup);
-        });
     const popup = popupsManager.createPopup('new-project-popup', 'New project', 'new-project-close-btn', newProjectForm);
+    newProjectForm.addEventListener('submit', (e) => {
+        newProjectSubmit(e, popup)
+    });
     const newProjectCloseBtn = popup.querySelector('#new-project-close-btn');
     newProjectCloseBtn.addEventListener('click', popupsManager.closePopup.bind(this, popup));
     return popup;
