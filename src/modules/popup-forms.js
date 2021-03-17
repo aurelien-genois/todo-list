@@ -122,7 +122,7 @@ const createPopup = ((doc) => {
         const newProjectForm = popupsManager.createForm('new-project-form', 'Create a new project', inputs); 
         const popup = popupsManager.createPopupSection('new-project-popup', 'New project', 'new-project-close-btn', newProjectForm);
         newProjectForm.addEventListener('submit', (e) => {
-        manageProjects.createNewProjectFormSubmit(e, popup)
+            manageProjects.createNewProjectFormSubmit(e, popup)
         });
         const newProjectCloseBtn = popup.querySelector('#new-project-close-btn');
         newProjectCloseBtn.addEventListener('click', popupsManager.closePopup.bind(this, popup));
@@ -143,29 +143,7 @@ const createPopup = ((doc) => {
         inputs.push(titleInput, dueDateInput, prioritiesFieldset, descTextarea);
         const newTaskForm = popupsManager.createForm('new-task-form','Create a new task', inputs);
         newTaskForm.addEventListener('submit', (e) => {
-            const data = new FormData(newTaskForm);
-            for (const entry of data) { // get values
-                switch(entry[0]) {
-                    case 'new-task-title':
-                        var titleValue = entry[1];
-                        break;
-                    case 'new-task-duedate':
-                        var dueDateValue = entry[1];
-                        break;
-                    case 'new-task-priority':
-                        var priorityValue = entry[1];
-                        break;
-                    case 'new-task-desc':
-                        var descValue = entry[1];
-                        break;
-                };
-            };
-            newTaskForm.reset(); // reset form
-            const thisProjectId = document.querySelector('#project-detail').dataset.projectId;
-            // create task with default value for priority if undefined
-            manageProjects.getProject(thisProjectId).createTask(titleValue, dueDateValue, priorityValue || 3, descValue, thisProjectId); 
-            e.preventDefault();
-            popupsManager.closePopup(popup);
+            manageProjects.createNewTaskFormSubmit(e, popup);
         });
         const popup = popupsManager.createPopupSection('new-task-popup', 'New task', 'new-task-close-btn', newTaskForm);
         const newTaskCloseBtn = popup.querySelector('#new-task-close-btn');

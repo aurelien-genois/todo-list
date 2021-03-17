@@ -62,11 +62,16 @@ const domRenderTasks = ((doc) => {
 
         const actionsDiv = doc.createElement('div');
         actionsDiv.classList.add('task-actions');
-        const editBtn = doc.createElement('button');
-        editBtn.classList.add('edit-task-btn', 'round-btn');
-        editBtn.textContent = '/';
-        editBtn.addEventListener('click', () => {
+        const editTaskBtn = doc.createElement('button');
+        editTaskBtn.classList.add('edit-task-btn', 'round-btn');
+        editTaskBtn.textContent = '/';
+        editTaskBtn.addEventListener('click', () => {
             // todo edit task function (PUB/SUB)
+            // first create the form => renderEditTaskForm
+            // the form replace the task details ui, with a submit button
+            // when submit (editTaskFormSubmit in projects-manager)
+            // replace the form with the details ui
+            // or renderProjectDetails (update all tasks)
         });
         const deleteBtn = doc.createElement('button');
         deleteBtn.classList.add('round-btn', 'delete-task-btn');
@@ -76,7 +81,7 @@ const domRenderTasks = ((doc) => {
             const thisProject = manageProjects.getProject(projId);
             thisProject.deleteTask(taskId, thisTabId)
         });
-        actionsDiv.append(editBtn, deleteBtn);
+        actionsDiv.append(editTaskBtn, deleteBtn);
 
         expandDiv.append(detailsDiv, actionsDiv);
 
@@ -84,6 +89,8 @@ const domRenderTasks = ((doc) => {
         
         return li;
     }
+
+    
     
     const renderTasks = (projectTasks) => {
         // todo DATE: order projectTasks by date (more recent)

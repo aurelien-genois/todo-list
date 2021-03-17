@@ -11,7 +11,7 @@ const manageProjects = (() => {
         return newProject;
     };
 
-    const getNewProjectsValues = (form) => {
+    const getNewProjectValues = (form) => {
         const data = new FormData(form);
         for (const entry of data) { //  return {titleValue, descValue}; get values
             switch(entry[0]) {
@@ -34,7 +34,7 @@ const manageProjects = (() => {
         return {titleValue, descValue};
     };
     const createNewProjectFormSubmit = (e, popup) => {
-        const {titleValue, descValue} = getNewProjectsValues(e.target);
+        const {titleValue, descValue} = getNewProjectValues(e.target);
         const project  = createProject(titleValue, descValue);
         domRenderProjects.renderProjectDetails(project);
         domRenderTasks.renderTasks(project.getTasks());
@@ -42,12 +42,59 @@ const manageProjects = (() => {
         popupsManager.closePopup(popup);
     }   
     const editProjectFormSubmit = (e, project) => {
-        const {titleValue, descValue} = getNewProjectsValues(e.target);
+        const {titleValue, descValue} = getNewProjectValues(e.target);
         project.setTitle(titleValue);
         project.setDesc(descValue);
         domRenderProjects.renderProjectDetails(project);
         e.preventDefault();
     }
+    
+    const getNewTaskValues = (form) => {
+        const data = new FormData(form);
+        for (const entry of data) { // get values
+            switch(entry[0]) {
+                case 'new-task-title':
+                    var titleValue = entry[1];
+                    break;
+                case 'new-task-duedate':
+                    var dueDateValue = entry[1];
+                    break;
+                case 'new-task-priority':
+                    var priorityValue = entry[1];
+                    break;
+                case 'new-task-desc':
+                    var descValue = entry[1];
+                    break;
+                // todo create the renderEditTaskForm in dom-integration.js
+                case 'edit-task-title':
+                    var titleValue = entry[1];
+                    break;
+                case 'edit-task-duedate':
+                    var dueDateValue = entry[1];
+                    break;
+                case 'edit-task-priority':
+                    var priorityValue = entry[1];
+                    break;
+                case 'edit-task-desc':
+                    var descValue = entry[1];
+                    break;
+                case 'edit-task-state':
+                    var stateValue = entry[1];
+                    break;
+            };
+        };
+        form.reset(); // reset form
+        return {titleValue, dueDateValue, priorityValue, descValue, stateValue};
+    };
+    const createNewTaskFormSubmit = (e, popup) => {
+        const {titleValue, dueDateValue, priorityValue, descValue} = getNewTaskValues(e.target); 
+        const thisProjectId = document.querySelector('#project-detail').dataset.projectId;
+        // create task with default value for priority if undefined
+        manageProjects.getProject(thisProjectId).createTask(titleValue, dueDateValue, priorityValue || 3, descValue, thisProjectId); 
+        e.preventDefault();
+        popupsManager.closePopup(popup);
+    }
+    // editTaskFormSubmit
 
     const deleteProject = (projectSelected) => {
         // ! to Fixe delete project other than the last
@@ -72,6 +119,7 @@ const manageProjects = (() => {
         }, []);
 
     return {createProject, createNewProjectFormSubmit, editProjectFormSubmit, deleteProject,
+        createNewTaskFormSubmit,
          getProjects, getProject, getAllTasks, getProjectId};
 })();
 
