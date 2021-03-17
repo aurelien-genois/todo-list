@@ -50,9 +50,12 @@ const manageProjects = (() => {
     }
 
     const deleteProject = (projectSelected) => {
+        // ! to Fixe delete project other than the last
         const projectId = _projects.indexOf(projectSelected);
         _projects.splice(projectId, 1);
         domRenderProjects.renderProjectsTabs(_projects);
+        domRenderGeneralTabs.initPageLoadTasks();
+        domRenderProjects.renderProjectDetails('all-tasks', 'All tasks');
         return projectSelected;
     };
 

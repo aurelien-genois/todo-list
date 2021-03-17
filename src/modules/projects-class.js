@@ -15,18 +15,19 @@ const project = (title, desc) => {
             return this.tasks[taskId];
         },
         getTaskId(task) {
-            return this.tasks.indexOf(project)
+            return this.tasks.indexOf(task)
         },
-        createTask(title, dueDate, priorityLevel, desc) { 
-            // create and keep a task in project tasks[]
-            this.tasks.push(task(title, dueDate, priorityLevel, desc));
+        createTask(title, dueDate, priorityLevel, desc, projectId) {
+            this.tasks.push(task(title, dueDate, priorityLevel, desc, projectId));
             domRenderTasks.renderTasks(this.tasks);
         },
-        deleteTask(taskSelected) { 
-            // can be optimize with unique function for both deleteTask and deleteProject with deleteItem(array, item)
-            const taskId = tasks.indexOf(taskSelected);
-            tasks.splice(taskId, 1);
-            domRenderTasks.renderTasks(this.tasks);
+        deleteTask(taskId, thisTabId) { 
+            this.tasks.splice(taskId, 1);
+            if (isNaN(Number(thisTabId))) { // if thisTabId is a general tab
+                domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId);
+            } else {
+                domRenderTasks.renderTasks(this.tasks);
+            }
         }
     
     };

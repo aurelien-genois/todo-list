@@ -1,5 +1,7 @@
+import { project } from "./projects-class";
+
 // tasks factory
-const task = (title, dueDate, priorityLevel, desc) => {;
+const task = (title, dueDate, priorityLevel, desc, projectId) => {;
     let stateDegree = 3;
     const proto = {
         getTitle: () => title,
@@ -10,6 +12,9 @@ const task = (title, dueDate, priorityLevel, desc) => {;
         
         getDesc: () => desc,
         setDesc: (newDesc) => desc = newDesc,
+
+        getProjectId: () => projectId,
+        setProjectId : (newProjectId) => projectId = newProjectId, // task can change project
         
         taskPriorities: ['High', 'Medium', 'Low'],
         getPriority() {return this.taskPriorities[priorityLevel - 1]},

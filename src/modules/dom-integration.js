@@ -1,24 +1,19 @@
 import {manageProjects} from './projects-manager.js'
 import {dom} from './dom-elements.js'
+import {popupsManager, createPopup} from './popup-forms.js'
 
 
 const domRenderTasks = ((doc) => {
     // Render TASKS
     const _tasksUl = doc.querySelector('#tasks-list');
+    const projectDetail = doc.querySelector('#project-detail');
 
-    const _toggleTaskDetails = () => {
-        if(li.querySelector('.task-expand')) {
-            li.removeChild(expandDiv);
-            expandBtn.textContent = 'V';
-        } else {
-            li.append(expandDiv);
-            expandBtn.textContent = 'A';
-        }
-    };
-
-    const _createTaskLi = (title, dueDate, priority, state, desc) => {
+    const _createTaskLi = (title, dueDate, priority, state, desc, projId,taskId) => {
         const li = doc.createElement('li');
         li.classList.add('tasks');
+        li.setAttribute('data-task-id', taskId);        
+        li.setAttribute('data-project-id', projId);        
+
         const titleH4 = doc.createElement('h3');
         titleH4.textContent = title;
         titleH4.classList.add('task-title');
@@ -36,7 +31,16 @@ const domRenderTasks = ((doc) => {
         expandBtn.textContent = 'V';
         infoDiv.append(dueDateP, stateP, expandBtn);
 
-        expandBtn.addEventListener('click', _toggleTaskDetails);
+        expandBtn.addEventListener('click', () => {
+            if(li.querySelector('.task-expand')) {
+                li.removeChild(expandDiv);
+                expandBtn.textContent = 'V';
+            } else {
+                li.append(expandDiv);
+                expandBtn.textContent = 'A';
+            }
+    
+        });
 
         const mainInfosDiv = doc.createElement('div');
         mainInfosDiv.classList.add('task-main-infos');
@@ -54,6 +58,7 @@ const domRenderTasks = ((doc) => {
         descP.classList.add('task-desc');
         descP.textContent = desc;
         detailsDiv.append(priorityP, descP);
+        // NTH show the task's project name
 
         const actionsDiv = doc.createElement('div');
         actionsDiv.classList.add('task-actions');
@@ -67,10 +72,9 @@ const domRenderTasks = ((doc) => {
         deleteBtn.classList.add('round-btn', 'delete-task-btn');
         deleteBtn.textContent = 'X';
         deleteBtn.addEventListener('click', () => {
-            // todo delete task function (PUB/SUB)
-            // get thisProject
-            // get thisTask
-            // thisProject.deleteTask(thisTask)
+            const thisTabId = projectDetail.dataset.projectId;
+            const thisProject = manageProjects.getProject(projId);
+            thisProject.deleteTask(taskId, thisTabId)
         });
         actionsDiv.append(editBtn, deleteBtn);
 
@@ -83,8 +87,12 @@ const domRenderTasks = ((doc) => {
     
     const renderTasks = (projectTasks) => {
         // todo DATE: order projectTasks by date (more recent)
-        const tasksLis = projectTasks.map(task => {
-            return _createTaskLi(task.getTitle(), task.getDueDate(), task.getPriority(), task.getState(), task.getDesc());
+        const tasksLis = projectTasks.map((task, id) => {
+            const taskProject = manageProjects.getProject(task.getProjectId());
+            // get the id of the task in its project
+            const taskIdInProject = taskProject.getTaskId(task);
+            const taskLi = _createTaskLi(task.getTitle(), task.getDueDate(), task.getPriority(), task.getState(), task.getDesc(),task.getProjectId(),taskIdInProject);
+            return taskLi;
         });
         while(_tasksUl.firstChild) {
             _tasksUl.removeChild(_tasksUl.firstChild);
@@ -103,6 +111,7 @@ const domRenderProjects = ((doc) => {
         const projectDetail = doc.querySelector('#project-detail');
         const _projectH2 = doc.querySelector('#project-title');
         const _projectDesc = doc.querySelector('#project-desc');
+        const newProjectBtn = document.querySelector('#new-project-btn');
         const newTaskBtn = doc.querySelector('#new-task-btn');
         const editProjectBtn = doc.querySelector('#edit-project-btn');
         const deleteProjectBtn = doc.querySelector('#delete-project-btn');
@@ -110,22 +119,27 @@ const domRenderProjects = ((doc) => {
         editProjectBtn.style.visibility = "hidden";
         const projectInfos = doc.querySelector('#project-infos');
         deleteProjectBtn.style.visibility = "hidden";
+
+        newProjectBtn.addEventListener('click', popupsManager.openPopup.bind(this,createPopup.newProjectPopup()));
+
+        newTaskBtn.addEventListener('click',popupsManager.openPopup.bind(this,createPopup.newTaskPopup()));
+
         
-        const renderProjectDetails = (project, generalTabName) => {
+        const renderProjectDetails = (projectOrGeneralTab, generalTabName) => {
             if(doc.querySelector('#edit-project-form')) {
                 doc.querySelector('#edit-project-form').replaceWith(projectInfos);
             } 
-            if (project === 'general') {
+            if (typeof projectOrGeneralTab === 'string') {
                 _projectH2.textContent = generalTabName;
                 _projectDesc.textContent = '';
-                projectDetail.removeAttribute('data-project-id');
+                projectDetail.setAttribute('data-project-id', projectOrGeneralTab);
                 newTaskBtn.style.visibility = "hidden";
                 editProjectBtn.style.visibility = "hidden";
                 deleteProjectBtn.style.visibility = "hidden";    
             } else {
-                _projectH2.textContent = project.getTitle();
-                _projectDesc.textContent = project.getDesc();
-                const projId = manageProjects.getProjectId(project);
+                _projectH2.textContent = projectOrGeneralTab.getTitle();
+                _projectDesc.textContent = projectOrGeneralTab.getDesc();
+                const projId = manageProjects.getProjectId(projectOrGeneralTab);
                 projectDetail.setAttribute('data-project-id', projId);
                 newTaskBtn.style.visibility = "visible";
                 editProjectBtn.style.visibility = "visible";
@@ -180,7 +194,6 @@ const domRenderProjects = ((doc) => {
 
         deleteProjectBtn.addEventListener('click', () => {
             const thisProject = manageProjects.getProject(projectDetail.dataset.projectId);
-            console.log(projectDetail.dataset.projectId)
             manageProjects.deleteProject(thisProject);
         });
             
@@ -194,11 +207,10 @@ const domRenderGeneralTabs = ((doc) => {
         domRenderTasks.renderTasks(allTasks);                  
     };
     
-    const renderGeneralTabsTasks = (e) => {
+    const renderGeneralTabsTasks = (tabId) => {
         let allTasks =  manageProjects.getAllTasks();
-        const whichTab = e.target.dataset.tab;
         let allTasksFiltered = [];
-        switch(whichTab) {
+        switch(tabId) {
             case 'today':
                 // todo DATE: select task where date = today
                 allTasksFiltered = allTasks.filter(task => task.getDueDate() === 1);
@@ -215,14 +227,19 @@ const domRenderGeneralTabs = ((doc) => {
         }
         domRenderTasks.renderTasks(allTasksFiltered);       
         // 'project' details for general tabs
-        domRenderProjects.renderProjectDetails('general', e.target.textContent);
     }
 
     const _generalTabsLis = [...doc.querySelector('#general-tabs').children];
-    _generalTabsLis.map(genTab => genTab.addEventListener('click', renderGeneralTabsTasks));
+    _generalTabsLis.map(genTab => genTab.addEventListener('click', (e) => {
+        const whichTab = e.target.dataset.tab;
+        const tabTitle = e.target.textContent;
+        renderGeneralTabsTasks(whichTab);
+        domRenderProjects.renderProjectDetails(whichTab, tabTitle);
+    }));
+        
 
         
-    return {initPageLoadTasks};
+    return {initPageLoadTasks, renderGeneralTabsTasks};
 })(document);
 
 export {

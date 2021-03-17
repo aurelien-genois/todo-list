@@ -76,7 +76,7 @@ const popupsManager = ((doc) => {
         return form;
     }
 
-    const createPopup = (popupId, popupTitle, closeBtnId, popupForm) => {
+    const createPopupSection = (popupId, popupTitle, closeBtnId, popupForm) => {
         const popup = doc.createElement('section');
         popup.setAttribute('id', popupId);
         popup.classList.add('popups');
@@ -110,78 +110,73 @@ const popupsManager = ((doc) => {
         }, 500);
     };
 
-    return { createFormInput, createForm, createPopup, openPopup, closePopup}
+    return { createFormInput, createForm, createPopupSection, openPopup, closePopup}
+})(document);
+    
+const createPopup = ((doc) => {
+    const newProjectPopup = () => {
+        let inputs = [];
+        const titleInput = popupsManager.createFormInput('Project title:', 'new-project-title', 'text');
+        const descTextarea = popupsManager.createFormInput('Project description:','new-project-desc', 'textarea');
+        inputs.push(titleInput, descTextarea);
+        const newProjectForm = popupsManager.createForm('new-project-form', 'Create a new project', inputs); 
+        const popup = popupsManager.createPopupSection('new-project-popup', 'New project', 'new-project-close-btn', newProjectForm);
+        newProjectForm.addEventListener('submit', (e) => {
+        manageProjects.createNewProjectFormSubmit(e, popup)
+        });
+        const newProjectCloseBtn = popup.querySelector('#new-project-close-btn');
+        newProjectCloseBtn.addEventListener('click', popupsManager.closePopup.bind(this, popup));
+        return popup;
+    };
+
+    const newTaskPopup = () => {
+        let inputs = [];
+        const titleInput = popupsManager.createFormInput('Task title:', 'new-task-title', 'text');
+        const dueDateInput = popupsManager.createFormInput('Due date:', 'new-task-duedate', 'date');
+        let priorityRadios = [];
+        const priority3Input = popupsManager.createFormInput('Low', 'new-task-priority3', 'radio');
+        const priority2Input = popupsManager.createFormInput('Medium', 'new-task-priority2', 'radio');
+        const priority1Input = popupsManager.createFormInput('High', 'new-task-priority1', 'radio');
+        priorityRadios.push(priority3Input, priority2Input, priority1Input);
+        const prioritiesFieldset = popupsManager.createFormInput('Priority:', 'new-task-priority', 'fieldset', priorityRadios);
+        const descTextarea = popupsManager.createFormInput('Task description:', 'new-task-desc', 'textarea');
+        inputs.push(titleInput, dueDateInput, prioritiesFieldset, descTextarea);
+        const newTaskForm = popupsManager.createForm('new-task-form','Create a new task', inputs);
+        newTaskForm.addEventListener('submit', (e) => {
+            const data = new FormData(newTaskForm);
+            for (const entry of data) { // get values
+                switch(entry[0]) {
+                    case 'new-task-title':
+                        var titleValue = entry[1];
+                        break;
+                    case 'new-task-duedate':
+                        var dueDateValue = entry[1];
+                        break;
+                    case 'new-task-priority':
+                        var priorityValue = entry[1];
+                        break;
+                    case 'new-task-desc':
+                        var descValue = entry[1];
+                        break;
+                };
+            };
+            newTaskForm.reset(); // reset form
+            const thisProjectId = document.querySelector('#project-detail').dataset.projectId;
+            // create task with default value for priority if undefined
+            manageProjects.getProject(thisProjectId).createTask(titleValue, dueDateValue, priorityValue || 3, descValue, thisProjectId); 
+            e.preventDefault();
+            popupsManager.closePopup(popup);
+        });
+        const popup = popupsManager.createPopupSection('new-task-popup', 'New task', 'new-task-close-btn', newTaskForm);
+        const newTaskCloseBtn = popup.querySelector('#new-task-close-btn');
+        newTaskCloseBtn.addEventListener('click',popupsManager.closePopup.bind(this, popup));
+        return popup;
+    };
+
+    return {newProjectPopup, newTaskPopup};
 })(document);
 
-    // new project popup
-
-const newProjectPopup = () => {
-    let inputs = [];
-    const titleInput = popupsManager.createFormInput('Project title:', 'new-project-title', 'text');
-    const descTextarea = popupsManager.createFormInput('Project description:','new-project-desc', 'textarea');
-    inputs.push(titleInput, descTextarea);
-    const newProjectForm = popupsManager.createForm('new-project-form', 'Create a new project', inputs); 
-    const popup = popupsManager.createPopup('new-project-popup', 'New project', 'new-project-close-btn', newProjectForm);
-    newProjectForm.addEventListener('submit', (e) => {
-        manageProjects.createNewProjectFormSubmit(e, popup)
-    });
-    const newProjectCloseBtn = popup.querySelector('#new-project-close-btn');
-    newProjectCloseBtn.addEventListener('click', popupsManager.closePopup.bind(this, popup));
-    return popup;
-};
-
-const newProjectBtn = document.querySelector('#new-project-btn');
-newProjectBtn.addEventListener('click', popupsManager.openPopup.bind(this,newProjectPopup()));
-
-    
-// new task popup
-const newTaskPopup = () => {
-    let inputs = [];
-    const titleInput = popupsManager.createFormInput('Task title:', 'new-task-title', 'text');
-    const dueDateInput = popupsManager.createFormInput('Due date:', 'new-task-duedate', 'date');
-    let priorityRadios = [];
-    const priority3Input = popupsManager.createFormInput('Low', 'new-task-priority3', 'radio');
-    const priority2Input = popupsManager.createFormInput('Medium', 'new-task-priority2', 'radio');
-    const priority1Input = popupsManager.createFormInput('High', 'new-task-priority1', 'radio');
-    priorityRadios.push(priority3Input, priority2Input, priority1Input);
-    const prioritiesFieldset = popupsManager.createFormInput('Priority:', 'new-task-priority', 'fieldset', priorityRadios);
-    const descTextarea = popupsManager.createFormInput('Task description:', 'new-task-desc', 'textarea');
-    inputs.push(titleInput, dueDateInput, prioritiesFieldset, descTextarea);
-    const newTaskForm = popupsManager.createForm('new-task-form','Create a new task', inputs);
-    newTaskForm.addEventListener('submit', (e) => {
-        const data = new FormData(newTaskForm);
-        for (const entry of data) { // get values
-            switch(entry[0]) {
-                case 'new-task-title':
-                    var titleValue = entry[1];
-                    break;
-                case 'new-task-duedate':
-                    var dueDateValue = entry[1];
-                    break;
-                case 'new-task-priority':
-                    var priorityValue = entry[1];
-                    break;
-                case 'new-task-desc':
-                    var descValue = entry[1];
-                    break;
-            };
-        };
-        newTaskForm.reset(); // reset form
-        const thisProjectId = document.querySelector('#project-detail').dataset.projectId;
-        // create task with default value for priority if undefined
-        manageProjects.getProject(thisProjectId).createTask(titleValue, dueDateValue, priorityValue || 3, descValue); 
-        e.preventDefault();
-        popupsManager.closePopup(popup);
-    });
-    const popup = popupsManager.createPopup('new-task-popup', 'New task', 'new-task-close-btn', newTaskForm);
-    const newTaskCloseBtn = popup.querySelector('#new-task-close-btn');
-    newTaskCloseBtn.addEventListener('click',popupsManager.closePopup.bind(this, newTaskPopup));
-    return popup;
-};
-
-const newTaskBtn = document.querySelector('#new-task-btn');
-newTaskBtn.addEventListener('click',popupsManager.openPopup.bind(this,newTaskPopup()));
-
 export {
-    popupsManager
+    popupsManager,
+    createPopup
 }
