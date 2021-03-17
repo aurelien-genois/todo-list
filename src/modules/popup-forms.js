@@ -1,5 +1,5 @@
 import {manageProjects} from './projects-manager.js'
-import {domRender} from './dom-integration.js'
+import {domRenderTasks, domRenderProjects, domRenderGeneralTabs} from './dom-integration.js'
 import {dom} from './dom-elements.js'
 
 // popupUX
@@ -114,26 +114,7 @@ const popupsManager = ((doc) => {
 })(document);
 
     // new project popup
-const newProjectSubmit = (e, popup) => {
-    const data = new FormData(e.target);
-    for (const entry of data) { // get values
-        switch(entry[0]) {
-            case 'new-project-title':
-                var titleValue = entry[1];
-                break;
-            case 'new-project-desc':
-                var descValue = entry[1];
-            break;
-            };
-    };
-    e.target.reset(); // reset form 
-    manageProjects.createProject(titleValue, descValue); // create project
-    const project  = manageProjects.getProjectByTitle(titleValue);
 
-    domRender.renderProjectsDetails(project);
-    e.preventDefault();
-    popupsManager.closePopup(popup);
-}
 const newProjectPopup = () => {
     let inputs = [];
     const titleInput = popupsManager.createFormInput('Project title:', 'new-project-title', 'text');
@@ -142,7 +123,7 @@ const newProjectPopup = () => {
     const newProjectForm = popupsManager.createForm('new-project-form', 'Create a new project', inputs); 
     const popup = popupsManager.createPopup('new-project-popup', 'New project', 'new-project-close-btn', newProjectForm);
     newProjectForm.addEventListener('submit', (e) => {
-        newProjectSubmit(e, popup)
+        manageProjects.createNewProjectFormSubmit(e, popup)
     });
     const newProjectCloseBtn = popup.querySelector('#new-project-close-btn');
     newProjectCloseBtn.addEventListener('click', popupsManager.closePopup.bind(this, popup));

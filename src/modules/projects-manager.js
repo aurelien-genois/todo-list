@@ -1,57 +1,65 @@
-import {task} from './tasks-manager.js'
-import {domRender} from './dom-integration.js'
+import {project} from './projects-class.js'
+import {popupsManager} from './popup-forms.js'
+import {domRenderTasks, domRenderProjects, domRenderGeneralTabs} from './dom-integration.js'
 
-
-const project = (title, desc) => {
-    let tasks = [];
-    const proto = {
-        getTitle: () => title,
-        setTitle: (newTitle) => title = newTitle,
-        getDesc: () => desc,
-        setDesc: (newDesc) => desc = newDesc,
-        getTasks() {
-            return this.tasks;
-        },
-        getTask(taskId) {
-            return this.tasks[taskId];
-        },
-        createTask(title, dueDate, priorityLevel, desc) { 
-            // create and keep a task in project tasks[]
-            this.tasks.push(task(title, dueDate, priorityLevel, desc));
-            domRender.renderTasks(this.tasks);
-        },
-        deleteTask(taskSelected) { 
-            // can be optimize with unique function for both deleteTask and deleteProject with deleteItem(array, item)
-            const taskId = tasks.indexOf(taskSelected);
-            tasks.splice(taskId, 1);
-            domRender.renderTasks(this.tasks);
-        }
-    };
-    return Object.assign(Object.create(proto), {tasks});
-}
-// (NTH function setProject for change the project for one task)
-
-// to be moved in right place or condense in one module 'manageProjects'
 const manageProjects = (() => {
     let _projects = [];
     const createProject = (title,desc) => {
         const newProject = project(title, desc);
         _projects.push(newProject)
-        domRender.renderProjectsTabs(_projects);
+        domRenderProjects.renderProjectsTabs(_projects);
         return newProject;
     };
+
+    const getNewProjectsValues = (form) => {
+        const data = new FormData(form);
+        for (const entry of data) { //  return {titleValue, descValue}; get values
+            switch(entry[0]) {
+                case 'new-project-title':
+                    var titleValue = entry[1];
+                    break;
+                case 'new-project-desc':
+                    var descValue = entry[1];
+                    break;
+                case 'edit-project-title':
+                    var titleValue = entry[1];
+                    break;
+                case 'edit-project-desc':
+                    var descValue = entry[1];
+                    break;
+
+            };
+        };
+        form.reset(); // reset form 
+        return {titleValue, descValue};
+    };
+    const createNewProjectFormSubmit = (e, popup) => {
+        const {titleValue, descValue} = getNewProjectsValues(e.target);
+        const project  = createProject(titleValue, descValue);
+        domRenderProjects.renderProjectDetails(project);
+        domRenderTasks.renderTasks(project.getTasks());
+        e.preventDefault();
+        popupsManager.closePopup(popup);
+    }   
+    const editProjectFormSubmit = (e, project) => {
+        const {titleValue, descValue} = getNewProjectsValues(e.target);
+        project.setTitle(titleValue);
+        project.setDesc(descValue);
+        domRenderProjects.renderProjectDetails(project);
+        e.preventDefault();
+    }
+
     const deleteProject = (projectSelected) => {
         const projectId = _projects.indexOf(projectSelected);
         _projects.splice(projectId, 1);
-        domRender.renderProjectsTabs(_projects);
+        domRenderProjects.renderProjectsTabs(_projects);
         return projectSelected;
     };
+
+    // getters
     const getProjects = () => _projects;
     const getProject = (projectId) => {
         return _projects[projectId];
-    }
-    const getProjectByTitle = (title) => {
-        return _projects.find(project => project.getTitle() === title);
     }
     const getProjectId = (project) => {
         return _projects.indexOf(project)
@@ -60,7 +68,8 @@ const manageProjects = (() => {
             return tasks.concat(proj.getTasks());
         }, []);
 
-    return {createProject, deleteProject, getProjects, getProject, getAllTasks, getProjectByTitle, getProjectId};
+    return {createProject, createNewProjectFormSubmit, editProjectFormSubmit, deleteProject,
+         getProjects, getProject, getAllTasks, getProjectId};
 })();
 
 export {

@@ -91,7 +91,7 @@ fieldset {
     display: grid;
     grid-template-columns: 1fr 2rem;
 }
-#new-task-btn, #edit-project-btn, #edit-project-form input[type='submit'] {
+#new-task-btn, #edit-project-btn, #delete-project-btn, #edit-project-form input[type='submit'] {
     border: 0.2rem solid rgb(158, 206, 94);;
     color: rgb(158, 206, 94);
     margin: 0;
