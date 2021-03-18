@@ -2,7 +2,7 @@ import { project } from "./projects-class";
 
 // tasks factory
 const task = (title, dueDate, priorityLevel, desc, projectId) => {;
-    let stateDegree = 3;
+    let stateDegree = 2;
     const proto = {
         getTitle: () => title,
         setTitle: (newTitle) => title = newTitle,
@@ -21,7 +21,7 @@ const task = (title, dueDate, priorityLevel, desc, projectId) => {;
         setPriority(level) {priorityLevel = level},
 
         taskStates: ['Done', 'WIP', 'Todo', 'Abandoned'],
-        getState() {return this.taskStates[this.stateDegree -1]},
+        getState() {return this.taskStates[this.stateDegree]},
         setState(newDegree) {this.stateDegree = newDegree}
         
     }

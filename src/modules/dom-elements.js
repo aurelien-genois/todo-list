@@ -13,9 +13,10 @@ const dom = ((doc) => {
         inputText.setAttribute('maxlength', maxlength);
         inputText.classList.add(...classes);
         inputText.required = true;
-
+        if (maxlength) {
+            inputText.placeholder = `(up to ${maxlength} characters)`;
+        }
         label.append(labelText, inputText);
-
         return label;
     };
 
@@ -23,34 +24,23 @@ const dom = ((doc) => {
         const label = doc.createElement('label');
         label.classList.add(...labelClasses);
         label.setAttribute('for', id);
-
         let labelTextSpan = labelText;
-        if (maxlength) {
-            labelTextSpan = doc.createElement('span');
-            labelTextSpan.textContent = labelText;
-            const parenthesis = doc.createElement('span');
-            parenthesis.classList.add('parenthesis');
-            parenthesis.textContent = `(up to ${maxlength} characters)`;
-            labelTextSpan.appendChild(parenthesis);
-        }
-
         const textarea = document.createElement('textarea');
         textarea.setAttribute('id', id);
         textarea.setAttribute('name', name);
         textarea.setAttribute('maxlength', maxlength);
         textarea.classList.add(...classes);
-
+        if (maxlength) {
+            textarea.placeholder = `(up to ${maxlength} characters)`;
+        };
         label.append(labelTextSpan, textarea);
-
         return label;    
-    }
+    };
     
     const createDateInput = (labelText, labelClasses, id, name, classes) => {
-
         const label = doc.createElement('label');
         label.classList.add(...labelClasses);
         label.setAttribute('for', id);
-
         const inputDate = doc.createElement('input');
         inputDate.setAttribute('type', 'date');
         inputDate.setAttribute('id', id);
@@ -61,7 +51,7 @@ const dom = ((doc) => {
         label.append(labelText, inputDate);
 
         return label;
-    }
+    };
 
     const createSelectOption = (value, textContent, classes) => {
         const option = doc.createElement('option');
@@ -69,7 +59,20 @@ const dom = ((doc) => {
         option.textContent = textContent;
         option.classList.add(...classes);
         return option;
-    }
+    };
+
+    const createSelect = (labelText, labelClasses, id, name, options, classes) => {
+        const label = doc.createElement('label');
+        label.classList.add(...labelClasses);
+        label.setAttribute('for', id);
+        const select = doc.createElement('select');
+        select.setAttribute('id',id);
+        select.setAttribute('name', name);
+        select.classList.add(...classes);
+        select.append(...options); 
+        label.append(labelText,select);       
+        return label;
+    };
 
     const createRadio = (labelText, labelClasses, id, name, value, classes) => {
 
@@ -103,7 +106,7 @@ const dom = ((doc) => {
 
 
         return label;
-    }
+    };
 
     const createSubmit = (value, classes) => {
         const submit = doc.createElement('input');
@@ -111,21 +114,25 @@ const dom = ((doc) => {
         submit.setAttribute('value', value);
         submit.classList.add(...classes);
         return submit;
-    }
+    };
 
     const createForm = (formId, classes, submitValue, submitClasses, inputs) => {
         const form = doc.createElement('form');
         form.setAttribute('id', formId);
         form.classList.add(...classes);
-        inputs.map(input => {
-            form.appendChild(input);
-        });
+        if(Array.isArray(inputs)) {
+            inputs.map(input => {
+                form.appendChild(input);
+            });
+        } else {
+            form.appendChild(inputs);
+        }
         const formSubmit = dom.createSubmit(submitValue, submitClasses);
         form.appendChild(formSubmit);
         return form;
-    }
+    };
 
-    return {createTextInput, createTextarea, createDateInput, createSelectOption, createRadio, createRadioFieldset, createSubmit, createForm};
+    return {createTextInput, createTextarea, createDateInput, createSelectOption, createSelect, createRadio, createRadioFieldset, createSubmit, createForm};
 })(document);
 
 export {

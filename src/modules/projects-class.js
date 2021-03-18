@@ -21,10 +21,10 @@ const project = (title, desc) => {
             this.tasks.push(task(title, dueDate, priorityLevel, desc, projectId));
             domRenderTasks.renderTasks(this.tasks);
         },
-        deleteTask(taskId, thisTabId) { 
+        deleteTask(taskId, tabId) { 
             this.tasks.splice(taskId, 1);
-            if (isNaN(Number(thisTabId))) { // if thisTabId is a general tab
-                domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId); // for re-filter the task-list
+            if (isNaN(Number(tabId))) { // if thisTabId is a general tab
+                domRenderGeneralTabs.renderGeneralTabsTasks(tabId); // for re-filter the task-list
             } else {
                 domRenderTasks.renderTasks(this.tasks);
             }

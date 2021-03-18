@@ -65,7 +65,6 @@ const manageProjects = (() => {
                 case 'new-task-desc':
                     var descValue = entry[1];
                     break;
-                // todo create the renderEditTaskForm in dom-integration.js
                 case 'edit-task-title':
                     var titleValue = entry[1];
                     break;
@@ -88,16 +87,32 @@ const manageProjects = (() => {
     };
     const createNewTaskFormSubmit = (e, popup) => {
         const {titleValue, dueDateValue, priorityValue, descValue} = getNewTaskValues(e.target); 
+        // remove the 'document' here, pass the thisProject with a attribute
         const thisProjectId = document.querySelector('#project-detail').dataset.projectId;
         manageProjects.getProject(thisProjectId).createTask(titleValue, dueDateValue, priorityValue || 3, descValue, thisProjectId); 
         e.preventDefault();
         popupsManager.closePopup(popup);
     }
-    // editTaskFormSubmit
+    const editTaskFormSubmit = (e, task, project, tabId) => {
+        const {titleValue, dueDateValue, priorityValue, descValue, stateValue} = getNewTaskValues(e.target);
+        task.setTitle(titleValue);
+        task.setDesc(descValue);
+        task.setDueDate(dueDateValue);
+        task.setPriority(priorityValue);
+        task.setState(stateValue);
+        if (isNaN(Number(tabId))) { // if thisTabId is a general tab
+            domRenderGeneralTabs.renderGeneralTabsTasks(tabId); // for re-filter the task-list
+        } else {
+            domRenderTasks.renderTasks(project.getTasks());
+        }
+        e.preventDefault();
+    };
 
     const deleteProject = (projectSelected) => {
         // ! to Fixe delete project other than the last
+        // conflict in the renderTasks methods with deleteTask which need 'taskIdInProject'
         const projectId = _projects.indexOf(projectSelected);
+        console.log(projectId)
         _projects.splice(projectId, 1);
         domRenderProjects.renderProjectsTabs(_projects);
         domRenderGeneralTabs.initPageLoadTasks();
@@ -118,7 +133,7 @@ const manageProjects = (() => {
         }, []);
 
     return {createProject, createNewProjectFormSubmit, editProjectFormSubmit, deleteProject,
-        createNewTaskFormSubmit,
+        createNewTaskFormSubmit, editTaskFormSubmit,
          getProjects, getProject, getAllTasks, getProjectId};
 })();
 
