@@ -131,22 +131,22 @@ fieldset {
     padding: 0.5rem;
     border-radius: 0.5rem;
 }
-.task-main-infos {
+.task-main-infos, #edit-task-main-infos {
     display: flex;
     justify-content: space-between;
 }
-.task-infos {
+.task-infos, #edit-task-date-state {
     display: flex;
 }
-.task-duedate, .task-state {
+.task-duedate, .task-state, #edit-task-duedate {
     margin-right: 0.5rem;
 }
-.task-expand {
+.task-expand, #edit-task-expand {
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
 }
-.task-actions {
+.task-actions, #edit-task-details {
     display: flex;
     flex-direction: column;
 }
@@ -230,7 +230,7 @@ fieldset {
     height: 5rem;
     resize: none;
 }
-.popup-inputs-radio {
+.popup-inputs-radio, .edit-inputs-radio {
     margin-right: 0.5rem;
     position: relative;
     top: 0.3rem;
@@ -243,4 +243,8 @@ fieldset {
     bottom: 0;
     align-self: center;
     width: 20rem;
+}
+
+#edit-task-priority, #edit-task-priority label {
+    margin-left: 0.5rem;
 }
