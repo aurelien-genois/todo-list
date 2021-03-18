@@ -89,7 +89,6 @@ const manageProjects = (() => {
     const createNewTaskFormSubmit = (e, popup) => {
         const {titleValue, dueDateValue, priorityValue, descValue} = getNewTaskValues(e.target); 
         const thisProjectId = document.querySelector('#project-detail').dataset.projectId;
-        // create task with default value for priority if undefined
         manageProjects.getProject(thisProjectId).createTask(titleValue, dueDateValue, priorityValue || 3, descValue, thisProjectId); 
         e.preventDefault();
         popupsManager.closePopup(popup);

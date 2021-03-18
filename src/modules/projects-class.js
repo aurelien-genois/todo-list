@@ -24,7 +24,7 @@ const project = (title, desc) => {
         deleteTask(taskId, thisTabId) { 
             this.tasks.splice(taskId, 1);
             if (isNaN(Number(thisTabId))) { // if thisTabId is a general tab
-                domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId);
+                domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId); // for re-filter the task-list
             } else {
                 domRenderTasks.renderTasks(this.tasks);
             }

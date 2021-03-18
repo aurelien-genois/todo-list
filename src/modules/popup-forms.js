@@ -4,78 +4,6 @@ import {dom} from './dom-elements.js'
 
 // popupUX
 const popupsManager = ((doc) => {
-    const createFormInput = (labelText,inputId,inputType, inputChilds) => {
-        const label = doc.createElement('label');
-        label.classList.add('popup-labels');
-        label.setAttribute('for', inputId);
-        switch(inputType) {
-            case 'text':
-                label.textContent = labelText;
-                const titleInput = dom.createTextInput(inputId, inputId, 25, ['popup-inputs', 'popup-inputs-text'])
-                label.appendChild(titleInput);
-                break;
-            case 'date':
-                label.textContent = labelText;
-                const inputDate = doc.createElement('input');
-                inputDate.setAttribute('type', 'date');
-                inputDate.setAttribute('name', inputId);
-                inputDate.setAttribute('id', inputId);
-                inputDate.classList.add('popup-inputs', 'popup-inputs-date');
-                inputDate.setAttribute('required', true);
-                label.appendChild(inputDate);
-                break;
-            case 'textarea':
-                label.classList.add('popup-labels-textarea');
-                const span = doc.createElement('span');
-                span.textContent = labelText;
-                const parenthesis = doc.createElement('span');
-                parenthesis.classList.add('parenthesis');
-                parenthesis.textContent = ' (up to 100 characters)';
-                span.appendChild(parenthesis);
-                const descTextarea = dom.createTextarea(inputId, inputId, 100, ['popup-inputs', 'popup-textareas']);
-                label.append(span, descTextarea);
-                break;
-            case 'fieldset':
-                label.textContent = labelText;
-                const fieldset = doc.createElement('fieldset');
-                fieldset.setAttribute('id', inputId);
-                fieldset.classList.add('popup-inputs');
-                inputChilds.map(input => {
-                    input.firstElementChild.setAttribute('name', inputId);
-                    fieldset.appendChild(input);
-                });
-                label.appendChild(fieldset);
-                break;
-            case 'radio':
-                label.classList.remove('popup-labels');
-                const values = {
-                    Low: 3,
-                    Medium: 2,
-                    High: 1
-                }
-                const inputRadio = doc.createElement('input');
-                inputRadio.setAttribute('type', 'radio');
-                inputRadio.setAttribute('id', inputId);
-                inputRadio.classList.add('popup-inputs-radio');
-                inputRadio.setAttribute('value', values[labelText]);
-                label.appendChild(inputRadio);
-                label.append(labelText);
-        }
-        return label;
-    }
-
-    const createForm = (formId, submitValue, inputs) => {
-        const form = doc.createElement('form');
-        form.setAttribute('id', formId);
-        form.classList.add('popup-forms');
-        inputs.map(input => {
-            form.appendChild(input);
-        });
-        const formSubmit = dom.createSubmit(submitValue, ['popup-submits']);
-        form.appendChild(formSubmit);
-        return form;
-    }
-
     const createPopupSection = (popupId, popupTitle, closeBtnId, popupForm) => {
         const popup = doc.createElement('section');
         popup.setAttribute('id', popupId);
@@ -110,16 +38,16 @@ const popupsManager = ((doc) => {
         }, 500);
     };
 
-    return { createFormInput, createForm, createPopupSection, openPopup, closePopup}
+    return {createPopupSection, openPopup, closePopup}
 })(document);
     
 const createPopup = ((doc) => {
     const newProjectPopup = () => {
         let inputs = [];
-        const titleInput = popupsManager.createFormInput('Project title:', 'new-project-title', 'text');
-        const descTextarea = popupsManager.createFormInput('Project description:','new-project-desc', 'textarea');
+        const titleInput = dom.createTextInput('Project title:',['popup-labels'],'new-project-title', 'new-project-title', 25, ['popup-inputs', 'popup-inputs-text']);
+        const descTextarea = dom.createTextarea('Project description:',['popup-labels','popup-labels-textarea'],'new-project-desc', 'new-project-desc', 100, ['popup-inputs', 'popup-textareas']);
         inputs.push(titleInput, descTextarea);
-        const newProjectForm = popupsManager.createForm('new-project-form', 'Create a new project', inputs); 
+        const newProjectForm = dom.createForm('new-project-form', ['popup-forms'], 'Create a new project', ['popup-submits'], inputs); 
         const popup = popupsManager.createPopupSection('new-project-popup', 'New project', 'new-project-close-btn', newProjectForm);
         newProjectForm.addEventListener('submit', (e) => {
             manageProjects.createNewProjectFormSubmit(e, popup)
@@ -131,17 +59,22 @@ const createPopup = ((doc) => {
 
     const newTaskPopup = () => {
         let inputs = [];
-        const titleInput = popupsManager.createFormInput('Task title:', 'new-task-title', 'text');
-        const dueDateInput = popupsManager.createFormInput('Due date:', 'new-task-duedate', 'date');
-        let priorityRadios = [];
-        const priority3Input = popupsManager.createFormInput('Low', 'new-task-priority3', 'radio');
-        const priority2Input = popupsManager.createFormInput('Medium', 'new-task-priority2', 'radio');
-        const priority1Input = popupsManager.createFormInput('High', 'new-task-priority1', 'radio');
-        priorityRadios.push(priority3Input, priority2Input, priority1Input);
-        const prioritiesFieldset = popupsManager.createFormInput('Priority:', 'new-task-priority', 'fieldset', priorityRadios);
-        const descTextarea = popupsManager.createFormInput('Task description:', 'new-task-desc', 'textarea');
+        const titleInput = dom.createTextInput('Task title:',['popup-labels'],'new-task-title', 'new-task-title', 25, ['popup-inputs', 'popup-inputs-text']);
+        const dueDateInput = dom.createDateInput('Due date:',['popup-labels'],'new-task-duedate', 'new-task-duedate', ['popup-inputs', 'popup-inputs-date']);
+        // PriorityRadios
+        const priorities = {
+            Low: 3,
+            Medium: 2,
+            High: 1
+        };
+        const priority3Input = dom.createRadio('Low', [], 'new-task-priority3', 'temp', priorities['Low'], ['popup-inputs-radio']);
+        const priority2Input = dom.createRadio('Medium', [], 'new-task-priority2', 'temp', priorities['Medium'], ['popup-inputs-radio']);
+        const priority1Input = dom.createRadio('High', [], 'new-task-priority1', 'temp', priorities['High'], ['popup-inputs-radio']);
+        const priorityRadios = [priority3Input, priority2Input, priority1Input];
+        const prioritiesFieldset = dom.createRadioFieldset('Priority:',['popup-labels'],'new-task-priority','new-task-priority',priorityRadios, ['popup-inputs']);
+        const descTextarea = dom.createTextarea('Task description:',['popup-labels','popup-labels-textarea'], 'new-task-desc',  'new-task-desc', 100, ['popup-inputs', 'popup-textareas']);
         inputs.push(titleInput, dueDateInput, prioritiesFieldset, descTextarea);
-        const newTaskForm = popupsManager.createForm('new-task-form','Create a new task', inputs);
+        const newTaskForm = dom.createForm('new-task-form', ['popup-forms'], 'Create a new task', ['popup-submits'], inputs);
         newTaskForm.addEventListener('submit', (e) => {
             manageProjects.createNewTaskFormSubmit(e, popup);
         });
