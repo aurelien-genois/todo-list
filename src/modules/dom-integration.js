@@ -163,9 +163,6 @@ const domRenderTasks = ((doc) => {
         // todo DATE: order projectTasks by date (more recent)
         const tasksLis = projectTasks.map((task, id) => {
             const taskProject = manageProjects.getProject(task.getProjectId());
-            // ! to Fixe delete project other than the last
-            // semble chercher un id de project qui n'existe plus (les tâches du projet supprimer sont-elles bien supprimer ?)
-            console.log(task.getProjectId(), task.getTitle())
             // get the id of the task in its project
             const taskIdInProject = taskProject.getTaskId(task);
             const taskLi = _createTaskLi(task.getTitle(), task.getDueDate(), task.getPriority(), task.getState(), task.getDesc(),task.getProjectId(),taskIdInProject);
@@ -248,7 +245,7 @@ const domRenderProjects = ((doc) => {
             // create inputs
             const editFormInputs = doc.createElement('fieldset');
             editFormInputs.setAttribute('id', 'edit-project-inputs');
-            const editTitleInput = dom.createTextInput('',[],'edit-project-title', 'edit-project-title',25, []);
+            const editTitleInput = dom.createTextInput('',[],'edit-project-title', 'edit-project-title',20, []);
             editTitleInput.querySelector('input').value =thisProject.getTitle();
             const editDescTextarea = dom.createTextarea('',[],'edit-project-desc','edit-project-desc', 100, []);
             editDescTextarea.querySelector('textarea').value = thisProject.getDesc();

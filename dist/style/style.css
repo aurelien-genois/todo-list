@@ -49,16 +49,17 @@ fieldset {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
 }
 .tabs {
     margin: 0.2rem 0;
     cursor: pointer;
+    width: 16rem;
 }
 #projects-tabs::before {
     content: "";
     position: absolute;
     top: 1rem;
+    left: 3rem;
     height: 0.3rem;
     width: 10rem;
     background-color: rgb(100, 139, 101);

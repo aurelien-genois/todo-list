@@ -44,7 +44,7 @@ const popupsManager = ((doc) => {
 const createPopup = ((doc) => {
     const newProjectPopup = () => {
         let inputs = [];
-        const titleInput = dom.createTextInput('Project title:',['popup-labels'],'new-project-title', 'new-project-title', 25, ['popup-inputs', 'popup-inputs-text']);
+        const titleInput = dom.createTextInput('Project title:',['popup-labels'],'new-project-title', 'new-project-title', 20, ['popup-inputs', 'popup-inputs-text']);
         const descTextarea = dom.createTextarea('Project description:',['popup-labels','popup-labels-textarea'],'new-project-desc', 'new-project-desc', 100, ['popup-inputs', 'popup-textareas']);
         inputs.push(titleInput, descTextarea);
         const newProjectForm = dom.createForm('new-project-form', ['popup-forms'], 'Create a new project', ['popup-submits'], inputs); 

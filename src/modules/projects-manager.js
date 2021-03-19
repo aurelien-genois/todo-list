@@ -46,6 +46,7 @@ const manageProjects = (() => {
         project.setTitle(titleValue);
         project.setDesc(descValue);
         domRenderProjects.renderProjectDetails(project);
+        domRenderProjects.renderProjectsTabs(_projects);
         e.preventDefault();
     }
     
@@ -109,11 +110,16 @@ const manageProjects = (() => {
     };
 
     const deleteProject = (projectSelected) => {
-        // ! to Fixe delete project other than the last
-        // conflict in the renderTasks methods with deleteTask which need 'taskIdInProject'
         const projectId = _projects.indexOf(projectSelected);
-        console.log(projectId)
         _projects.splice(projectId, 1);
+        // update the tasks' projectId for project greater than the project deleted
+        const greaterProjects = _projects.filter((project, id) => id >= projectId);
+        greaterProjects.map(project => {
+            project.getTasks().map(task => {
+                task.setProjectId(task.getProjectId() - 1);
+            });
+        });
+        // task.setProjectId()
         domRenderProjects.renderProjectsTabs(_projects);
         domRenderGeneralTabs.initPageLoadTasks();
         domRenderProjects.renderProjectDetails('all-tasks', 'All tasks');
