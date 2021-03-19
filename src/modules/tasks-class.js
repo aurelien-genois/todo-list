@@ -1,4 +1,3 @@
-import { project } from "./projects-class";
 
 // tasks factory
 const task = (title, dueDate, priorityLevel, desc, projectId) => {;

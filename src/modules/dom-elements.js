@@ -1,5 +1,5 @@
 
-const dom = ((doc) => {
+const domForm = ((doc) => {
 
     const createTextInput = (labelText, labelClasses, id, name, maxlength, classes) => {
         const label = doc.createElement('label');
@@ -127,7 +127,7 @@ const dom = ((doc) => {
         } else {
             form.appendChild(inputs);
         }
-        const formSubmit = dom.createSubmit(submitValue, submitClasses);
+        const formSubmit = createSubmit(submitValue, submitClasses);
         form.appendChild(formSubmit);
         return form;
     };
@@ -135,8 +135,50 @@ const dom = ((doc) => {
     return {createTextInput, createTextarea, createDateInput, createSelectOption, createSelect, createRadio, createRadioFieldset, createSubmit, createForm};
 })(document);
 
+const domElements = ((doc) => {
+    const createH = (id, classes,textContent,level) => {
+        const titleH = doc.createElement('h' + level);
+        titleH.textContent = textContent;
+        titleH.id = id;
+        titleH.classList.add(...classes);
+        return titleH;
+    };
+
+    const createButton = (id, classes,textContent) => {
+        const button = doc.createElement('button');
+        button.textContent = textContent;
+        button.setAttribute('id', id);
+        button.classList.add(...classes);
+        return button;
+    };
+    
+    const createDiv = (id,classes,children) => {
+        const div = doc.createElement('div');
+        div.id = id;
+        div.classList.add(...classes);
+        children.map(child => {
+            div.append(child);
+        })
+        return div;
+    }
+    const createSection = (id, classes,children) => {
+        const section = doc.createElement('section');
+        section.id = id;
+        section.classList.add(...classes);
+        children.map(child => {
+            section.append(child);
+        });
+        return section;
+    };
+
+    const body = doc.querySelector('#body');
+
+    return {createH, createButton, createDiv, createSection, body};
+})(document);
+
 export {
-    dom
+    domForm,
+    domElements
 }
 
 

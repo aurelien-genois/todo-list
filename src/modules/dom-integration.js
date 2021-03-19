@@ -1,5 +1,5 @@
 import {manageProjects} from './projects-manager.js'
-import {dom} from './dom-elements.js'
+import {domForm} from './dom-elements.js'
 import {popupsManager, createPopup} from './popup-forms.js'
 
 
@@ -113,26 +113,26 @@ const domRenderTasks = ((doc) => {
         const editMainInfos = doc.createElement('fieldset');
         editMainInfos.setAttribute('id','edit-task-main-infos');
         // Title
-        const editTitleInput = dom.createTextInput('',[],'edit-task-title', 'edit-task-title', 25,  []);
+        const editTitleInput = domForm.createTextInput('',[],'edit-task-title', 'edit-task-title', 15,  []);
         editTitleInput.querySelector('input').value = thisTask.getTitle();
         // DateState fieldset
         const editDateState = doc.createElement('fieldset');
         editDateState.setAttribute('id','edit-task-date-state');
         // Date
-        const editDateInput = dom.createDateInput('',[],'edit-task-duedate', 'edit-task-duedate',[]);
+        const editDateInput = domForm.createDateInput('',[],'edit-task-duedate', 'edit-task-duedate',[]);
         editDateInput.querySelector('input').value = thisTask.getDueDate();
         // States
-        const editStateDoneOption = dom.createSelectOption(0, 'Done',[]);
-        const editStateWipOption = dom.createSelectOption(1, 'WIP', []);
-        const editStateTodoOpion = dom.createSelectOption(2,'Todo',[]);
-        const editStateAbandonedOpion = dom.createSelectOption(3,'Abandoned', []);
+        const editStateDoneOption = domForm.createSelectOption(0, 'Done',[]);
+        const editStateWipOption = domForm.createSelectOption(1, 'WIP', []);
+        const editStateTodoOpion = domForm.createSelectOption(2,'Todo',[]);
+        const editStateAbandonedOpion = domForm.createSelectOption(3,'Abandoned', []);
         const stateOptions = [editStateDoneOption,editStateWipOption,editStateTodoOpion,editStateAbandonedOpion];
         stateOptions.map(option =>{ 
             if (option.textContent === thisTask.getState()) {
                 option.selected = true;
             }
         });
-        const editStateSelect = dom.createSelect('',[],'edit-task-state','edit-task-state',stateOptions, []);
+        const editStateSelect = domForm.createSelect('',[],'edit-task-state','edit-task-state',stateOptions, []);
         // mainInfos hierachy
         editDateState.append(editDateInput, editStateSelect)
         editMainInfos.append(editTitleInput, editDateState);
@@ -148,9 +148,9 @@ const domRenderTasks = ((doc) => {
             Medium: 2,
             High: 1
         };
-        const priority3Input = dom.createRadio('Low', [], 'edit-task-priority3', 'temp', priorities['Low'], ['edit-inputs-radio']);
-        const priority2Input = dom.createRadio('Medium', [], 'edit-task-priority2', 'temp', priorities['Medium'], ['edit-inputs-radio']);
-        const priority1Input = dom.createRadio('High', [], 'edit-task-priority1', 'temp', priorities['High'], ['edit-inputs-radio']);
+        const priority3Input = domForm.createRadio('Low', [], 'edit-task-priority3', 'temp', priorities['Low'], ['edit-inputs-radio']);
+        const priority2Input = domForm.createRadio('Medium', [], 'edit-task-priority2', 'temp', priorities['Medium'], ['edit-inputs-radio']);
+        const priority1Input = domForm.createRadio('High', [], 'edit-task-priority1', 'temp', priorities['High'], ['edit-inputs-radio']);
         const priorityRadios = [priority3Input, priority2Input, priority1Input];
         priorityRadios.map(radio =>{ 
             if (radio.textContent === thisTask.getPriority()) {
@@ -158,15 +158,15 @@ const domRenderTasks = ((doc) => {
                 ('input').checked = true;
             };
         });
-        const prioritiesFieldset = dom.createRadioFieldset('Priority:',['edit-labels'],'edit-task-priority','edit-task-priority',priorityRadios, ['edit-inputs']);
+        const prioritiesFieldset = domForm.createRadioFieldset('Priority:',['edit-labels'],'edit-task-priority','edit-task-priority',priorityRadios, ['edit-inputs']);
         // desc
-        const editDescTextarea = dom.createTextInput('',[],'edit-task-desc','edit-task-desc',25, []);
+        const editDescTextarea = domForm.createTextInput('',[],'edit-task-desc','edit-task-desc',25, []);
         editDescTextarea.querySelector('input').value = thisTask.getDesc();
         // expand div hierachy
         editDetails.append(prioritiesFieldset,editDescTextarea);
         editExpandDiv.append(editDetails);
         // create form
-        const editForm = dom.createForm('edit-task-form',[],'OK',['round-btn'],[editMainInfos,editExpandDiv]);
+        const editForm = domForm.createForm('edit-task-form',[],'OK',['round-btn'],[editMainInfos,editExpandDiv]);
         editForm.addEventListener('submit', (e) => {
             const thisTabId = projectDetail.dataset.projectId;
             manageProjects.editTaskFormSubmit(e, thisTask, thisProject, thisTabId);
@@ -216,9 +216,12 @@ const domRenderProjects = ((doc) => {
 
         newProjectBtn.addEventListener('click', popupsManager.openPopup.bind(this,createPopup.newProjectPopup()));
 
-        newTaskBtn.addEventListener('click',popupsManager.openPopup.bind(this,createPopup.newTaskPopup()));
+        newTaskBtn.addEventListener('click', () => {
+            const thisProjectId = projectDetail.dataset.projectId;
+            const popup = createPopup.newTaskPopup(thisProjectId);
+            popupsManager.openPopup(popup);
+        });
 
-        
         const renderProjectDetails = (projectOrGeneralTab, generalTabName) => {
             if(doc.querySelector('#edit-project-form')) {
                 doc.querySelector('#edit-project-form').replaceWith(projectInfos);
@@ -265,13 +268,13 @@ const domRenderProjects = ((doc) => {
             // create inputs
             const editFormInputs = doc.createElement('fieldset');
             editFormInputs.setAttribute('id', 'edit-project-inputs');
-            const editTitleInput = dom.createTextInput('',[],'edit-project-title', 'edit-project-title',20, []);
+            const editTitleInput = domForm.createTextInput('',[],'edit-project-title', 'edit-project-title',20, []);
             editTitleInput.querySelector('input').value =thisProject.getTitle();
-            const editDescTextarea = dom.createTextarea('',[],'edit-project-desc','edit-project-desc', 100, []);
+            const editDescTextarea = domForm.createTextarea('',[],'edit-project-desc','edit-project-desc', 100, []);
             editDescTextarea.querySelector('textarea').value = thisProject.getDesc();
             editFormInputs.append(editTitleInput, editDescTextarea);
             // create form
-            const editForm = dom.createForm('edit-project-form',[],'OK',['round-btn'],editFormInputs);
+            const editForm = domForm.createForm('edit-project-form',[],'OK',['round-btn'],editFormInputs);
             editForm.addEventListener('submit', (e) => {
                 manageProjects.editProjectFormSubmit(e, thisProject);
             });

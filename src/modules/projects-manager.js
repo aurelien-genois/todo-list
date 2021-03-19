@@ -86,10 +86,8 @@ const manageProjects = (() => {
         form.reset(); // reset form
         return {titleValue, dueDateValue, priorityValue, descValue, stateValue};
     };
-    const createNewTaskFormSubmit = (e, popup) => {
+    const createNewTaskFormSubmit = (e, popup, thisProjectId) => {
         const {titleValue, dueDateValue, priorityValue, descValue} = getNewTaskValues(e.target); 
-        // remove the 'document' here, pass the thisProject with a attribute
-        const thisProjectId = document.querySelector('#project-detail').dataset.projectId;
         manageProjects.getProject(thisProjectId).createTask(titleValue, dueDateValue, priorityValue || 3, descValue, thisProjectId); 
         e.preventDefault();
         popupsManager.closePopup(popup);
