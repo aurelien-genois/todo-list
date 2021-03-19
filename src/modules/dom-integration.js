@@ -9,10 +9,33 @@ const domRenderTasks = ((doc) => {
     const projectDetail = doc.querySelector('#project-detail');
 
     const _createTaskLi = (title, dueDate, priority, state, desc, projId,taskId) => {
+        const thisProject = manageProjects.getProject(projId);
+        const thisTask = thisProject.getTask(taskId);
+
         const li = doc.createElement('li');
         li.classList.add('tasks');
         li.setAttribute('data-task-id', taskId);        
         li.setAttribute('data-project-id', projId);        
+        const checkState = doc.createElement('input');
+        checkState.type = 'checkbox';
+        checkState.id = 'task-check-state';
+        if(thisTask.getState() === 'Done') {
+            checkState.checked = true;
+        }
+        checkState.addEventListener('change', () => {
+            const thisTabId = projectDetail.dataset.projectId;
+            if (thisTask.getState() === 'Todo') {
+                thisTask.setState(0); //set Done
+            } else {
+                thisTask.setState(2); // set Todo
+            };
+            if (isNaN(Number(thisTabId))) { // if thisTabId is a general tab
+                domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId); // for re-filter the task-list
+            } else {
+                renderTasks(thisProject.getTasks());
+            }
+        });
+
 
         const titleH4 = doc.createElement('h3');
         titleH4.textContent = title;
@@ -44,7 +67,7 @@ const domRenderTasks = ((doc) => {
 
         const mainInfosDiv = doc.createElement('div');
         mainInfosDiv.classList.add('task-main-infos');
-        mainInfosDiv.append(titleH4, infoDiv);
+        mainInfosDiv.append(checkState, titleH4, infoDiv);
 
         const expandDiv = doc.createElement('div');
         expandDiv.classList.add('task-expand');
@@ -66,14 +89,13 @@ const domRenderTasks = ((doc) => {
         editTaskBtn.classList.add('edit-task-btn', 'round-btn');
         editTaskBtn.textContent = '/';
         editTaskBtn.addEventListener('click', () => {
-            renderEditTaskForm(projId, taskId, li,mainInfosDiv, expandDiv);
+            renderEditTaskForm(thisProject, thisTask, li,mainInfosDiv, expandDiv);
         });
         const deleteBtn = doc.createElement('button');
         deleteBtn.classList.add('round-btn', 'delete-task-btn');
         deleteBtn.textContent = 'X';
         deleteBtn.addEventListener('click', () => {
             const thisTabId = projectDetail.dataset.projectId;
-            const thisProject = manageProjects.getProject(projId);
             thisProject.deleteTask(taskId, thisTabId)
         });
         actionsDiv.append(editTaskBtn, deleteBtn);
@@ -85,9 +107,7 @@ const domRenderTasks = ((doc) => {
         return li;
     }
 
-    const renderEditTaskForm = (projId, taskId, taskLi, mainInfosDiv, expandDiv) => {
-        const thisProject = manageProjects.getProject(projId);
-        const thisTask = thisProject.getTask(taskId);
+    const renderEditTaskForm = (thisProject, thisTask, taskLi, mainInfosDiv, expandDiv) => {
         // create inputs
         // mainInfos fieldset
         const editMainInfos = doc.createElement('fieldset');
