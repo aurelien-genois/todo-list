@@ -50,14 +50,9 @@ const createPopup = (() => {
         const titleInput = domForm.createTextInput('Task title:',['popup-labels'],'new-task-title', 'new-task-title', 15, ['popup-inputs', 'popup-inputs-text']);
         const dueDateInput = domForm.createDateInput('Due date:',['popup-labels'],'new-task-duedate', 'new-task-duedate', ['popup-inputs', 'popup-inputs-date']);
         // PriorityRadios
-        const priorities = {
-            Low: 3,
-            Medium: 2,
-            High: 1
-        };
-        const priority3Input = domForm.createRadio('Low', [], 'new-task-priority3', 'temp', priorities['Low'], ['popup-inputs-radio']);
-        const priority2Input = domForm.createRadio('Medium', [], 'new-task-priority2', 'temp', priorities['Medium'], ['popup-inputs-radio']);
-        const priority1Input = domForm.createRadio('High', [], 'new-task-priority1', 'temp', priorities['High'], ['popup-inputs-radio']);
+        const priority3Input = domForm.createRadio('Low', [], 'new-task-priority3', 'temp', 3, ['popup-inputs-radio']);
+        const priority2Input = domForm.createRadio('Medium', [], 'new-task-priority2', 'temp', 2, ['popup-inputs-radio']);
+        const priority1Input = domForm.createRadio('High', [], 'new-task-priority1', 'temp', 1, ['popup-inputs-radio']);
         const priorityRadios = [priority3Input, priority2Input, priority1Input];
         const prioritiesFieldset = domForm.createRadioFieldset('Priority:',['popup-labels'],'new-task-priority','new-task-priority',priorityRadios, ['popup-inputs']);
         const descTextarea = domForm.createTextarea('Task description:',['popup-labels','popup-labels-textarea'], 'new-task-desc',  'new-task-desc', 100, ['popup-inputs', 'popup-textareas']);

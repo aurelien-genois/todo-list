@@ -1,6 +1,11 @@
 
 // tasks factory
 const task = (title, dueDate, priorityLevel, desc, projectId) => {;
+    // private arrays
+    // these values are fixed so an id is necessary to accessed them
+    const _taskPriorities =  ['High', 'Medium', 'Low'];
+    const _taskStates = ['Done', 'WIP', 'Todo', 'Abandoned'];
+
     let stateDegree = 2;
     const proto = {
         getTitle: () => title,
@@ -15,12 +20,10 @@ const task = (title, dueDate, priorityLevel, desc, projectId) => {;
         getProjectId: () => projectId,
         setProjectId : (newProjectId) => projectId = newProjectId, // task can change project
         
-        taskPriorities: ['High', 'Medium', 'Low'],
-        getPriority() {return this.taskPriorities[priorityLevel - 1]},
+        getPriority() {return _taskPriorities[priorityLevel - 1]},
         setPriority(level) {priorityLevel = level},
 
-        taskStates: ['Done', 'WIP', 'Todo', 'Abandoned'],
-        getState() {return this.taskStates[this.stateDegree]},
+        getState() {return _taskStates[this.stateDegree]},
         setState(newDegree) {this.stateDegree = newDegree}
         
     }

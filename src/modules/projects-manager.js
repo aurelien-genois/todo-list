@@ -11,7 +11,8 @@ const manageProjects = (() => {
         return newProject;
     };
 
-    const getNewProjectValues = (form) => {
+    // Project Form Submit
+    const _getNewProjectValues = (form) => {
         const data = new FormData(form);
         for (const entry of data) { //  return {titleValue, descValue}; get values
             switch(entry[0]) {
@@ -34,7 +35,7 @@ const manageProjects = (() => {
         return {titleValue, descValue};
     };
     const createNewProjectFormSubmit = (e, popup) => {
-        const {titleValue, descValue} = getNewProjectValues(e.target);
+        const {titleValue, descValue} = _getNewProjectValues(e.target);
         const project  = createProject(titleValue, descValue);
         domRenderProjects.renderProjectDetails(project);
         domRenderTasks.renderTasks(project.getTasks());
@@ -42,7 +43,7 @@ const manageProjects = (() => {
         popupsManager.closePopup(popup);
     }   
     const editProjectFormSubmit = (e, project) => {
-        const {titleValue, descValue} = getNewProjectValues(e.target);
+        const {titleValue, descValue} = _getNewProjectValues(e.target);
         project.setTitle(titleValue);
         project.setDesc(descValue);
         domRenderProjects.renderProjectDetails(project);
@@ -50,7 +51,8 @@ const manageProjects = (() => {
         e.preventDefault();
     }
     
-    const getNewTaskValues = (form) => {
+    // Task Form Submit
+    const _getNewTaskValues = (form) => {
         const data = new FormData(form);
         for (const entry of data) { // get values
             switch(entry[0]) {
@@ -87,13 +89,13 @@ const manageProjects = (() => {
         return {titleValue, dueDateValue, priorityValue, descValue, stateValue};
     };
     const createNewTaskFormSubmit = (e, popup, thisProjectId) => {
-        const {titleValue, dueDateValue, priorityValue, descValue} = getNewTaskValues(e.target); 
+        const {titleValue, dueDateValue, priorityValue, descValue} = _getNewTaskValues(e.target); 
         manageProjects.getProject(thisProjectId).createTask(titleValue, dueDateValue, priorityValue || 3, descValue, thisProjectId); 
         e.preventDefault();
         popupsManager.closePopup(popup);
     }
     const editTaskFormSubmit = (e, task, project, tabId) => {
-        const {titleValue, dueDateValue, priorityValue, descValue, stateValue} = getNewTaskValues(e.target);
+        const {titleValue, dueDateValue, priorityValue, descValue, stateValue} = _getNewTaskValues(e.target);
         task.setTitle(titleValue);
         task.setDesc(descValue);
         task.setDueDate(dueDateValue);
