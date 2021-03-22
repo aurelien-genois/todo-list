@@ -73,6 +73,7 @@ const domRenderTasks = ((doc) => {
         taskLi.append(editForm);
     }
 
+    // move this function out of dom-integration
     const _toggleStateDoneTodo = (thisTask, thisProject) => {
         const thisTabId = _projectDetail.dataset.projectId;
         if (thisTask.getState() !== 'Done') {
@@ -80,13 +81,16 @@ const domRenderTasks = ((doc) => {
         } else {
             thisTask.setState(2); // set Todo
         };
+        domRenderProjects.updateLocalStorage();
         if (isNaN(Number(thisTabId))) { // if thisTabId is a general tab
             domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId); // for re-filter the task-list
         } else {
             renderTasks(thisProject.getTasks());
         }
+
     };
 
+        // move this function out of dom-integration
     const _deleteThisTask = (taskId, thisProject) => {
         const thisTabId = _projectDetail.dataset.projectId;
         thisProject.deleteTask(taskId);
@@ -96,7 +100,7 @@ const domRenderTasks = ((doc) => {
         } else {
             domRenderTasks.renderTasks(thisProject.getTasks());
         }
-
+        domRenderProjects.updateLocalStorage();
     }
 
     const _toggleExpandDetails = (thisBtn,li, expandDiv) => {
@@ -268,6 +272,7 @@ const domRenderProjects = ((doc) => {
                 const li = doc.createElement('li');
                 li.classList.add('tabs', 'project-tab');
                 li.textContent = project.getTitle();
+                console.log(project.getTitle())
                 return li;
             });
             projectsLi.map((projLi, projId) => projLi.addEventListener('click', () => {
@@ -308,8 +313,13 @@ const domRenderProjects = ((doc) => {
             const thisProject = manageProjects.getProject(projectDetail.dataset.projectId);
             manageProjects.deleteProject(thisProject);
         });
+
+        const updateLocalStorage = () => {
+            console.log('local')
+            localStorage.setItem('projects', JSON.stringify(manageProjects.getProjects()));
+        }
             
-        return {renderProjectsTabs,renderProjectDetails};
+        return {renderProjectsTabs,renderProjectDetails, updateLocalStorage};
 })(document)
 
 const domRenderGeneralTabs = ((doc) => {

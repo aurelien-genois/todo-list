@@ -2,32 +2,37 @@ import {task} from './tasks-class.js'
 import {domRenderTasks, domRenderProjects, domRenderGeneralTabs} from './dom-integration.js'
 
 const project = (title, desc) => {
-    // private array
-    let _tasks = [];
+    // // private array
+    // public values important for localStorage
+    let tasks = [];
+    let thisTitle = title;
+    let thisDesc = desc;
     const proto = {
-        getTitle: () => title,
-        setTitle: (newTitle) => title = newTitle,
-        getDesc: () => desc,
-        setDesc: (newDesc) => desc = newDesc,
+        getTitle: () => thisTitle,
+        setTitle: (newTitle) => thisTitle = newTitle,
+        getDesc: () => thisDesc,
+        setDesc: (newDesc) => thisDesc = newDesc,
         getTasks() {
-            return _tasks;
+            return tasks;
         },
         getTask(taskId) {
-            return _tasks[taskId];
+            return tasks[taskId];
         },
         getTaskId(task) {
-            return _tasks.indexOf(task)
+            return tasks.indexOf(task)
         },
-        createTask(title, dueDate, priorityLevel, desc, projectId) {
-            _tasks.push(task(title, dueDate, priorityLevel, desc, projectId));
-            domRenderTasks.renderTasks(_tasks);
+        createTask(title, dueDate, priorityLevel, thisDesc, projectId) {
+            const newTask = task(title, dueDate, priorityLevel, thisDesc, projectId);
+            tasks.push(newTask);
+            domRenderTasks.renderTasks(tasks);
+            domRenderProjects.updateLocalStorage();
+            return newTask;
         },
         deleteTask(taskId) { 
-            _tasks.splice(taskId, 1);
+            tasks.splice(taskId, 1);
         }
-    
     };
-    return Object.assign(Object.create(proto), {});
+    return Object.assign(Object.create(proto), {tasks, thisTitle, thisDesc});
 }
 // (NTH function setProject for change the project for one task)
 

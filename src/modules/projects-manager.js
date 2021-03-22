@@ -2,14 +2,22 @@ import {project} from './projects-class.js'
 import {popupsManager} from './popup-forms.js'
 import {domRenderTasks, domRenderProjects, domRenderGeneralTabs} from './dom-integration.js'
 
+
 const manageProjects = (() => {
     let _projects = [];
+
     const createProject = (title,desc) => {
         const newProject = project(title, desc);
         _projects.push(newProject)
         domRenderProjects.renderProjectsTabs(_projects);
+        domRenderProjects.updateLocalStorage();
         return newProject;
     };
+
+    // ! not used
+    const setProjects = (projects) => {
+        _projects = [...projects];
+    }
 
     // Project Forms Submit
     const _getNewProjectValues = (form) => {
@@ -40,15 +48,24 @@ const manageProjects = (() => {
         domRenderProjects.renderProjectDetails(project);
         domRenderTasks.renderTasks(project.getTasks());
         e.preventDefault();
+        domRenderProjects.updateLocalStorage();
         popupsManager.closePopup(popup);
     }   
     const editProjectFormSubmit = (e, project) => {
         const {titleValue, descValue} = _getNewProjectValues(e.target);
+
         project.setTitle(titleValue);
+        // ! the property thisTitle does not change on the object 
+        // but the following changes it:
+        // project.thisTitle = titleValue;
+        // ? which is the best between using direct property and using getter functions ?
+        console.log(project.getTitle(), project)
+
         project.setDesc(descValue);
         domRenderProjects.renderProjectDetails(project);
         domRenderProjects.renderProjectsTabs(_projects);
         e.preventDefault();
+        domRenderProjects.updateLocalStorage();
     }
     
     // Task Forms Submit
@@ -92,6 +109,7 @@ const manageProjects = (() => {
         const {titleValue, dueDateValue, priorityValue, descValue} = _getNewTaskValues(e.target); 
         manageProjects.getProject(thisProjectId).createTask(titleValue, new Date(dueDateValue), priorityValue || 3, descValue, thisProjectId); 
         e.preventDefault();
+        domRenderProjects.updateLocalStorage();
         popupsManager.closePopup(popup);
     }
     const editTaskFormSubmit = (e, task, project, tabId) => {
@@ -101,6 +119,7 @@ const manageProjects = (() => {
         task.setDueDate(new Date(dueDateValue));
         task.setPriority(priorityValue);
         task.setState(stateValue);
+        domRenderProjects.updateLocalStorage();
         if (isNaN(Number(tabId))) { // if thisTabId is a general tab
             domRenderGeneralTabs.renderGeneralTabsTasks(tabId); // for re-filter the task-list
         } else {
@@ -122,6 +141,7 @@ const manageProjects = (() => {
         domRenderProjects.renderProjectsTabs(_projects);
         domRenderGeneralTabs.initPageLoadTasks();
         domRenderProjects.renderProjectDetails('all-tasks', 'All tasks');
+        domRenderProjects.updateLocalStorage();
         return projectSelected;
     };
 
@@ -137,9 +157,18 @@ const manageProjects = (() => {
             return tasks.concat(proj.getTasks());
         }, []);
 
-    return {createProject, createNewProjectFormSubmit, editProjectFormSubmit, deleteProject,
-        createNewTaskFormSubmit, editTaskFormSubmit,
-         getProjects, getProject, getAllTasks, getProjectId};
+    return {createProject, 
+        setProjects,
+        createNewProjectFormSubmit, 
+        editProjectFormSubmit, 
+        deleteProject,
+        createNewTaskFormSubmit, 
+        editTaskFormSubmit,
+        getProjects, 
+        getProject, 
+        getAllTasks, 
+        getProjectId
+    };
 })();
 
 export {
