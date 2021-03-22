@@ -114,7 +114,7 @@ fieldset {
 }
 #edit-project-title {
     max-width: 20rem;
-}
+} 
 #edit-project-desc {
     height: 3rem;
     resize: none;
@@ -132,6 +132,16 @@ fieldset {
     padding: 0.5rem;
     border-radius: 0.5rem;
 }
+.late-tasks, .abandoned-tasks {
+    background: rgb(255, 96, 57);
+}
+.done-tasks {
+    background: rgb(12, 216, 216);
+}
+.today-tasks {
+    background: rgb(255, 196, 0);
+}
+
 .task-main-infos, #edit-task-main-infos {
     display: flex;
     justify-content: space-between;
