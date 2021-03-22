@@ -1,10 +1,9 @@
 import {manageProjects} from './projects-manager.js'
 import {domForm} from './dom-elements.js'
 import {popupsManager, createPopup} from './popup-forms.js'
-
+import { format, isToday, isThisWeek, isPast} from 'date-fns'
 
 const domRenderTasks = ((doc) => {
-    // Render TASKS
     const _tasksUl = doc.querySelector('#tasks-list');
     const _projectDetail = doc.querySelector('#project-detail');
 
@@ -21,7 +20,7 @@ const domRenderTasks = ((doc) => {
         editDateState.setAttribute('id','edit-task-date-state');
         // Date
         const editDateInput = domForm.createDateInput('',[],'edit-task-duedate', 'edit-task-duedate',[]);
-        editDateInput.querySelector('input').value = thisTask.getDueDate();
+        editDateInput.querySelector('input').value = format(thisTask.getDueDate(), 'yyyy-MM-dd');
         // States
         const editStateDoneOption = domForm.createSelectOption(0, 'Done',[]);
         const editStateWipOption = domForm.createSelectOption(1, 'WIP', []);
@@ -76,7 +75,7 @@ const domRenderTasks = ((doc) => {
 
     const _toggleStateDoneTodo = (thisTask, thisProject) => {
         const thisTabId = _projectDetail.dataset.projectId;
-        if (thisTask.getState() === 'Todo') {
+        if (thisTask.getState() !== 'Done') {
             thisTask.setState(0); //set Done
         } else {
             thisTask.setState(2); // set Todo
@@ -87,6 +86,18 @@ const domRenderTasks = ((doc) => {
             renderTasks(thisProject.getTasks());
         }
     };
+
+    const _deleteThisTask = (taskId, thisProject) => {
+        const thisTabId = _projectDetail.dataset.projectId;
+        thisProject.deleteTask(taskId);
+
+        if (isNaN(Number(thisTabId))) { // if thisTabId is a general tab
+            domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId); // for re-filter the task-list
+        } else {
+            domRenderTasks.renderTasks(thisProject.getTasks());
+        }
+
+    }
 
     const _toggleExpandDetails = (thisBtn,li, expandDiv) => {
         if(li.querySelector('.task-expand')) {
@@ -131,7 +142,6 @@ const domRenderTasks = ((doc) => {
         expandBtn.textContent = 'V';
         infoDiv.append(dueDateP, stateP, expandBtn);
 
-        
         const mainInfosDiv = doc.createElement('div');
         mainInfosDiv.classList.add('task-main-infos');
         mainInfosDiv.append(checkState, titleH4, infoDiv);
@@ -165,10 +175,7 @@ const domRenderTasks = ((doc) => {
         const deleteBtn = doc.createElement('button');
         deleteBtn.classList.add('round-btn', 'delete-task-btn');
         deleteBtn.textContent = 'X';
-        deleteBtn.addEventListener('click', () => {
-            const thisTabId = _projectDetail.dataset.projectId;
-            thisProject.deleteTask(taskId, thisTabId)
-        });
+        deleteBtn.addEventListener('click', _deleteThisTask.bind(this,taskId, thisProject));
         actionsDiv.append(editTaskBtn, deleteBtn);
 
         expandDiv.append(detailsDiv, actionsDiv);
@@ -179,12 +186,27 @@ const domRenderTasks = ((doc) => {
     }
     
     const renderTasks = (projectTasks) => {
-        // todo DATE: order projectTasks by date (more recent)
-        const tasksLis = projectTasks.map((task, id) => {
+        // DATE: sort projectTasks by date (more recent)
+        const sortedByDateTasks = projectTasks.sort((a,b) => b.getDueDate() - a.getDueDate());
+        const tasksLis = sortedByDateTasks.map(task => {
             const taskProject = manageProjects.getProject(task.getProjectId());
             // get the id of the task in its project
             const taskIdInProject = taskProject.getTaskId(task);
-            const taskLi = _createTaskLi(task.getTitle(), task.getDueDate(), task.getPriority(), task.getState(), task.getDesc(),task.getProjectId(),taskIdInProject);
+            const taskLi = _createTaskLi(task.getTitle(), task.getDueDateFormat(), task.getPriority(), task.getState(), task.getDesc(),task.getProjectId(),taskIdInProject);
+            
+            if(isPast(task.getDueDate()) && task.getState() !== 'Done') {
+                taskLi.classList.add('late-tasks');
+            }
+            if (task.getState() === 'Abandoned') {
+                taskLi.classList.add('abandoned-tasks');
+            }
+            if (task.getState() === 'Done') {
+                taskLi.classList.add('done-tasks');
+            }
+            if (isToday(task.getDueDate()) && task.getState() !== 'Done') {
+                taskLi.classList.add('today-tasks');
+            }
+
             return taskLi;
         });
         while(_tasksUl.firstChild) {
@@ -199,7 +221,6 @@ const domRenderTasks = ((doc) => {
 })(document);
 
 const domRenderProjects = ((doc) => {
-        // Render PROJECTS
         const _projectsUl = doc.querySelector('#projects-tabs');
         const projectDetail = doc.querySelector('#project-detail');
         const _projectH2 = doc.querySelector('#project-title');
@@ -292,7 +313,6 @@ const domRenderProjects = ((doc) => {
 })(document)
 
 const domRenderGeneralTabs = ((doc) => {
-    // GENERAL TABS
     const initPageLoadTasks = () => {
         let allTasks = manageProjects.getAllTasks();
         domRenderTasks.renderTasks(allTasks);                  
@@ -303,12 +323,12 @@ const domRenderGeneralTabs = ((doc) => {
         let allTasksFiltered = [];
         switch(tabId) {
             case 'today':
-                // todo DATE: select task where date = today
-                allTasksFiltered = allTasks.filter(task => task.getDueDate() === 1);
+                // DATE: select task where date = today
+                allTasksFiltered = allTasks.filter(task => isToday(task.getDueDate()));
                 break;
             case 'this-week':
-                // todo DATE: select task where date = this week
-                allTasksFiltered = allTasks.filter(task => task.getDueDate() > 0);
+                // DATE: select task where date = this week
+                allTasksFiltered = allTasks.filter(task => isThisWeek(task.getDueDate()));
                 break;
             case 'high-priority':
                     allTasksFiltered = allTasks.filter(task => task.getPriority() === 'High');
@@ -317,13 +337,13 @@ const domRenderGeneralTabs = ((doc) => {
                 allTasksFiltered = [...allTasks];
         }
         domRenderTasks.renderTasks(allTasksFiltered);       
-        // 'project' details for general tabs
     }
-
+    
     const _generalTabsLis = [...doc.querySelector('#general-tabs').children];
     _generalTabsLis.map(genTab => genTab.addEventListener('click', (e) => {
         const whichTab = e.target.dataset.tab;
         const tabTitle = e.target.textContent;
+        //NTH project desc for general tabs
         renderGeneralTabsTasks(whichTab);
         domRenderProjects.renderProjectDetails(whichTab, tabTitle);
     }));

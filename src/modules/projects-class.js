@@ -2,36 +2,32 @@ import {task} from './tasks-class.js'
 import {domRenderTasks, domRenderProjects, domRenderGeneralTabs} from './dom-integration.js'
 
 const project = (title, desc) => {
-    let tasks = [];
+    // private array
+    let _tasks = [];
     const proto = {
         getTitle: () => title,
         setTitle: (newTitle) => title = newTitle,
         getDesc: () => desc,
         setDesc: (newDesc) => desc = newDesc,
         getTasks() {
-            return this.tasks;
+            return _tasks;
         },
         getTask(taskId) {
-            return this.tasks[taskId];
+            return _tasks[taskId];
         },
         getTaskId(task) {
-            return this.tasks.indexOf(task)
+            return _tasks.indexOf(task)
         },
         createTask(title, dueDate, priorityLevel, desc, projectId) {
-            this.tasks.push(task(title, dueDate, priorityLevel, desc, projectId));
-            domRenderTasks.renderTasks(this.tasks);
+            _tasks.push(task(title, dueDate, priorityLevel, desc, projectId));
+            domRenderTasks.renderTasks(_tasks);
         },
-        deleteTask(taskId, tabId) { 
-            this.tasks.splice(taskId, 1);
-            if (isNaN(Number(tabId))) { // if thisTabId is a general tab
-                domRenderGeneralTabs.renderGeneralTabsTasks(tabId); // for re-filter the task-list
-            } else {
-                domRenderTasks.renderTasks(this.tasks);
-            }
+        deleteTask(taskId) { 
+            _tasks.splice(taskId, 1);
         }
     
     };
-    return Object.assign(Object.create(proto), {tasks});
+    return Object.assign(Object.create(proto), {});
 }
 // (NTH function setProject for change the project for one task)
 

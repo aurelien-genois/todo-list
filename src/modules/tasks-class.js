@@ -1,3 +1,4 @@
+import { format} from 'date-fns'
 
 // tasks factory
 const task = (title, dueDate, priorityLevel, desc, projectId) => {;
@@ -12,6 +13,7 @@ const task = (title, dueDate, priorityLevel, desc, projectId) => {;
         setTitle: (newTitle) => title = newTitle,
         
         getDueDate: () => dueDate,
+        getDueDateFormat: () =>  format(dueDate, 'dd/MM/yyyy'),
         setDueDate: (newDueDate) => dueDate = newDueDate,
         
         getDesc: () => desc,

@@ -1,5 +1,6 @@
 import {manageProjects} from './projects-manager.js'
 import {domForm, domElements} from './dom-elements.js'
+import { format} from 'date-fns'
 
 // popupUX
 const popupsManager = (() => {
@@ -49,6 +50,7 @@ const createPopup = (() => {
         let inputs = [];
         const titleInput = domForm.createTextInput('Task title:',['popup-labels'],'new-task-title', 'new-task-title', 15, ['popup-inputs', 'popup-inputs-text']);
         const dueDateInput = domForm.createDateInput('Due date:',['popup-labels'],'new-task-duedate', 'new-task-duedate', ['popup-inputs', 'popup-inputs-date']);
+        dueDateInput.querySelector('input').value = format(new Date(), 'yyyy-MM-dd');;
         // PriorityRadios
         const priority3Input = domForm.createRadio('Low', [], 'new-task-priority3', 'temp', 3, ['popup-inputs-radio']);
         const priority2Input = domForm.createRadio('Medium', [], 'new-task-priority2', 'temp', 2, ['popup-inputs-radio']);

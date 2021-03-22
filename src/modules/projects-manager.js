@@ -11,10 +11,10 @@ const manageProjects = (() => {
         return newProject;
     };
 
-    // Project Form Submit
+    // Project Forms Submit
     const _getNewProjectValues = (form) => {
         const data = new FormData(form);
-        for (const entry of data) { //  return {titleValue, descValue}; get values
+        for (const entry of data) {
             switch(entry[0]) {
                 case 'new-project-title':
                     var titleValue = entry[1];
@@ -51,7 +51,7 @@ const manageProjects = (() => {
         e.preventDefault();
     }
     
-    // Task Form Submit
+    // Task Forms Submit
     const _getNewTaskValues = (form) => {
         const data = new FormData(form);
         for (const entry of data) { // get values
@@ -90,7 +90,7 @@ const manageProjects = (() => {
     };
     const createNewTaskFormSubmit = (e, popup, thisProjectId) => {
         const {titleValue, dueDateValue, priorityValue, descValue} = _getNewTaskValues(e.target); 
-        manageProjects.getProject(thisProjectId).createTask(titleValue, dueDateValue, priorityValue || 3, descValue, thisProjectId); 
+        manageProjects.getProject(thisProjectId).createTask(titleValue, new Date(dueDateValue), priorityValue || 3, descValue, thisProjectId); 
         e.preventDefault();
         popupsManager.closePopup(popup);
     }
@@ -98,7 +98,7 @@ const manageProjects = (() => {
         const {titleValue, dueDateValue, priorityValue, descValue, stateValue} = _getNewTaskValues(e.target);
         task.setTitle(titleValue);
         task.setDesc(descValue);
-        task.setDueDate(dueDateValue);
+        task.setDueDate(new Date(dueDateValue));
         task.setPriority(priorityValue);
         task.setState(stateValue);
         if (isNaN(Number(tabId))) { // if thisTabId is a general tab
@@ -119,7 +119,6 @@ const manageProjects = (() => {
                 task.setProjectId(task.getProjectId() - 1);
             });
         });
-        // task.setProjectId()
         domRenderProjects.renderProjectsTabs(_projects);
         domRenderGeneralTabs.initPageLoadTasks();
         domRenderProjects.renderProjectDetails('all-tasks', 'All tasks');

@@ -6,4 +6,4 @@ initDefaultProjects();
 
 domRenderGeneralTabs.initPageLoadTasks();
 
-console.log(manageProjects.getProjects(0));
+console.log(manageProjects.getProjects());
