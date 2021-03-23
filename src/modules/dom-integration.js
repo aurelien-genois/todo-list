@@ -55,8 +55,8 @@ const domRenderTasks = ((doc) => {
         });
         const prioritiesFieldset = domForm.createRadioFieldset('Priority:',['edit-labels'],'edit-task-priority','edit-task-priority',priorityRadios, ['edit-inputs']);
         // desc
-        const editDescTextarea = domForm.createTextInput('',[],'edit-task-desc','edit-task-desc',25, []);
-        editDescTextarea.querySelector('input').value = thisTask.getDesc();
+        const editDescTextarea = domForm.createTextarea('',[],'edit-task-desc','edit-task-desc',25, []);
+        editDescTextarea.querySelector('textarea').value = thisTask.getDesc();
         // expand div hierachy
         editDetails.append(prioritiesFieldset,editDescTextarea);
         editExpandDiv.append(editDetails);
@@ -198,18 +198,11 @@ const domRenderTasks = ((doc) => {
             const taskIdInProject = taskProject.getTaskId(task);
             const taskLi = _createTaskLi(task.getTitle(), task.getDueDateFormat(), task.getPriority(), task.getState(), task.getDesc(),task.getProjectId(),taskIdInProject);
 
-            if (isToday(task.getDueDate()) && task.getState() !== 'Done') {
-                taskLi.classList.add('today-tasks');
-            }
-            if(isPast(task.getDueDate()) && task.getState() !== 'Done') {
-                taskLi.classList.add('late-tasks');
-            }
-            if (task.getState() === 'Abandoned') {
-                taskLi.classList.add('abandoned-tasks');
-            }
-            if (task.getState() === 'Done') {
-                taskLi.classList.add('done-tasks');
-            }
+            (task.getState() === 'Abandoned') ? taskLi.classList.add('abandoned-tasks')
+                : (task.getState() === 'Done') ? taskLi.classList.add('done-tasks')
+                : (isToday(task.getDueDate())) ? taskLi.classList.add('today-tasks')
+                : (isPast(task.getDueDate())) ? taskLi.classList.add('late-tasks')
+                : '';
 
             return taskLi;
         });
