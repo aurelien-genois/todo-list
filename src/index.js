@@ -16,7 +16,7 @@ if (allProjects.length === 0) {
     allProjects.map((project, id) => {
         const newProj = manageProjects.createProject(project.thisTitle, project.thisDesc);
         project.tasks.map(task => {
-            const newTask = newProj.createTask(task.thisTitle, new Date(task.thisDueDate), task.thisPriorityValue, task.thisDesc, task.thisTaskProjectId);
+            const newTask = newProj.createTask(task.thisTitle, new Date(task.thisDueDate), task.thisPriorityLevel, task.thisDesc, task.thisTaskProjectId);
             newTask.setState(task.stateDegree);
         });
 

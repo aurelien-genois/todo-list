@@ -2,7 +2,7 @@ import { format} from 'date-fns'
 
 // tasks factory
 const task = (title, dueDate, priorityLevel, desc, projectId) => {;
-    // //private arrays
+    // private arrays
     // these values are fixed so an id is necessary to accessed them
     const _taskPriorities =  ['High', 'Medium', 'Low'];
     const _taskStates = ['Done', 'WIP', 'Todo', 'Abandoned'];
@@ -14,21 +14,22 @@ const task = (title, dueDate, priorityLevel, desc, projectId) => {;
     let thisTaskProjectId = projectId
     let stateDegree = 2;
     const proto = {
-        getTitle: () => thisTitle,
-        setTitle: (newTitle) => thisTitle = newTitle,
+        // use this in regular function, not arrow functions in which this is lexically bound
+        getTitle() {return this.thisTitle},
+        setTitle(newTitle) {this.thisTitle = newTitle},
         
-        getDueDate: () => thisDueDate,
-        getDueDateFormat: () =>  format(thisDueDate, 'dd/MM/yyyy'),
-        setDueDate: (newDueDate) => thisDueDate = newDueDate,
+        getDueDate() {return this.thisDueDate},
+        getDueDateFormat() {return format(thisDueDate, 'dd/MM/yyyy')},
+        setDueDate(newDueDate) {this.thisDueDate = newDueDate},
         
-        getDesc: () => thisDesc,
-        setDesc: (newDesc) => thisDesc = newDesc,
+        getDesc() {return this.thisDesc},
+        setDesc(newDesc) {this.thisDesc = newDesc},
 
-        getProjectId: () => thisTaskProjectId,
-        setProjectId : (newProjectId) => thisTaskProjectId = newProjectId, // task can change project
+        getProjectId() {return this.thisTaskProjectId},
+        setProjectId(newProjectId) {this.thisTaskProjectId = newProjectId}, // task can change project
         
-        getPriority() {return _taskPriorities[thisPriorityLevel - 1]},
-        setPriority(level) {thisPriorityLevel = level},
+        getPriority() {return _taskPriorities[this.thisPriorityLevel - 1]},
+        setPriority(level) {this.thisPriorityLevel = level},
 
         getState() {return _taskStates[this.stateDegree]},
         setState(newDegree) {this.stateDegree = newDegree}

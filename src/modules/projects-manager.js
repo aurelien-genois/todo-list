@@ -55,10 +55,6 @@ const manageProjects = (() => {
         const {titleValue, descValue} = _getNewProjectValues(e.target);
 
         project.setTitle(titleValue);
-        // ! the property thisTitle does not change on the object 
-        // but the following changes it:
-        // project.thisTitle = titleValue;
-        // ? which is the best between using direct property and using getter functions ?
         console.log(project.getTitle(), project)
 
         project.setDesc(descValue);

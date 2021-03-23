@@ -8,28 +8,29 @@ const project = (title, desc) => {
     let thisTitle = title;
     let thisDesc = desc;
     const proto = {
-        getTitle: () => thisTitle,
-        setTitle: (newTitle) => thisTitle = newTitle,
-        getDesc: () => thisDesc,
-        setDesc: (newDesc) => thisDesc = newDesc,
+        // use this in regular function, not arrow functions in which this is lexically bound
+        getTitle() {return this.thisTitle},
+        setTitle(newTitle) {this.thisTitle = newTitle},
+        getDesc() {return this.thisDesc},
+        setDesc(newDesc) {this.thisDesc = newDesc},
         getTasks() {
-            return tasks;
+            return this.tasks;
         },
         getTask(taskId) {
-            return tasks[taskId];
+            return this.tasks[taskId];
         },
         getTaskId(task) {
-            return tasks.indexOf(task)
+            return this.tasks.indexOf(task)
         },
         createTask(title, dueDate, priorityLevel, thisDesc, projectId) {
             const newTask = task(title, dueDate, priorityLevel, thisDesc, projectId);
-            tasks.push(newTask);
-            domRenderTasks.renderTasks(tasks);
+            this.tasks.push(newTask);
+            domRenderTasks.renderTasks(this.tasks);
             domRenderProjects.updateLocalStorage();
             return newTask;
         },
         deleteTask(taskId) { 
-            tasks.splice(taskId, 1);
+            this.tasks.splice(taskId, 1);
         }
     };
     return Object.assign(Object.create(proto), {tasks, thisTitle, thisDesc});
