@@ -14,7 +14,6 @@ const manageProjects = (() => {
         return newProject;
     };
 
-    // ! not used
     const setProjects = (projects) => {
         _projects = [...projects];
     }
@@ -53,10 +52,7 @@ const manageProjects = (() => {
     }   
     const editProjectFormSubmit = (e, project) => {
         const {titleValue, descValue} = _getNewProjectValues(e.target);
-
         project.setTitle(titleValue);
-        console.log(project.getTitle(), project)
-
         project.setDesc(descValue);
         domRenderProjects.renderProjectDetails(project);
         domRenderProjects.renderProjectsTabs(_projects);
@@ -115,13 +111,13 @@ const manageProjects = (() => {
         task.setDueDate(new Date(dueDateValue));
         task.setPriority(priorityValue);
         task.setState(stateValue);
-        domRenderProjects.updateLocalStorage();
         if (isNaN(Number(tabId))) { // if thisTabId is a general tab
             domRenderGeneralTabs.renderGeneralTabsTasks(tabId); // for re-filter the task-list
         } else {
             domRenderTasks.renderTasks(project.getTasks());
         }
         e.preventDefault();
+        domRenderProjects.updateLocalStorage();
     };
 
     const deleteProject = (projectSelected) => {

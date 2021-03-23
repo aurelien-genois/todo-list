@@ -73,7 +73,7 @@ const domRenderTasks = ((doc) => {
         taskLi.append(editForm);
     }
 
-    // move this function out of dom-integration
+    // ! move this function out of dom-integration
     const _toggleStateDoneTodo = (thisTask, thisProject) => {
         const thisTabId = _projectDetail.dataset.projectId;
         if (thisTask.getState() !== 'Done') {
@@ -90,7 +90,7 @@ const domRenderTasks = ((doc) => {
 
     };
 
-        // move this function out of dom-integration
+        // ! move this function out of dom-integration
     const _deleteThisTask = (taskId, thisProject) => {
         const thisTabId = _projectDetail.dataset.projectId;
         thisProject.deleteTask(taskId);
@@ -197,7 +197,10 @@ const domRenderTasks = ((doc) => {
             // get the id of the task in its project
             const taskIdInProject = taskProject.getTaskId(task);
             const taskLi = _createTaskLi(task.getTitle(), task.getDueDateFormat(), task.getPriority(), task.getState(), task.getDesc(),task.getProjectId(),taskIdInProject);
-            
+
+            if (isToday(task.getDueDate()) && task.getState() !== 'Done') {
+                taskLi.classList.add('today-tasks');
+            }
             if(isPast(task.getDueDate()) && task.getState() !== 'Done') {
                 taskLi.classList.add('late-tasks');
             }
@@ -206,9 +209,6 @@ const domRenderTasks = ((doc) => {
             }
             if (task.getState() === 'Done') {
                 taskLi.classList.add('done-tasks');
-            }
-            if (isToday(task.getDueDate()) && task.getState() !== 'Done') {
-                taskLi.classList.add('today-tasks');
             }
 
             return taskLi;
@@ -272,7 +272,6 @@ const domRenderProjects = ((doc) => {
                 const li = doc.createElement('li');
                 li.classList.add('tabs', 'project-tab');
                 li.textContent = project.getTitle();
-                console.log(project.getTitle())
                 return li;
             });
             projectsLi.map((projLi, projId) => projLi.addEventListener('click', () => {
@@ -315,7 +314,6 @@ const domRenderProjects = ((doc) => {
         });
 
         const updateLocalStorage = () => {
-            console.log('local')
             localStorage.setItem('projects', JSON.stringify(manageProjects.getProjects()));
         }
             
