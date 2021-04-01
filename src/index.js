@@ -1,6 +1,6 @@
 import {manageProjects} from './modules/projects-manager.js'
 import {initDefaultProjects} from './modules/init-default-projects.js'
-import {domRenderTasks, domRenderProjects, domRenderGeneralTabs} from './modules/dom-integration.js'
+import {domRenderProjects, domRenderGeneralTabs} from './modules/dom-integration.js'
 import {project} from './modules/projects-class.js'
 import {task} from './modules/tasks-class.js'
 import { parseISO} from 'date-fns'
