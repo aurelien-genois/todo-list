@@ -24,19 +24,16 @@ const manageProjects = (() => {
   // Project Forms Submit
   const _getNewProjectValues = (form) => {
     const data = new FormData(form);
+    let titleValue, descValue;
     for (const entry of data) {
       switch (entry[0]) {
-        case "new-project-title":
-          var titleValue = entry[1];
+        case 'new-project-title':
+        case 'edit-project-title':
+          titleValue = entry[1];
           break;
-        case "new-project-desc":
-          var descValue = entry[1];
-          break;
-        case "edit-project-title":
-          var titleValue = entry[1];
-          break;
-        case "edit-project-desc":
-          var descValue = entry[1];
+        case 'new-project-desc':
+        case 'edit-project-desc':
+          descValue = entry[1];
           break;
       }
     }
@@ -65,35 +62,28 @@ const manageProjects = (() => {
   // Task Forms Submit
   const _getNewTaskValues = (form) => {
     const data = new FormData(form);
+    let titleValue, dueDateValue, priorityValue, descValue, stateValue;
     for (const entry of data) {
       // get values
       switch (entry[0]) {
-        case "new-task-title":
-          var titleValue = entry[1];
+        case 'new-task-title':
+        case 'edit-task-title':
+          titleValue = entry[1];
           break;
-        case "new-task-duedate":
-          var dueDateValue = entry[1];
+        case 'new-task-duedate':
+        case 'edit-task-duedate':
+          dueDateValue = entry[1];
           break;
-        case "new-task-priority":
-          var priorityValue = entry[1];
+        case 'new-task-priority':
+        case 'edit-task-priority':
+          priorityValue = entry[1];
           break;
-        case "new-task-desc":
-          var descValue = entry[1];
+        case 'new-task-desc':
+        case 'edit-task-desc':
+          descValue = entry[1];
           break;
-        case "edit-task-title":
-          var titleValue = entry[1];
-          break;
-        case "edit-task-duedate":
-          var dueDateValue = entry[1];
-          break;
-        case "edit-task-priority":
-          var priorityValue = entry[1];
-          break;
-        case "edit-task-desc":
-          var descValue = entry[1];
-          break;
-        case "edit-task-state":
-          var stateValue = entry[1];
+        case 'edit-task-state':
+          stateValue = entry[1];
           break;
       }
     }
