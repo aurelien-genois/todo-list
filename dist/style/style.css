@@ -1,6 +1,17 @@
 html {
   font-size: 62.5%;
   font-family: sans-serif;
+  background-image: url('../images/background.jpg');
+  background-size: cover;
+  background-position-x: center;
+  background-position-y: bottom;
+  background-attachment: fixed;
+  --global-text-color: rgb(253, 242, 238);
+  --black-text-color: rgb(8, 5, 5);
+  --header-bg-color: #e88302;
+  --tabs-bg-color: #ac3619d7;
+  --tabs-separator-color: #7c2813d7;
+  --popup-bg-color: rgb(255, 246, 223);
 }
 body,
 html {
@@ -15,6 +26,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: stretch;
+  color: var(--global-text-color);
 }
 * {
   margin: 0;
@@ -31,7 +43,7 @@ fieldset {
 
 /* main page */
 #header {
-  background: rgb(154, 187, 155);
+  background: var(--header-bg-color);
   display: flex;
   align-items: flex-end;
   padding: 1rem;
@@ -56,7 +68,7 @@ fieldset {
   font-size: 1.3rem;
   font-weight: bold;
   padding: 1rem;
-  background: rgb(167, 228, 169);
+  background: var(--tabs-bg-color);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,7 +85,7 @@ fieldset {
   left: 3rem;
   height: 0.3rem;
   width: 10rem;
-  background-color: rgb(100, 139, 101);
+  background-color: var(--tabs-separator-color);
 }
 #projects-tabs {
   position: relative;
@@ -95,7 +107,7 @@ fieldset {
 /* project detail */
 #project-detail {
   width: inherit;
-  background: rgb(204, 245, 205);
+  /* background: rgb(204, 245, 205); */
 }
 #project-header {
   margin: 1rem 1rem 0 1rem;
@@ -107,8 +119,8 @@ fieldset {
 #edit-project-btn,
 #delete-project-btn,
 #edit-project-form input[type='submit'] {
-  border: 0.2rem solid rgb(158, 206, 94);
-  color: rgb(158, 206, 94);
+  border: 0.2rem solid var(--global-text-color);
+  color: inherit;
   margin: 0;
 }
 #project-infos,
@@ -142,19 +154,22 @@ fieldset {
   box-sizing: border-box;
   width: inherit;
   margin: 0 0 1rem 0;
-  background: rgb(158, 206, 94);
+  background: rgb(52, 179, 27);
   padding: 0.5rem;
   border-radius: 0.5rem;
+  font-weight: bold;
 }
-.late-tasks,
+.late-tasks {
+  background: rgb(218, 33, 33);
+}
 .abandoned-tasks {
-  background: rgb(255, 96, 57);
+  background: rgb(99, 30, 30);
 }
 .done-tasks {
-  background: rgb(12, 216, 216);
+  background: rgb(52, 181, 185);
 }
 .today-tasks {
-  background: rgb(255, 196, 0);
+  background: rgb(223, 104, 0);
 }
 
 .task-main-infos,
@@ -192,6 +207,7 @@ fieldset {
 
 /* popup */
 .popups {
+  color: var(--black-text-color);
   visibility: visible;
   opacity: 0;
   transition: opacity 0.5s;
@@ -208,7 +224,7 @@ fieldset {
   box-sizing: border-box;
   height: 40rem;
   width: 40rem;
-  background: white;
+  background: var(--popup-bg-color);
   border-radius: 1rem;
   padding: 2rem;
   display: grid;
