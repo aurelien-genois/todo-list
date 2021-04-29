@@ -5,7 +5,7 @@ const domForm = ((doc) => {
     id,
     name,
     maxlength,
-    classes
+    classes,
   ) => {
     const label = doc.createElement('label');
     label.classList.add(...labelClasses);
@@ -31,7 +31,7 @@ const domForm = ((doc) => {
     id,
     name,
     maxlength,
-    classes
+    classes,
   ) => {
     const label = doc.createElement('label');
     label.classList.add(...labelClasses);
@@ -79,7 +79,7 @@ const domForm = ((doc) => {
     id,
     name,
     options,
-    classes
+    classes,
   ) => {
     const label = doc.createElement('label');
     label.classList.add(...labelClasses);
@@ -114,7 +114,7 @@ const domForm = ((doc) => {
     id,
     radiosName,
     radios,
-    classes
+    classes,
   ) => {
     const label = doc.createElement('label');
     label.classList.add(...labelClasses);

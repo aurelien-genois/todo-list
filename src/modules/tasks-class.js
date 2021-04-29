@@ -1,11 +1,11 @@
-import { format } from "date-fns";
+import { format } from 'date-fns';
 
 // tasks factory
 const task = (title, dueDate, priorityLevel, desc, projectId) => {
   // private arrays
   // these values are fixed so an id is necessary to accessed them
-  const _taskPriorities = ["High", "Medium", "Low"];
-  const _taskStates = ["Done", "WIP", "Todo", "Abandoned"];
+  const _taskPriorities = ['High', 'Medium', 'Low'];
+  const _taskStates = ['Done', 'WIP', 'Todo', 'Abandoned'];
   // public values important for localStorage
   let thisTitle = title;
   let thisDueDate = dueDate;
@@ -26,7 +26,7 @@ const task = (title, dueDate, priorityLevel, desc, projectId) => {
       return this.thisDueDate;
     },
     getDueDateFormat() {
-      return format(thisDueDate, "dd/MM/yyyy");
+      return format(thisDueDate, 'dd/MM/yyyy');
     },
     setDueDate(newDueDate) {
       this.thisDueDate = newDueDate;

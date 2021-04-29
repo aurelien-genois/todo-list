@@ -1,10 +1,10 @@
-import { project } from "./projects-class.js";
-import { popupsManager } from "./popup-forms.js";
+import { project } from './projects-class.js';
+import { popupsManager } from './popup-forms.js';
 import {
   domRenderTasks,
   domRenderProjects,
   domRenderGeneralTabs,
-} from "./dom-integration.js";
+} from './dom-integration.js';
 
 const manageProjects = (() => {
   let _projects = [];
@@ -104,7 +104,7 @@ const manageProjects = (() => {
         new Date(dueDateValue),
         priorityValue || 3,
         descValue,
-        thisProjectId
+        thisProjectId,
       );
     e.preventDefault();
     domRenderProjects.updateLocalStorage();
@@ -146,7 +146,7 @@ const manageProjects = (() => {
     });
     domRenderProjects.renderProjectsTabs(_projects);
     domRenderGeneralTabs.initPageLoadTasks();
-    domRenderProjects.renderProjectDetails("all-tasks", "All tasks");
+    domRenderProjects.renderProjectDetails('all-tasks', 'All tasks');
     domRenderProjects.updateLocalStorage();
     return projectSelected;
   };

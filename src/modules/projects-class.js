@@ -1,5 +1,5 @@
-import { task } from "./tasks-class.js";
-import { domRenderTasks, domRenderProjects } from "./dom-integration.js";
+import { task } from './tasks-class.js';
+import { domRenderTasks, domRenderProjects } from './dom-integration.js';
 
 const project = (title, desc) => {
   // // private array

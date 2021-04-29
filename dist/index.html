@@ -1,46 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style/style.css" />
     <title>Todo list</title>
-</head>
-<body id="body">
+  </head>
+  <body id="body">
     <header id="header">
-        <h1 id="title">Todo-list</h1>
+      <h1 id="title">Todo-list</h1>
     </header>
     <main id="content">
-        <nav id="tabs-list">
-            <ul id="general-tabs">
-                <li class="tabs" data-tab='all-tasks'>All tasks</li>
-                <li class="tabs" data-tab='today'>Today</li>
-                <li class="tabs" data-tab='this-week'>This week</li>
-                <li class="tabs" data-tab='high-priority'>High priority</li>
-            </ul>
-            <ul id="projects-tabs">
-            </ul>
-            <button id="new-project-btn" class="round-btn">+</button>
-        </nav>
-        <div id="project-detail" data-project-id="all-tasks">
-            <header id="project-header">
-                <div id="project-infos">
-                    <h2 id="project-title">
-                        All tasks
-                    </h2>
-                    <p id="project-desc"></p>
-                </div>
-                <div id="project-options">
-                    <button id="edit-project-btn" class="round-btn">/</button>
-                    <button id="delete-project-btn" class="round-btn">X</button>
-                    <button id="new-task-btn" class="round-btn">+</button>
-                </div>
-            </header>
-            <ul id="tasks-list">
-            </ul>
-        </div>
+      <nav id="tabs-list">
+        <ul id="general-tabs">
+          <li class="tabs" data-tab="all-tasks">All tasks</li>
+          <li class="tabs" data-tab="today">Today</li>
+          <li class="tabs" data-tab="this-week">This week</li>
+          <li class="tabs" data-tab="high-priority">High priority</li>
+        </ul>
+        <ul id="projects-tabs"></ul>
+        <button id="new-project-btn" class="round-btn">+</button>
+      </nav>
+      <div id="project-detail" data-project-id="all-tasks">
+        <header id="project-header">
+          <div id="project-infos">
+            <h2 id="project-title">All tasks</h2>
+            <p id="project-desc"></p>
+          </div>
+          <div id="project-options">
+            <button id="edit-project-btn" class="round-btn">/</button>
+            <button id="delete-project-btn" class="round-btn">X</button>
+            <button id="new-task-btn" class="round-btn">+</button>
+          </div>
+        </header>
+        <ul id="tasks-list"></ul>
+      </div>
     </main>
-    
+
     <script src="main.js"></script>
-</body>
+  </body>
 </html>
