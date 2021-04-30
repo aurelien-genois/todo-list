@@ -153,9 +153,9 @@ body {
   font-size: 3rem;
 }
 #project-desc,
-.edit-project-desc-label {
+#edit-project-desc {
   line-height: 1.8rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 #project-options {
   display: flex;
@@ -169,27 +169,28 @@ body {
 #edit-project-form {
   display: grid;
   grid-template-columns: 1fr auto;
-  /* height same as 3x round-btns + their margins */
-  height: 10.8rem;
+  height: 9.3rem;
+  overflow: hidden;
 }
 #edit-project-inputs {
   display: flex;
   flex-direction: column;
+  height: inherit;
 }
 .edit-project-desc-label {
-  height: 100%;
   width: 100%;
+  max-width: 50rem;
 }
 #edit-project-title {
   width: 100%;
+  max-width: 50rem;
 }
 #edit-project-desc {
-  height: inherit;
+  max-height: 5.9rem;
   width: inherit;
-  resize: none;
 }
 #edit-project-form input[type='submit'] {
-  margin-left: 0.3rem;
+  margin-left: 1rem;
   align-self: flex-end;
 }
 
