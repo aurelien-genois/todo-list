@@ -54,7 +54,7 @@ const createPopup = (() => {
       ['popup-labels'],
       'new-project-title',
       'new-project-title',
-      20,
+      15,
       ['popup-inputs', 'popup-inputs-text'],
     );
     const descTextarea = domForm.createTextarea(

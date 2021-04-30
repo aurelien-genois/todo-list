@@ -8,6 +8,7 @@ html {
   background-attachment: fixed;
   --global-text-color: rgb(253, 242, 238);
   --grayish-text-color: rgb(228, 210, 203);
+  --grayish-border-color: rgb(134, 108, 84);
   --black-text-color: rgb(8, 5, 5);
   --header-bg-color: #442304;
   --tabs-bg-color: #962d12d7;
@@ -15,11 +16,13 @@ html {
   --popup-bg-color: rgb(255, 246, 223);
   --highlight-general-color: rgb(255, 235, 58);
   --highlight-color: rgb(245, 167, 255);
+  --btn-color: rgb(142, 116, 255);
+  --project-header-bg-color: rgba(129, 58, 0, 0.425);
 }
 body,
 html {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 /* prevent the default focus outline on chrome */
 :focus {
@@ -45,6 +48,13 @@ ol {
 fieldset {
   border: none;
   display: inline;
+}
+input[type='text'],
+textarea {
+  border: 0.3rem solid var(--grayish-border-color);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
 }
 
 /* main page */
@@ -121,43 +131,57 @@ fieldset {
 /* project detail */
 #project-detail {
   width: inherit;
-  /* background: rgb(204, 245, 205); */
 }
 #project-header {
-  margin: 1rem 1rem 0 1rem;
-  height: 5rem;
+  padding: 2rem 1rem;
+  background-color: var(--project-header-bg-color);
+}
+#project-infos {
   display: grid;
-  grid-template-columns: 1fr 2rem;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr;
 }
-#new-task-btn,
-#edit-project-btn,
-#delete-project-btn,
-#edit-project-form input[type='submit'] {
-  border: 0.2rem solid var(--global-text-color);
-  color: inherit;
-  margin: 0;
+#project-title {
+  font-size: 3rem;
 }
-#project-infos,
-#edit-project-form {
-  margin-right: 1rem;
+#project-desc,
+.edit-project-desc-label {
+  line-height: 1.8rem;
+  margin-top: 1rem;
+}
+#project-options {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  grid-row: 1 / span 2;
+  grid-column: 2;
 }
 /* edit form */
 #edit-project-form {
   display: grid;
-  grid-template-columns: 1fr 2rem;
+  grid-template-columns: 1fr auto;
+  /* height same as 3x round-btns + their margins */
+  height: 10.8rem;
 }
 #edit-project-inputs {
   display: flex;
   flex-direction: column;
-  width: auto;
-  /* width: -moz-available; */
+}
+.edit-project-desc-label {
+  height: 100%;
+  width: 100%;
 }
 #edit-project-title {
-  max-width: 20rem;
+  width: 100%;
 }
 #edit-project-desc {
-  height: 3rem;
+  height: inherit;
+  width: inherit;
   resize: none;
+}
+#edit-project-form input[type='submit'] {
+  margin-left: 0.3rem;
+  align-self: flex-end;
 }
 
 /* task list */

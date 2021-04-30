@@ -401,16 +401,16 @@ const domRenderProjects = ((doc) => {
     editFormInputs.setAttribute('id', 'edit-project-inputs');
     const editTitleInput = domForm.createTextInput(
       '',
-      [],
+      ['edit-project-title-label'],
       'edit-project-title',
       'edit-project-title',
-      20,
+      15,
       [],
     );
     editTitleInput.querySelector('input').value = thisProject.getTitle();
     const editDescTextarea = domForm.createTextarea(
       '',
-      [],
+      ['edit-project-desc-label'],
       'edit-project-desc',
       'edit-project-desc',
       100,
