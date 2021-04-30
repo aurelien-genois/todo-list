@@ -12,11 +12,15 @@
     <title>Todo list</title>
   </head>
   <body id="body">
+    <div id="page">
     <header id="header">
       <h1 id="title">Fofo's todo-list</h1>
-      <p id="tuto">Choose a project or create a new project to create a task</p>
+        <p id="tuto">
+          Choose a project or create a new project to create a task
+        </p>
     </header>
     <main id="content">
+        <section id="tabs-list-container">
       <nav id="tabs-list">
         <ul id="general-tabs">
           <li class="tabs" data-tab="all-tasks">All tasks</li>
@@ -27,6 +31,7 @@
         <ul id="projects-tabs"></ul>
         <button id="new-project-btn" class="round-btn">+</button>
       </nav>
+        </section>
       <div id="project-detail" data-project-id="all-tasks">
         <header id="project-header">
           <div id="project-infos">
@@ -42,6 +47,7 @@
         <ul id="tasks-list"></ul>
       </div>
     </main>
+    </div>
 
     <script src="main.js"></script>
   </body>

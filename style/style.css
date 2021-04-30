@@ -17,7 +17,7 @@ html {
   --highlight-general-color: rgb(255, 235, 58);
   --highlight-color: rgb(245, 167, 255);
   --btn-color: rgb(142, 116, 255);
-  --project-header-bg-color: rgba(129, 58, 0, 0.425);
+  --project-header-bg-color: rgba(124, 66, 11, 0.795);
 }
 * {
   margin: 0;
@@ -42,7 +42,8 @@ textarea {
   box-sizing: border-box;
 }
 body {
-  height: 100vh;
+  height: 100%;
+  width: 100%;
   color: var(--global-text-color);
   font-family: 'Patrick Hand', sans-serif;
   font-size: 1.7rem;
@@ -57,6 +58,9 @@ body {
   display: flex;
   align-items: flex-end;
   padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 3;
 }
 #title {
   margin-right: 1rem;
@@ -71,10 +75,9 @@ body {
 /* ********** main ********** */
 /* ************************** */
 #content {
-  height: inherit;
-  width: inherit;
   display: grid;
   grid-template-columns: auto 1fr;
+  position: relative;
 }
 .round-btn {
   border-radius: 50%;
@@ -93,14 +96,18 @@ body {
 /* ************************** */
 /* ***** nav tabs list ****** */
 /* ************************** */
+#tabs-list-container {
+  background: var(--tabs-bg-color);
+}
 #tabs-list {
   min-width: 24rem;
   font-size: 2rem;
   font-weight: bold;
   padding: 1rem;
-  background: var(--tabs-bg-color);
   display: flex;
   flex-direction: column;
+  position: sticky;
+  top: 6rem;
 }
 .tabs {
   margin: 0.2rem 0;
@@ -132,8 +139,10 @@ body {
 /* ***** project header ***** */
 /* ************************** */
 #project-header {
-  padding: 2rem 1rem;
+  padding: 1rem;
   background-color: var(--project-header-bg-color);
+  position: sticky;
+  top: 6rem;
 }
 #project-infos {
   display: grid;
@@ -189,10 +198,10 @@ body {
 /* ************************** */
 #tasks-list {
   padding: 1rem;
+  max-width: 60rem;
+  margin: auto;
 }
 .tasks {
-  box-sizing: border-box;
-  width: inherit;
   margin: 0 0 1rem 0;
   background: rgb(112, 133, 11);
   padding: 0.5rem;
@@ -265,8 +274,8 @@ body {
   opacity: 0;
   transition: opacity 0.5s;
   position: fixed;
-  height: inherit;
-  width: inherit;
+  height: 100vh;
+  width: 100%;
   background: rgba(146, 146, 146, 0.418);
   display: flex;
   justify-content: center;
