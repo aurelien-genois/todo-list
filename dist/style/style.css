@@ -19,24 +19,6 @@ html {
   --btn-color: rgb(142, 116, 255);
   --project-header-bg-color: rgba(129, 58, 0, 0.425);
 }
-body,
-html {
-  height: 100vh;
-  width: 100vw;
-}
-/* prevent the default focus outline on chrome */
-:focus {
-  outline: transparent none 0px;
-}
-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  color: var(--global-text-color);
-  font-family: 'Patrick Hand', sans-serif;
-  font-size: 1.9rem;
-  letter-spacing: 0.05rem;
-}
 * {
   margin: 0;
   padding: 0;
@@ -44,6 +26,9 @@ body {
 ul,
 ol {
   list-style: none;
+}
+:focus {
+  outline: transparent none 0px;
 }
 fieldset {
   border: none;
@@ -56,8 +41,17 @@ textarea {
   padding: 0.5rem;
   box-sizing: border-box;
 }
+body {
+  height: 100vh;
+  color: var(--global-text-color);
+  font-family: 'Patrick Hand', sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: 0.05rem;
+}
 
-/* main page */
+/* ************************** */
+/* ********* header ********* */
+/* ************************** */
 #header {
   background: var(--header-bg-color);
   display: flex;
@@ -73,13 +67,32 @@ textarea {
   color: var(--grayish-text-color);
 }
 
+/* ************************** */
+/* ********** main ********** */
+/* ************************** */
 #content {
   height: inherit;
   width: inherit;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+.round-btn {
+  border-radius: 50%;
+  border: 0.4rem solid var(--global-text-color);
+  color: var(--global-text-color);
+  font-weight: bold;
+  background: transparent;
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  margin: 0.3rem auto;
+  font-size: 2rem;
+  cursor: pointer;
 }
 
-/* nav tabs list */
+/* ************************** */
+/* ***** nav tabs list ****** */
+/* ************************** */
 #tabs-list {
   min-width: 24rem;
   font-size: 2rem;
@@ -114,24 +127,10 @@ textarea {
   position: relative;
   padding-top: 2rem;
 }
-.round-btn {
-  border-radius: 50%;
-  border: 0.4rem solid var(--global-text-color);
-  color: var(--global-text-color);
-  font-weight: bold;
-  background: transparent;
-  width: 3rem;
-  height: 3rem;
-  text-align: center;
-  margin: 0.3rem auto;
-  font-size: 2rem;
-  cursor: pointer;
-}
 
-/* project detail */
-#project-detail {
-  width: inherit;
-}
+/* ************************** */
+/* ***** project header ***** */
+/* ************************** */
 #project-header {
   padding: 2rem 1rem;
   background-color: var(--project-header-bg-color);
@@ -156,7 +155,8 @@ textarea {
   grid-row: 1 / span 2;
   grid-column: 2;
 }
-/* edit form */
+
+/* edit project form */
 #edit-project-form {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -184,7 +184,9 @@ textarea {
   align-self: flex-end;
 }
 
-/* task list */
+/* ************************** */
+/* ********** tasks ********* */
+/* ************************** */
 #tasks-list {
   padding: 1rem;
 }
@@ -249,8 +251,14 @@ textarea {
   width: 2rem;
   border: 0;
 }
+#edit-task-priority,
+#edit-task-priority label {
+  margin-left: 0.5rem;
+}
 
-/* popup */
+/* ************************** */
+/* ********** popup ********* */
+/* ************************** */
 .popups {
   color: var(--black-text-color);
   visibility: visible;
@@ -264,7 +272,6 @@ textarea {
   justify-content: center;
   align-items: center;
 }
-
 .popup-containers {
   box-sizing: border-box;
   height: 40rem;
@@ -338,10 +345,9 @@ textarea {
   width: 20rem;
 }
 
-#edit-task-priority,
-#edit-task-priority label {
-  margin-left: 0.5rem;
-}
+/* ************************** */
+/* ******* responsive ******* */
+/* ************************** */
 
 @media screen and (max-width: 700px) {
   /* close the tabs menu (drop-down) */
