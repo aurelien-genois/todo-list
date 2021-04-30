@@ -30,11 +30,11 @@ const domRenderTasks = ((doc) => {
     editTitleInput.querySelector('input').value = thisTask.getTitle();
     // DateState fieldset
     const editDateState = doc.createElement('fieldset');
-    editDateState.setAttribute('id', 'edit-task-date-state');
+    editDateState.classList.add('edit-task-date-state-fs');
     // Date
     const editDateInput = domForm.createDateInput(
       '',
-      [],
+      ['edit-task-duedate-label'],
       'edit-task-duedate',
       'edit-task-duedate',
       [],
@@ -65,7 +65,7 @@ const domRenderTasks = ((doc) => {
     });
     const editStateSelect = domForm.createSelect(
       '',
-      [],
+      ['edit-task-state-label'],
       'edit-task-state',
       'edit-task-state',
       stateOptions,
@@ -113,7 +113,7 @@ const domRenderTasks = ((doc) => {
     });
     const prioritiesFieldset = domForm.createRadioFieldset(
       'Priority:',
-      ['edit-labels'],
+      ['edit-task-priority-labels'],
       'edit-task-priority',
       'edit-task-priority',
       priorityRadios,
@@ -122,10 +122,10 @@ const domRenderTasks = ((doc) => {
     // desc
     const editDescTextarea = domForm.createTextarea(
       '',
-      [],
+      ['edit-task-desc-label'],
       'edit-task-desc',
       'edit-task-desc',
-      25,
+      100,
       [],
     );
     editDescTextarea.querySelector('textarea').value = thisTask.getDesc();
@@ -210,7 +210,7 @@ const domRenderTasks = ((doc) => {
     li.setAttribute('data-project-id', projId);
     const checkState = doc.createElement('input');
     checkState.type = 'checkbox';
-    checkState.id = 'task-check-state';
+    checkState.classList.add('task-check-state');
     if (thisTask.getState() === 'Done') {
       checkState.checked = true;
     }
@@ -251,7 +251,7 @@ const domRenderTasks = ((doc) => {
     detailsDiv.classList.add('task-details');
     const priorityP = doc.createElement('p');
     priorityP.classList.add('task-priority');
-    priorityP.textContent = priority;
+    priorityP.textContent = `Priority: ${priority}`;
     const descP = doc.createElement('p');
     descP.classList.add('task-desc');
     descP.textContent = desc;
