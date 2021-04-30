@@ -7,11 +7,14 @@ html {
   background-position-y: bottom;
   background-attachment: fixed;
   --global-text-color: rgb(253, 242, 238);
+  --grayish-text-color: rgb(228, 210, 203);
   --black-text-color: rgb(8, 5, 5);
-  --header-bg-color: #e88302;
-  --tabs-bg-color: #ac3619d7;
+  --header-bg-color: #442304;
+  --tabs-bg-color: #962d12d7;
   --tabs-separator-color: #7c2813d7;
   --popup-bg-color: rgb(255, 246, 223);
+  --highlight-general-color: rgb(255, 235, 58);
+  --highlight-color: rgb(245, 167, 255);
 }
 body,
 html {
@@ -54,9 +57,10 @@ fieldset {
 #title {
   margin-right: 1rem;
   line-height: 1;
+  font-size: 4rem;
 }
 #tuto {
-  font-size: 1.2rem;
+  color: var(--grayish-text-color);
 }
 
 #content {
@@ -67,19 +71,17 @@ fieldset {
 
 /* nav tabs list */
 #tabs-list {
-  width: 16rem;
-  font-size: 1.3rem;
+  min-width: 24rem;
+  font-size: 2rem;
   font-weight: bold;
   padding: 1rem;
   background: var(--tabs-bg-color);
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 .tabs {
   margin: 0.2rem 0;
   cursor: pointer;
-  width: 16rem;
 }
 #projects-tabs::before {
   content: '';
@@ -87,8 +89,16 @@ fieldset {
   top: 1rem;
   left: 3rem;
   height: 0.3rem;
-  width: 10rem;
+  width: 16rem;
   background-color: var(--tabs-separator-color);
+}
+#general-tabs .tabs:hover {
+  color: var(--highlight-general-color);
+}
+#projects-tabs .tabs:hover,
+.round-btn:hover {
+  color: var(--highlight-color);
+  border-color: var(--highlight-color);
 }
 #projects-tabs {
   position: relative;
@@ -96,14 +106,15 @@ fieldset {
 }
 .round-btn {
   border-radius: 50%;
-  border: 0.2rem solid rgb(228, 247, 229);
-  color: rgb(228, 247, 229);
+  border: 0.4rem solid var(--global-text-color);
+  color: var(--global-text-color);
   font-weight: bold;
   background: transparent;
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   text-align: center;
-  margin: 0.2rem auto;
+  margin: 0.3rem auto;
+  font-size: 2rem;
   cursor: pointer;
 }
 
@@ -157,32 +168,39 @@ fieldset {
   box-sizing: border-box;
   width: inherit;
   margin: 0 0 1rem 0;
-  background: rgb(52, 179, 27);
+  background: rgb(112, 133, 11);
   padding: 0.5rem;
   border-radius: 0.5rem;
   font-weight: bold;
 }
 .late-tasks {
-  background: rgb(218, 33, 33);
+  background: rgb(187, 36, 21);
 }
 .abandoned-tasks {
-  background: rgb(99, 30, 30);
+  background: rgb(65, 21, 21);
 }
 .done-tasks {
-  background: rgb(52, 181, 185);
+  background: rgb(37, 143, 93);
 }
 .today-tasks {
-  background: rgb(223, 104, 0);
+  background: rgb(223, 89, 0);
 }
 
 .task-main-infos,
 #edit-task-main-infos {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 6fr 4fr;
+  align-items: center;
 }
 .task-infos,
 #edit-task-date-state {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  justify-items: center;
+  align-items: center;
+}
+.task-title {
+  margin-left: 0.5rem;
 }
 .task-duedate,
 .task-state,
@@ -299,4 +317,11 @@ fieldset {
 #edit-task-priority,
 #edit-task-priority label {
   margin-left: 0.5rem;
+}
+
+@media screen and (max-width: 700px) {
+  /* close the tabs menu (drop-down) */
+  html {
+    font-size: 1.4vw;
+  }
 }
