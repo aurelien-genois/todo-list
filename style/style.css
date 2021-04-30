@@ -41,6 +41,13 @@ textarea {
   padding: 0.5rem;
   box-sizing: border-box;
 }
+#page {
+  width: inherit;
+  height: inherit;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  position: absolute;
+}
 body {
   height: 100%;
   width: 100%;
