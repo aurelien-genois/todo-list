@@ -26,7 +26,7 @@ const task = (title, dueDate, priorityLevel, desc, projectId) => {
       return this.thisDueDate;
     },
     getDueDateFormat() {
-      return format(thisDueDate, 'dd/MM/yyyy');
+      return format(this.thisDueDate, 'dd/MM/yyyy');
     },
     setDueDate(newDueDate) {
       this.thisDueDate = newDueDate;
