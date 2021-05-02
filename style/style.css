@@ -17,7 +17,7 @@ html {
   --highlight-general-color: rgb(255, 235, 58);
   --select-color: rgb(58, 232, 255);
   --select-highlight-color: rgb(91, 255, 58);
-  --highlight-color: rgb(245, 167, 255);
+  --highlight-color: rgb(255, 206, 251);
   --btn-color: rgb(142, 116, 255);
   --project-header-bg-color: rgba(124, 66, 11, 0.795);
 }
@@ -54,6 +54,12 @@ option,
 textarea {
   font-family: inherit;
   font-size: inherit;
+}
+button {
+  background: transparent;
+  cursor: pointer;
+  border: 0;
+  color: inherit;
 }
 #page {
   width: inherit;
@@ -105,14 +111,22 @@ body {
   border: 0.3rem solid var(--global-text-color);
   color: var(--global-text-color);
   font-weight: bold;
-  background: transparent;
   width: 2.5rem;
   height: 2.5rem;
   text-align: center;
   margin: 0.3rem auto;
   font-size: 1.4rem;
-  cursor: pointer;
   box-sizing: border-box;
+}
+.round-btn:hover,
+.task-expand-btn:hover {
+  color: var(--highlight-general-color);
+  text-shadow: 0 0 0.2rem var(--highlight-general-color);
+}
+.round-btn:hover {
+  box-shadow: 0 0 0.3rem var(--highlight-general-color);
+  border-color: var(--highlight-general-color);
+  transform: scale(1.2, 1.2);
 }
 
 /* ************************** */
@@ -151,15 +165,7 @@ body {
   color: var(--select-color);
 }
 .tabs:hover {
-  text-shadow: 0 0 0.5rem var(--highlight-general-color);
-}
-
-.round-btn:hover {
-  color: var(--highlight-color);
-  text-shadow: 0 0 0.5rem var(--highlight-color);
-  box-shadow: 0 0 0.5rem var(--highlight-color);
-  border-color: var(--highlight-color);
-  transform: scale(1.2, 1.2);
+  text-shadow: 0 0 0.3rem var(--highlight-general-color);
 }
 #projects-tabs {
   position: relative;
@@ -221,7 +227,7 @@ body {
   max-height: 5.9rem;
   width: inherit;
 }
-#edit-project-form input[type='submit'] {
+#edit-project-form button[type='submit'] {
   margin-left: 1rem;
   align-self: flex-end;
 }
@@ -262,35 +268,27 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  position: relative;
-  border: solid 0.2rem rgb(201, 201, 201);
   cursor: pointer;
-  box-sizing: border-box;
-  background: transparent;
-  width: 1.6rem;
-  height: 1.6rem;
+  margin-top: 0.2rem;
 }
 .task-check-state:before {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 0rem;
-  height: 0rem;
-  transition: width 0.4s, height 0.4s;
-  background-color: rgb(155, 155, 155);
+  font-weight: 900;
+  content: '\f192';
+  font-family: 'Font Awesome 5 Free';
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  font-size: 2rem;
+  border-radius: 50%;
 }
 .task-check-state:active:before,
 .task-check-state:hover:before {
-  width: 0.8rem;
-  height: 0.8rem;
+  content: '\f058';
+  background: var(--grayish-border-color);
 }
 .task-check-state:checked:before {
-  width: 1.4rem;
-  height: 1.4rem;
-  background-color: whitesmoke;
+  background: var(--black-text-color);
+  content: '\f058';
 }
 
 .task-title {
@@ -332,11 +330,9 @@ body {
   font-size: 1.5rem;
 }
 .task-expand-btn {
-  cursor: pointer;
-  background-color: rgb(76, 161, 201);
+  font-size: 2rem;
   height: 2rem;
   width: 2rem;
-  border: 0;
 }
 
 /* edit task form */
@@ -429,7 +425,7 @@ body {
   height: 1.4rem;
   background-color: whitesmoke;
 }
-#edit-task-form input[type='submit'] {
+#edit-task-form button[type='submit'] {
   align-self: end;
   margin-left: 1rem;
 }
@@ -470,12 +466,13 @@ body {
   position: absolute;
   right: 2rem;
   top: 2rem;
-  border-radius: 50%;
-  background: transparent;
   width: 2rem;
   height: 2rem;
-  border: transparent;
-  cursor: pointer;
+  font-size: 2rem;
+  color: var(--grayish-border-color);
+}
+.popup-close-btns:hover {
+  color: var(--black-text-color);
 }
 .parenthesis {
   color: grey;
