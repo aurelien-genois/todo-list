@@ -258,6 +258,7 @@ body {
 .today-tasks {
   background: rgb(223, 89, 0);
 }
+
 .task-main-infos,
 #edit-task-main-infos {
   display: grid;
@@ -275,26 +276,67 @@ body {
   font-weight: 900;
   content: '\f192';
   font-family: 'Font Awesome 5 Free';
+  line-height: 1;
   font-style: normal;
   font-variant: normal;
   text-rendering: auto;
   font-size: 2rem;
   border-radius: 50%;
 }
+.task-check-state:checked:before {
+  background: var(--black-text-color);
+  content: '\f058';
+}
 .task-check-state:active:before,
 .task-check-state:hover:before {
   content: '\f058';
   background: var(--grayish-border-color);
-}
-.task-check-state:checked:before {
-  background: var(--black-text-color);
-  content: '\f058';
 }
 
 .task-title {
   margin-left: 0.5rem;
   font-size: 2rem;
   font-weight: normal;
+  width: 100%;
+  position: relative;
+}
+.task-exclamation {
+  margin-top: 0.2rem;
+  position: absolute;
+  right: 0;
+  opacity: 0;
+}
+
+.today-tasks .task-exclamation,
+.late-tasks .task-exclamation {
+  opacity: 100%;
+}
+.today-tasks .task-exclamation::after,
+.late-tasks .task-exclamation::after {
+  content: "Today's task!";
+  background-color: var(--grayish-border-color);
+  padding: 0.5rem;
+  font-size: 1.7rem;
+  font-weight: normal;
+  font-family: 'Patrick Hand', sans-serif;
+  letter-spacing: 0.1rem;
+  border-radius: 0.5rem;
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  display: block;
+  width: max-content;
+  visibility: collapse;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.today-tasks .task-exclamation:hover::after,
+.late-tasks .task-exclamation:hover::after {
+  visibility: visible;
+  opacity: 100%;
+}
+.late-tasks .task-exclamation::after {
+  content: 'Late tasks!';
 }
 .task-infos,
 .edit-task-date-state-fs {
