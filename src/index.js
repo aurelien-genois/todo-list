@@ -1,9 +1,7 @@
 import { manageProjects } from './modules/projects-manager.js';
 import { initDefaultProjects } from './modules/init-default-projects.js';
-import {
-  domRenderProjects,
-  domRenderGeneralTabs,
-} from './modules/dom-integration.js';
+import { domRenderProjects } from './modules/dom-integration/render-projects.js';
+import { domRenderGeneralTabs } from './modules/dom-integration/render-general-tabs.js';
 import { project } from './modules/projects-class.js';
 import { task } from './modules/tasks-class.js';
 import { parseISO } from 'date-fns';
@@ -22,7 +20,7 @@ if (allProjects.length === 0) {
     Object.setPrototypeOf(project, protoProject);
     project.tasks.map((task) => {
       Object.setPrototypeOf(task, protoTask);
-      // parseISO() because LocalFormat convert Date to string, need to convert it back to Date format
+      // parseISO() because LocalStorage convert Date to string, need to convert it back to Date format
       // can also create a new date : new Date(task.thisDueDate)
       task.setDueDate(parseISO(task.thisDueDate));
     });
@@ -30,7 +28,5 @@ if (allProjects.length === 0) {
   manageProjects.setProjects(allProjects);
   domRenderProjects.renderProjectsTabs(allProjects);
 }
-
-console.log(manageProjects.getProjects());
 
 domRenderGeneralTabs.initPageLoadTasks();

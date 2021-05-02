@@ -1,8 +1,8 @@
-import { manageProjects } from './projects-manager.js';
+import { manageProjects } from '../projects-manager.js';
+import { manageTasks } from '../tasks-manager.js';
 import { domForm, domElements } from './dom-elements.js';
 import { format } from 'date-fns';
 
-// popupUX
 const popupsManager = (() => {
   const createPopupSection = (popupId, popupTitle, closeBtnId, popupForm) => {
     const popupTitleH3 = domElements.createH(
@@ -162,7 +162,7 @@ const createPopup = (() => {
       inputs,
     );
     newTaskForm.addEventListener('submit', (e) => {
-      manageProjects.createNewTaskFormSubmit(e, popup, projId);
+      manageTasks.createNewTaskFormSubmit(e, popup, projId);
     });
     const popup = popupsManager.createPopupSection(
       'new-task-popup',

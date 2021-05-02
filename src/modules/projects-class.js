@@ -1,8 +1,6 @@
 import { task } from './tasks-class.js';
-import { domRenderTasks, domRenderProjects } from './dom-integration.js';
 
 const project = (title, desc) => {
-  // // private array
   // public values important for localStorage
   let tasks = [];
   let thisTitle = title;
@@ -33,8 +31,6 @@ const project = (title, desc) => {
     createTask(title, dueDate, priorityLevel, thisDesc, projectId) {
       const newTask = task(title, dueDate, priorityLevel, thisDesc, projectId);
       this.tasks.push(newTask);
-      domRenderTasks.renderTasks(this.tasks);
-      domRenderProjects.updateLocalStorage();
       return newTask;
     },
     deleteTask(taskId) {

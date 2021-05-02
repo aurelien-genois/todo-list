@@ -1,7 +1,7 @@
-import { manageProjects } from './projects-manager.js';
+import { manageProjects } from '../projects-manager.js';
+import { manageTasks } from '../tasks-manager.js';
 import { domForm } from './dom-elements.js';
-import { popupsManager, createPopup } from './popup-forms.js';
-import { format, isToday, isThisWeek, isPast } from 'date-fns';
+import { format, isToday, isPast } from 'date-fns';
 
 const domRenderTasks = ((doc) => {
   const _tasksUl = doc.querySelector('#tasks-list');
@@ -142,7 +142,7 @@ const domRenderTasks = ((doc) => {
     );
     editForm.addEventListener('submit', (e) => {
       const thisTabId = _projectDetail.dataset.projectId;
-      manageProjects.editTaskFormSubmit(e, thisTask, thisProject, thisTabId);
+      manageTasks.editTaskFormSubmit(e, thisTask, thisProject, thisTabId);
     });
 
     // replace current infos
@@ -151,44 +151,15 @@ const domRenderTasks = ((doc) => {
     taskLi.append(editForm);
   };
 
-  // ! move this function out of dom-integration
-  const _toggleStateDoneTodo = (thisTask, thisProject) => {
-    const thisTabId = _projectDetail.dataset.projectId;
-    if (thisTask.getState() !== 'Done') {
-      thisTask.setState(0); //set Done
-    } else {
-      thisTask.setState(2); // set Todo
-    }
-    domRenderProjects.updateLocalStorage();
-    if (isNaN(Number(thisTabId))) {
-      // if thisTabId is a general tab
-      domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId); // for re-filter the task-list
-    } else {
-      renderTasks(thisProject.getTasks());
-    }
-  };
-
-  // ! move this function out of dom-integration
-  const _deleteThisTask = (taskId, thisProject) => {
-    const thisTabId = _projectDetail.dataset.projectId;
-    thisProject.deleteTask(taskId);
-
-    if (isNaN(Number(thisTabId))) {
-      // if thisTabId is a general tab
-      domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId); // for re-filter the task-list
-    } else {
-      domRenderTasks.renderTasks(thisProject.getTasks());
-    }
-    domRenderProjects.updateLocalStorage();
-  };
-
   const _toggleExpandDetails = (thisBtn, li, expandDiv) => {
     if (li.querySelector('.task-expand')) {
       li.removeChild(expandDiv);
       thisBtn.textContent = 'V';
+      // todo change to classList to use font-awesome
     } else {
       li.append(expandDiv);
       thisBtn.textContent = 'A';
+      // todo change to classList to use font-awesome
     }
   };
 
@@ -216,7 +187,12 @@ const domRenderTasks = ((doc) => {
     }
     checkState.addEventListener(
       'change',
-      _toggleStateDoneTodo.bind(this, thisTask, thisProject),
+      manageTasks.toggleStateDoneTodo.bind(
+        this,
+        thisTask,
+        thisProject,
+        _projectDetail.dataset.projectId,
+      ),
     );
 
     const titleH4 = doc.createElement('h3');
@@ -265,13 +241,19 @@ const domRenderTasks = ((doc) => {
     editTaskBtn.textContent = '/';
     editTaskBtn.addEventListener('click', () => {
       _renderEditTaskForm(thisProject, thisTask, li, mainInfosDiv, expandDiv);
+      // ! (NTH: prevent edit several tasks at the same time)
     });
     const deleteBtn = doc.createElement('button');
     deleteBtn.classList.add('round-btn', 'delete-task-btn');
     deleteBtn.textContent = 'X';
     deleteBtn.addEventListener(
       'click',
-      _deleteThisTask.bind(this, taskId, thisProject),
+      manageTasks.deleteThisTask.bind(
+        this,
+        taskId,
+        thisProject,
+        _projectDetail.dataset.projectId,
+      ),
     );
     actionsDiv.append(editTaskBtn, deleteBtn);
 
@@ -324,179 +306,4 @@ const domRenderTasks = ((doc) => {
   return { renderTasks };
 })(document);
 
-const domRenderProjects = ((doc) => {
-  const _projectsUl = doc.querySelector('#projects-tabs');
-  const projectDetail = doc.querySelector('#project-detail');
-  const _projectH2 = doc.querySelector('#project-title');
-  const _projectDesc = doc.querySelector('#project-desc');
-  const _newProjectBtn = document.querySelector('#new-project-btn');
-  const _newTaskBtn = doc.querySelector('#new-task-btn');
-  const _editProjectBtn = doc.querySelector('#edit-project-btn');
-  const _deleteProjectBtn = doc.querySelector('#delete-project-btn');
-  _newTaskBtn.style.visibility = 'hidden';
-  _editProjectBtn.style.visibility = 'hidden';
-  const _projectInfos = doc.querySelector('#project-infos');
-  _deleteProjectBtn.style.visibility = 'hidden';
-
-  _newProjectBtn.addEventListener(
-    'click',
-    popupsManager.openPopup.bind(this, createPopup.newProjectPopup()),
-  );
-
-  _newTaskBtn.addEventListener('click', () => {
-    const thisProjectId = projectDetail.dataset.projectId;
-    const popup = createPopup.newTaskPopup(thisProjectId);
-    popupsManager.openPopup(popup);
-  });
-
-  const renderProjectDetails = (projectOrGeneralTab, generalTabName) => {
-    if (doc.querySelector('#edit-project-form')) {
-      doc.querySelector('#edit-project-form').replaceWith(_projectInfos);
-    }
-    if (typeof projectOrGeneralTab === 'string') {
-      _projectH2.textContent = generalTabName;
-      _projectDesc.textContent = '';
-      projectDetail.setAttribute('data-project-id', projectOrGeneralTab);
-      _newTaskBtn.style.visibility = 'hidden';
-      _editProjectBtn.style.visibility = 'hidden';
-      _deleteProjectBtn.style.visibility = 'hidden';
-    } else {
-      _projectH2.textContent = projectOrGeneralTab.getTitle();
-      _projectDesc.textContent = projectOrGeneralTab.getDesc();
-      const projId = manageProjects.getProjectId(projectOrGeneralTab);
-      projectDetail.setAttribute('data-project-id', projId);
-      _newTaskBtn.style.visibility = 'visible';
-      _editProjectBtn.style.visibility = 'visible';
-      _deleteProjectBtn.style.visibility = 'visible';
-    }
-  };
-  const renderProjectsTabs = (projects) => {
-    const projectsLi = projects.map((project) => {
-      const li = doc.createElement('li');
-      li.classList.add('tabs', 'project-tab');
-      li.textContent = project.getTitle();
-      return li;
-    });
-    projectsLi.map((projLi, projId) =>
-      projLi.addEventListener('click', () => {
-        const thisProject = projects[projId];
-        domRenderTasks.renderTasks(thisProject.getTasks());
-        renderProjectDetails(thisProject);
-      }),
-    );
-    while (_projectsUl.firstChild) {
-      _projectsUl.removeChild(_projectsUl.firstChild);
-    }
-    projectsLi.map((projLi) => {
-      _projectsUl.appendChild(projLi);
-    });
-  };
-
-  const _renderEditProjectForm = () => {
-    const thisProject = manageProjects.getProject(
-      projectDetail.dataset.projectId,
-    );
-    // create inputs
-    const editFormInputs = doc.createElement('fieldset');
-    editFormInputs.setAttribute('id', 'edit-project-inputs');
-    const editTitleInput = domForm.createTextInput(
-      '',
-      ['edit-project-title-label'],
-      'edit-project-title',
-      'edit-project-title',
-      15,
-      [],
-    );
-    editTitleInput.querySelector('input').value = thisProject.getTitle();
-    const editDescTextarea = domForm.createTextarea(
-      '',
-      ['edit-project-desc-label'],
-      'edit-project-desc',
-      'edit-project-desc',
-      100,
-      [],
-    );
-    editDescTextarea.querySelector('textarea').value = thisProject.getDesc();
-    editFormInputs.append(editTitleInput, editDescTextarea);
-    // create form
-    const editForm = domForm.createForm(
-      'edit-project-form',
-      [],
-      'OK',
-      ['round-btn'],
-      editFormInputs,
-    );
-    editForm.addEventListener('submit', (e) => {
-      manageProjects.editProjectFormSubmit(e, thisProject);
-    });
-    // replace current infos
-    _projectInfos.replaceWith(editForm);
-  };
-
-  _editProjectBtn.addEventListener('click', _renderEditProjectForm);
-
-  _deleteProjectBtn.addEventListener('click', () => {
-    const thisProject = manageProjects.getProject(
-      projectDetail.dataset.projectId,
-    );
-    manageProjects.deleteProject(thisProject);
-  });
-
-  const updateLocalStorage = () => {
-    localStorage.setItem(
-      'projects',
-      JSON.stringify(manageProjects.getProjects()),
-    );
-  };
-
-  return { renderProjectsTabs, renderProjectDetails, updateLocalStorage };
-})(document);
-
-const domRenderGeneralTabs = ((doc) => {
-  const initPageLoadTasks = () => {
-    let allTasks = manageProjects.getAllTasks();
-    domRenderTasks.renderTasks(allTasks);
-  };
-
-  const renderGeneralTabsTasks = (tabId) => {
-    let allTasks = manageProjects.getAllTasks();
-    let allTasksFiltered = [];
-    switch (tabId) {
-      case 'today':
-        // DATE: select task where date = today
-        allTasksFiltered = allTasks.filter((task) =>
-          isToday(task.getDueDate()),
-        );
-        break;
-      case 'this-week':
-        // DATE: select task where date = this week
-        allTasksFiltered = allTasks.filter((task) =>
-          isThisWeek(task.getDueDate()),
-        );
-        break;
-      case 'high-priority':
-        allTasksFiltered = allTasks.filter(
-          (task) => task.getPriority() === 'High',
-        );
-        break;
-      case 'all-tasks':
-        allTasksFiltered = [...allTasks];
-    }
-    domRenderTasks.renderTasks(allTasksFiltered);
-  };
-
-  const _generalTabsLis = [...doc.querySelector('#general-tabs').children];
-  _generalTabsLis.map((genTab) =>
-    genTab.addEventListener('click', (e) => {
-      const whichTab = e.target.dataset.tab;
-      const tabTitle = e.target.textContent;
-      //NTH project desc for general tabs
-      renderGeneralTabsTasks(whichTab);
-      domRenderProjects.renderProjectDetails(whichTab, tabTitle);
-    }),
-  );
-
-  return { initPageLoadTasks, renderGeneralTabsTasks };
-})(document);
-
-export { domRenderTasks, domRenderProjects, domRenderGeneralTabs };
+export { domRenderTasks };
