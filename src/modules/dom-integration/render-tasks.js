@@ -136,8 +136,8 @@ const domRenderTasks = ((doc) => {
     const editForm = domForm.createForm(
       'edit-task-form',
       [],
-      'OK',
-      ['round-btn'],
+      '',
+      ['round-btn', 'fa', 'fa-check'],
       [editMainInfos, editExpandDiv],
     );
     editForm.addEventListener('submit', (e) => {
@@ -154,12 +154,12 @@ const domRenderTasks = ((doc) => {
   const _toggleExpandDetails = (thisBtn, li, expandDiv) => {
     if (li.querySelector('.task-expand')) {
       li.removeChild(expandDiv);
-      thisBtn.textContent = 'V';
-      // todo change to classList to use font-awesome
+      thisBtn.classList.add('fa-arrow-circle-down');
+      thisBtn.classList.remove('fa-arrow-circle-up');
     } else {
       li.append(expandDiv);
-      thisBtn.textContent = 'A';
-      // todo change to classList to use font-awesome
+      thisBtn.classList.add('fa-arrow-circle-up');
+      thisBtn.classList.remove('fa-arrow-circle-down');
     }
   };
 
@@ -209,7 +209,7 @@ const domRenderTasks = ((doc) => {
     stateP.textContent = state;
     const expandBtn = doc.createElement('button');
     expandBtn.classList.add('task-expand-btn');
-    expandBtn.textContent = 'V';
+    expandBtn.classList.add('fa', 'fa-arrow-circle-down');
     infoDiv.append(dueDateP, stateP, expandBtn);
 
     const mainInfosDiv = doc.createElement('div');
@@ -237,15 +237,12 @@ const domRenderTasks = ((doc) => {
     const actionsDiv = doc.createElement('div');
     actionsDiv.classList.add('task-actions');
     const editTaskBtn = doc.createElement('button');
-    editTaskBtn.classList.add('edit-task-btn', 'round-btn');
-    editTaskBtn.textContent = '/';
+    editTaskBtn.classList.add('edit-task-btn', 'round-btn', 'fa', 'fa-pen');
     editTaskBtn.addEventListener('click', () => {
       _renderEditTaskForm(thisProject, thisTask, li, mainInfosDiv, expandDiv);
-      // ! (NTH: prevent edit several tasks at the same time)
     });
     const deleteBtn = doc.createElement('button');
-    deleteBtn.classList.add('round-btn', 'delete-task-btn');
-    deleteBtn.textContent = 'X';
+    deleteBtn.classList.add('round-btn', 'delete-task-btn', 'fa', 'fa-trash');
     deleteBtn.addEventListener(
       'click',
       manageTasks.deleteThisTask.bind(

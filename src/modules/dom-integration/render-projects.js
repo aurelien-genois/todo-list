@@ -64,8 +64,8 @@ const domRenderProjects = ((doc) => {
     const editForm = domForm.createForm(
       'edit-project-form',
       [],
-      'OK',
-      ['round-btn'],
+      '',
+      ['round-btn', 'fa', 'fa-check'],
       editFormInputs,
     );
     editForm.addEventListener('submit', (e) => {

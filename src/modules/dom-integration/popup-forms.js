@@ -13,8 +13,8 @@ const popupsManager = (() => {
     );
     const popupCloseBtn = domElements.createButton(
       closeBtnId,
-      ['popup-close-btns'],
-      'X',
+      ['popup-close-btns', 'fa', 'fa-times'],
+      '',
     );
     const popupContainer = domElements.createDiv(
       '',

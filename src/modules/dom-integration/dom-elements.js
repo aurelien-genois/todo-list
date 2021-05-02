@@ -132,9 +132,9 @@ const domForm = ((doc) => {
   };
 
   const createSubmit = (value, classes) => {
-    const submit = doc.createElement('input');
+    const submit = doc.createElement('button');
     submit.setAttribute('type', 'submit');
-    submit.setAttribute('value', value);
+    submit.textContent = value;
     submit.classList.add(...classes);
     return submit;
   };
