@@ -15,6 +15,8 @@ html {
   --tabs-separator-color: #7c2813d7;
   --popup-bg-color: rgb(255, 246, 223);
   --highlight-general-color: rgb(255, 235, 58);
+  --select-color: rgb(58, 232, 255);
+  --select-highlight-color: rgb(91, 255, 58);
   --highlight-color: rgb(245, 167, 255);
   --btn-color: rgb(142, 116, 255);
   --project-header-bg-color: rgba(124, 66, 11, 0.795);
@@ -133,6 +135,9 @@ body {
   margin: 0.2rem 0;
   cursor: pointer;
 }
+#general-tabs .tabs {
+  color: var(--highlight-general-color);
+}
 #projects-tabs::before {
   content: '';
   position: absolute;
@@ -142,13 +147,19 @@ body {
   width: 16rem;
   background-color: var(--tabs-separator-color);
 }
-#general-tabs .tabs:hover {
-  color: var(--highlight-general-color);
+#tabs-list .selected {
+  color: var(--select-color);
 }
-#projects-tabs .tabs:hover,
+.tabs:hover {
+  text-shadow: 0 0 0.5rem var(--highlight-general-color);
+}
+
 .round-btn:hover {
   color: var(--highlight-color);
+  text-shadow: 0 0 0.5rem var(--highlight-color);
+  box-shadow: 0 0 0.5rem var(--highlight-color);
   border-color: var(--highlight-color);
+  transform: scale(1.2, 1.2);
 }
 #projects-tabs {
   position: relative;
@@ -171,6 +182,7 @@ body {
 }
 #project-title {
   font-size: 3rem;
+  color: var(--select-color);
 }
 #project-desc,
 #edit-project-desc {
@@ -348,6 +360,10 @@ body {
 .edit-task-date-state-fs:after {
   content: '';
   width: 2rem;
+}
+#edit-task-duedate {
+  width: 10rem;
+  height: 3rem;
 }
 .edit-task-state-label {
   justify-self: right;

@@ -2,6 +2,7 @@ import { manageProjects } from '../projects-manager.js';
 import { domForm } from './dom-elements.js';
 import { domRenderTasks } from './render-tasks.js';
 import { popupsManager, createPopup } from './popup-forms.js';
+import { domRenderGeneralTabs } from './render-general-tabs';
 
 const domRenderProjects = ((doc) => {
   const _projectsUl = doc.querySelector('#projects-tabs');
@@ -105,8 +106,10 @@ const domRenderProjects = ((doc) => {
       return li;
     });
     projectsLi.map((projLi, projId) =>
-      projLi.addEventListener('click', () => {
+      projLi.addEventListener('click', (e) => {
         const thisProject = projects[projId];
+        domRenderGeneralTabs.removeTabsSelectState();
+        e.target.classList.add('selected');
         domRenderTasks.renderTasks(thisProject.getTasks());
         renderProjectDetails(thisProject);
       }),

@@ -4,6 +4,18 @@ import { domRenderProjects } from './render-projects.js';
 import { isToday, isThisWeek } from 'date-fns';
 
 const domRenderGeneralTabs = ((doc) => {
+  const _projectsUl = doc.querySelector('#projects-tabs');
+  const _generalTabsLis = [...doc.querySelector('#general-tabs').children];
+
+  const removeTabsSelectState = () => {
+    _generalTabsLis.forEach((li) => {
+      li.classList.remove('selected');
+    });
+    _projectsUl.querySelectorAll('li').forEach((li) => {
+      li.classList.remove('selected');
+    });
+  };
+
   const initPageLoadTasks = () => {
     let allTasks = manageProjects.getAllProjectsTasks();
     domRenderTasks.renderTasks(allTasks);
@@ -36,18 +48,19 @@ const domRenderGeneralTabs = ((doc) => {
     domRenderTasks.renderTasks(allTasksFiltered);
   };
 
-  const _generalTabsLis = [...doc.querySelector('#general-tabs').children];
   _generalTabsLis.map((genTab) =>
     genTab.addEventListener('click', (e) => {
       const whichTab = e.target.dataset.tab;
       const tabTitle = e.target.textContent;
+      removeTabsSelectState();
+      e.target.classList.add('selected');
       //NTH project desc for general tabs
       renderGeneralTabsTasks(whichTab);
       domRenderProjects.renderProjectDetails(whichTab, tabTitle);
     }),
   );
 
-  return { initPageLoadTasks, renderGeneralTabsTasks };
+  return { removeTabsSelectState, initPageLoadTasks, renderGeneralTabsTasks };
 })(document);
 
 export { domRenderGeneralTabs };
