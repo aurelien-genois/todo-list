@@ -198,8 +198,15 @@ const domRenderTasks = ((doc) => {
     const titleH4 = doc.createElement('h3');
     titleH4.textContent = title;
     titleH4.classList.add('task-title');
-    const infoDiv = doc.createElement('div');
+    const spanExclamation = doc.createElement('span');
+    spanExclamation.classList.add(
+      'task-exclamation',
+      'fa',
+      'fa-exclamation-circle',
+    );
+    titleH4.append(spanExclamation);
 
+    const infoDiv = doc.createElement('div');
     infoDiv.classList.add('task-infos');
     const dueDateP = doc.createElement('p');
     dueDateP.classList.add('task-duedate');
