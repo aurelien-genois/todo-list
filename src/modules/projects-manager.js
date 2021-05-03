@@ -13,19 +13,28 @@ const manageProjects = (() => {
     return newProject;
   };
   const deleteProject = (projectId) => {
-    _projects.splice(projectId, 1);
-    // update the tasks' projectId for project greater than the project deleted
-    const greaterProjects = _projects.filter((project, id) => id >= projectId);
-    greaterProjects.map((project) => {
-      project.getTasks().map((task) => {
-        task.setProjectId(task.getProjectId() - 1);
+    let confirmRemove = confirm(
+      `Are you sure you want to remove the project "${getProject(
+        projectId,
+      ).getTitle()}"?\nThis will remove all its tasks too.`,
+    );
+    if (confirmRemove) {
+      _projects.splice(projectId, 1);
+      // update the tasks' projectId for project greater than the project deleted
+      const greaterProjects = _projects.filter(
+        (project, id) => id >= projectId,
+      );
+      greaterProjects.map((project) => {
+        project.getTasks().map((task) => {
+          task.setProjectId(task.getProjectId() - 1);
+        });
       });
-    });
-    domRenderProjects.renderProjectsTabs(_projects);
-    domRenderGeneralTabs.initPageLoadTasks();
-    domRenderProjects.renderProjectDetails('all-tasks', 'All tasks');
-    updateLocalStorage();
-    return getProject(projectId);
+      domRenderProjects.renderProjectsTabs(_projects);
+      domRenderGeneralTabs.initPageLoadTasks();
+      domRenderProjects.renderProjectDetails('all-tasks', 'All tasks');
+      updateLocalStorage();
+      return getProject(projectId);
+    }
   };
   const setProjects = (projects) => {
     _projects = [...projects];

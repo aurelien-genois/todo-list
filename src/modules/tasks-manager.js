@@ -80,8 +80,6 @@ const manageTasks = (() => {
     e.preventDefault();
     manageProjects.updateLocalStorage();
   };
-  // ! (NTH: prevent edit several tasks at the same time)
-  // check if there is already a #edit-task-form id
 
   const toggleStateDoneTodo = (thisTask, thisProject, thisTabId) => {
     if (thisTask.getState() !== 'Done') {
@@ -99,16 +97,22 @@ const manageTasks = (() => {
   };
 
   const deleteThisTask = (taskId, thisProject, thisTabId) => {
-    // todo add confirm alert before delete
-    thisProject.deleteTask(taskId);
+    let confirmRemove = confirm(
+      `Are you sure you want to remove the task "${thisProject
+        .getTask(taskId)
+        .getTitle()}"?`,
+    );
+    if (confirmRemove) {
+      thisProject.deleteTask(taskId);
 
-    if (isNaN(Number(thisTabId))) {
-      // if thisTabId is a general tab
-      domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId); // for re-filter the task-list
-    } else {
-      domRenderTasks.renderTasks(thisProject.getTasks());
+      if (isNaN(Number(thisTabId))) {
+        // if thisTabId is a general tab
+        domRenderGeneralTabs.renderGeneralTabsTasks(thisTabId); // for re-filter the task-list
+      } else {
+        domRenderTasks.renderTasks(thisProject.getTasks());
+      }
+      manageProjects.updateLocalStorage();
     }
-    manageProjects.updateLocalStorage();
   };
 
   return {
