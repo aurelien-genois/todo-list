@@ -14,6 +14,10 @@ const domRenderTasks = ((doc) => {
     mainInfosDiv,
     expandDiv,
   ) => {
+    if (doc.querySelector('#edit-task-form') != null) {
+      alert('You can edit only one task at a time!');
+      return;
+    }
     // create inputs
     // mainInfos fieldset
     const editMainInfos = doc.createElement('fieldset');
