@@ -162,9 +162,29 @@ body {
 /* ************************** */
 #tabs-list-container {
   background: var(--tabs-bg-color);
+  position: relative;
+}
+
+/* keyframes animation than transition to prevent transition when resizing screen */
+@keyframes tabsListOpen {
+  from {
+    width: 1rem;
+  }
+  to {
+    width: 26rem;
+  }
+}
+@keyframes tabsListClose {
+  from {
+    width: 26rem;
+  }
+  to {
+    width: 1rem;
+  }
 }
 #tabs-list {
-  min-width: 24rem;
+  width: 26rem;
+  animation: tabsListOpen 1s;
   font-size: 2rem;
   font-weight: bold;
   padding: 1rem;
@@ -173,9 +193,16 @@ body {
   position: sticky;
   top: 6rem;
 }
+#tabs-list.closed {
+  animation: tabsListClose 1s;
+  width: 1rem;
+}
 .tabs {
   margin: 0.2rem 0;
   cursor: pointer;
+}
+#general-tabs {
+  margin-top: 3rem;
 }
 #general-tabs .tabs {
   color: var(--highlight-general-color);
@@ -198,6 +225,97 @@ body {
 #projects-tabs {
   position: relative;
   padding-top: 2rem;
+}
+@keyframes menuVisible {
+  from {
+    opacity: 0;
+    visibility: collapse;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+#tabs-list #general-tabs,
+#tabs-list #projects-tabs,
+#tabs-list #new-project-btn {
+  animation: menuVisible 0.5s cubic-bezier(0.95, 0.01, 0.59, 0.93);
+  visibility: visible;
+}
+@keyframes menuCollapse {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: collapse;
+  }
+}
+#tabs-list.closed {
+  white-space: nowrap;
+}
+#tabs-list.closed #general-tabs,
+#tabs-list.closed #projects-tabs,
+#tabs-list.closed #new-project-btn {
+  animation: menuCollapse 0.5s ease;
+  visibility: collapse;
+}
+
+.tabs-list-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 3rem;
+  width: 3rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tabs-list-btn-top,
+.tabs-list-btn-middle,
+.tabs-list-btn-bottom {
+  width: 2rem;
+  height: 0.4rem;
+  background-color: var(--global-text-color);
+  border-radius: 0.3rem;
+  text-align: center;
+  transition: transform 1s, width 1s, opacity 1s;
+  transform-origin: right;
+}
+.tabs-list-btn-middle {
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+.tabs-list-btn:hover .tabs-list-btn-middle,
+.tabs-list-btn.closed .tabs-list-btn-middle {
+  opacity: 0;
+}
+.tabs-list-btn:hover .tabs-list-btn-top,
+.tabs-list-btn:hover .tabs-list-btn-bottom,
+.tabs-list-btn.closed .tabs-list-btn-top,
+.tabs-list-btn.closed .tabs-list-btn-bottom {
+  width: 2.8rem;
+  margin-left: 0.2rem;
+}
+.tabs-list-btn:hover .tabs-list-btn-top,
+.tabs-list-btn.closed .tabs-list-btn-top {
+  transform: rotate(-45deg) translate(-0.25rem, -0.5rem);
+}
+.tabs-list-btn:hover .tabs-list-btn-bottom,
+.tabs-list-btn.closed .tabs-list-btn-bottom {
+  transform: rotate(45deg) translate(-0.25rem, 0.5rem);
+}
+.tabs-list-btn.closed:hover .tabs-list-btn-middle {
+  opacity: 1;
+}
+.tabs-list-btn.closed:hover .tabs-list-btn-top,
+.tabs-list-btn.closed:hover .tabs-list-btn-bottom {
+  transform: rotate(0deg) translate(0, 0);
+  width: 2rem;
+  margin-left: 0;
 }
 
 /* ************************** */
