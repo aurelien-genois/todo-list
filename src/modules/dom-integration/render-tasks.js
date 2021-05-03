@@ -288,7 +288,7 @@ const domRenderTasks = ((doc) => {
 
   const renderTasks = (projectTasks) => {
     const sortedByDateTasks = projectTasks.sort(
-      (a, b) => b.getDueDate() - a.getDueDate(),
+      (a, b) => a.getDueDate() - b.getDueDate(),
     );
     const tasksLis = sortedByDateTasks.map((task) => {
       const taskProject = manageProjects.getProject(task.getProjectId());

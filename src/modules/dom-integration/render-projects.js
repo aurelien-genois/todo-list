@@ -91,10 +91,12 @@ const domRenderProjects = ((doc) => {
           desc = 'All tasks that need to be done this week.';
           break;
         case 'high-priority':
-          desc = 'All tasks that has a high priority.';
+          desc =
+            'All tasks that has a high priority. Past and soon tasks are on top.';
           break;
         case 'all-tasks':
-          desc = 'All tasks whichever their date or state.';
+          desc =
+            'All tasks whichever their date or state. Past and soon tasks are on top.';
       }
       _projectH2.textContent = generalTabName;
       _projectDesc.textContent = desc;
