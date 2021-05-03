@@ -4,6 +4,7 @@ import { domRenderProjects } from './modules/dom-integration/render-projects.js'
 import { domRenderGeneralTabs } from './modules/dom-integration/render-general-tabs.js';
 import { project } from './modules/projects-class.js';
 import { task } from './modules/tasks-class.js';
+import { tabsMenuToggle } from './modules/dom-integration/dynamic-ui.js';
 import { parseISO } from 'date-fns';
 
 const allProjects = JSON.parse(localStorage.getItem('projects')) || [];
