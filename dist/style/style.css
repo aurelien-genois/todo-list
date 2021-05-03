@@ -15,6 +15,7 @@ html {
   --tabs-separator-color: #7c2813d7;
   --popup-bg-color: rgb(255, 246, 223);
   --highlight-general-color: rgb(255, 235, 58);
+  --highlight-reddish: rgb(255, 58, 58);
   --select-color: rgb(58, 232, 255);
   --select-highlight-color: rgb(91, 255, 58);
   --highlight-color: rgb(255, 206, 251);
@@ -51,6 +52,7 @@ input,
 select,
 optgroup,
 option,
+button,
 textarea {
   font-family: inherit;
   font-size: inherit;
@@ -547,8 +549,9 @@ body {
   content: '';
   width: 2rem;
 }
-#edit-task-duedate {
-  width: 10rem;
+#edit-task-duedate,
+.popup-inputs-date {
+  width: 11rem;
   height: 3rem;
 }
 .edit-task-state-label {
@@ -579,7 +582,8 @@ body {
   margin-left: 0.5rem;
   cursor: pointer;
 }
-#edit-task-priority input {
+#edit-task-priority input,
+.popup-inputs-radio {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -591,8 +595,11 @@ body {
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 50%;
+  margin-right: 0.5rem;
+  top: 0.3rem;
 }
-#edit-task-priority input:before {
+#edit-task-priority input:before,
+.popup-inputs-radio::before {
   content: '';
   display: block;
   position: absolute;
@@ -606,14 +613,20 @@ body {
   background-color: rgb(165, 165, 165);
 }
 #edit-task-priority input:hover:before,
-#edit-task-priority input:active:before {
+#edit-task-priority input:active:before,
+.popup-inputs-radio:hover:before,
+.popup-inputs-radio:active:before {
   width: 0.8rem;
   height: 0.8rem;
 }
-#edit-task-priority input:checked:before {
+#edit-task-priority input:checked:before,
+.popup-inputs-radio:checked:before {
   width: 1.4rem;
   height: 1.4rem;
   background-color: whitesmoke;
+}
+.popup-inputs-radio:checked:before {
+  background-color: var(--grayish-border-color);
 }
 #edit-task-form button[type='submit'] {
   align-self: end;
@@ -649,7 +662,7 @@ body {
 }
 .popup-titles {
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   margin: 0 auto 3rem;
 }
 .popup-close-btns {
@@ -662,7 +675,7 @@ body {
   color: var(--grayish-border-color);
 }
 .popup-close-btns:hover {
-  color: var(--black-text-color);
+  color: var(--highlight-reddish);
 }
 .parenthesis {
   color: grey;
@@ -674,7 +687,7 @@ body {
   position: relative;
 }
 .popup-labels {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 .popup-labels-textarea {
@@ -691,14 +704,8 @@ body {
 .popup-textareas {
   margin-left: 0;
   margin-top: 0.5rem;
-  height: 5rem;
+  height: 8rem;
   resize: none;
-}
-.popup-inputs-radio,
-.edit-inputs-radio {
-  margin-right: 0.5rem;
-  position: relative;
-  top: 0.3rem;
 }
 #new-task-priority label {
   margin-left: 1rem;
@@ -708,6 +715,10 @@ body {
   bottom: 0;
   align-self: center;
   width: 20rem;
+  font-weight: bold;
+}
+.popup-submits:hover {
+  color: var(--highlight-reddish);
 }
 
 /* ************************** */
@@ -718,5 +729,8 @@ body {
   /* close the tabs menu (drop-down) */
   html {
     font-size: 1.4vw;
+  }
+  .popup-containers {
+    transform: scale(1.5, 1.5);
   }
 }
