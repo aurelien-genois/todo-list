@@ -395,6 +395,11 @@ body {
   background: rgb(112, 133, 11);
   padding: 0.5rem;
   border-radius: 0.5rem;
+  height: 3rem;
+  transition: height 0.5s ease-in-out;
+}
+.tasks.expanded {
+  height: 12rem;
 }
 .late-tasks {
   background: rgb(187, 36, 21);

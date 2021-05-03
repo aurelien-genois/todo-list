@@ -18,6 +18,8 @@ const domRenderGeneralTabs = ((doc) => {
 
   const initPageLoadTasks = () => {
     let allTasks = manageProjects.getAllProjectsTasks();
+    // close all tasks
+    allTasks.forEach((task) => task.setIsExpand(false));
     domRenderTasks.renderTasks(allTasks);
   };
 
@@ -26,13 +28,11 @@ const domRenderGeneralTabs = ((doc) => {
     let allTasksFiltered = [];
     switch (tabId) {
       case 'today':
-        // DATE: select task where date = today
         allTasksFiltered = allTasks.filter((task) =>
           isToday(task.getDueDate()),
         );
         break;
       case 'this-week':
-        // DATE: select task where date = this week
         allTasksFiltered = allTasks.filter((task) =>
           isThisWeek(task.getDueDate()),
         );
@@ -54,7 +54,10 @@ const domRenderGeneralTabs = ((doc) => {
       const tabTitle = e.target.textContent;
       removeTabsSelectState();
       e.target.classList.add('selected');
-      //NTH project desc for general tabs
+      // close all tasks
+      manageProjects
+        .getAllProjectsTasks()
+        .forEach((task) => task.setIsExpand(false));
       renderGeneralTabsTasks(whichTab);
       domRenderProjects.renderProjectDetails(whichTab, tabTitle);
     }),

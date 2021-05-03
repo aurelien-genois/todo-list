@@ -155,13 +155,19 @@ const domRenderTasks = ((doc) => {
     taskLi.append(editForm);
   };
 
-  const _toggleExpandDetails = (thisBtn, li, expandDiv) => {
-    if (li.querySelector('.task-expand')) {
+  const _toggleExpandDetails = (thisBtn, li, expandDiv, task) => {
+    if (task.isExpand()) {
+      task.setIsExpand(false);
+      li.classList.remove('expanded');
       li.removeChild(expandDiv);
       thisBtn.classList.add('fa-arrow-circle-down');
       thisBtn.classList.remove('fa-arrow-circle-up');
     } else {
-      li.append(expandDiv);
+      task.setIsExpand(true);
+      li.classList.add('expanded');
+      setTimeout(() => {
+        li.append(expandDiv);
+      }, 500);
       thisBtn.classList.add('fa-arrow-circle-up');
       thisBtn.classList.remove('fa-arrow-circle-down');
     }
@@ -175,6 +181,7 @@ const domRenderTasks = ((doc) => {
     desc,
     projId,
     taskId,
+    isExpand,
   ) => {
     const thisProject = manageProjects.getProject(projId);
     const thisTask = thisProject.getTask(taskId);
@@ -231,7 +238,7 @@ const domRenderTasks = ((doc) => {
     expandDiv.classList.add('task-expand');
 
     expandBtn.addEventListener('click', (e) => {
-      _toggleExpandDetails(e.target, li, expandDiv);
+      _toggleExpandDetails(e.target, li, expandDiv, thisTask);
     });
 
     const detailsDiv = doc.createElement('div');
@@ -268,12 +275,18 @@ const domRenderTasks = ((doc) => {
     expandDiv.append(detailsDiv, actionsDiv);
 
     li.append(mainInfosDiv);
+    // if was expand before, keep it expand
+    if (isExpand) {
+      li.append(expandDiv);
+      li.classList.add('expanded');
+      expandBtn.classList.add('fa-arrow-circle-up');
+      expandBtn.classList.remove('fa-arrow-circle-down');
+    }
 
     return li;
   };
 
   const renderTasks = (projectTasks) => {
-    // DATE: sort projectTasks by date (more recent)
     const sortedByDateTasks = projectTasks.sort(
       (a, b) => b.getDueDate() - a.getDueDate(),
     );
@@ -289,6 +302,7 @@ const domRenderTasks = ((doc) => {
         task.getDesc(),
         task.getProjectId(),
         taskIdInProject,
+        task.isExpand(),
       );
 
       task.getState() === 'Abandoned'

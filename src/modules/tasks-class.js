@@ -13,6 +13,7 @@ const task = (title, dueDate, priorityLevel, desc, projectId) => {
   let thisDesc = desc;
   let thisTaskProjectId = projectId;
   let stateDegree = 2;
+  let expand = false;
   const proto = {
     // use this in regular function, not arrow functions in which this is lexically bound
     getTitle() {
@@ -59,6 +60,13 @@ const task = (title, dueDate, priorityLevel, desc, projectId) => {
     setState(newDegree) {
       this.stateDegree = newDegree;
     },
+
+    isExpand() {
+      return this.expand;
+    },
+    setIsExpand(expandBool) {
+      this.expand = expandBool;
+    },
   };
   return Object.assign(Object.create(proto), {
     thisTitle,
@@ -67,6 +75,7 @@ const task = (title, dueDate, priorityLevel, desc, projectId) => {
     thisDesc,
     thisTaskProjectId,
     stateDegree,
+    expand,
   });
 };
 // (NTH task can have a checklist, with items)

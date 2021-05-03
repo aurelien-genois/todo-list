@@ -112,6 +112,7 @@ const domRenderProjects = ((doc) => {
       _deleteProjectBtn.style.visibility = 'visible';
     }
   };
+
   const renderProjectsTabs = (projects) => {
     const projectsLi = projects.map((project) => {
       const li = doc.createElement('li');
@@ -124,6 +125,9 @@ const domRenderProjects = ((doc) => {
         const thisProject = projects[projId];
         domRenderGeneralTabs.removeTabsSelectState();
         e.target.classList.add('selected');
+        const thisProjectTasks = thisProject.getTasks();
+        // close all tasks for this project
+        thisProjectTasks.forEach((task) => task.setIsExpand(false));
         domRenderTasks.renderTasks(thisProject.getTasks());
         renderProjectDetails(thisProject);
       }),
