@@ -82,8 +82,22 @@ const domRenderProjects = ((doc) => {
       doc.querySelector('#edit-project-form').replaceWith(_projectInfos);
     }
     if (typeof projectOrGeneralTab === 'string') {
+      let desc = '';
+      switch (projectOrGeneralTab) {
+        case 'today':
+          desc = 'All tasks that need to be done today.';
+          break;
+        case 'this-week':
+          desc = 'All tasks that need to be done this week.';
+          break;
+        case 'high-priority':
+          desc = 'All tasks that has a high priority.';
+          break;
+        case 'all-tasks':
+          desc = 'All tasks whichever their date or state.';
+      }
       _projectH2.textContent = generalTabName;
-      _projectDesc.textContent = '';
+      _projectDesc.textContent = desc;
       projectDetail.setAttribute('data-project-id', projectOrGeneralTab);
       _newTaskBtn.style.visibility = 'hidden';
       _editProjectBtn.style.visibility = 'hidden';
