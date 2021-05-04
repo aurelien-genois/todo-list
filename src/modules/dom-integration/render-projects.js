@@ -84,19 +84,42 @@ const domRenderProjects = ((doc) => {
     if (typeof projectOrGeneralTab === 'string') {
       let desc = '';
       switch (projectOrGeneralTab) {
+        case 'all-tasks':
+          desc =
+            'All tasks whichever their date or state. Past and soon tasks are on top.';
+          break;
         case 'today':
           desc = 'All tasks that need to be done today.';
           break;
         case 'this-week':
           desc = 'All tasks that need to be done this week.';
           break;
+        case 'late':
+          desc = 'All tasks that are not done and their due date is past.';
+          break;
         case 'high-priority':
           desc =
             'All tasks that has a high priority. Past and soon tasks are on top.';
           break;
-        case 'all-tasks':
+        case 'medium-priority':
           desc =
-            'All tasks whichever their date or state. Past and soon tasks are on top.';
+            'All tasks that has a medium priority. Past and soon tasks are on top.';
+          break;
+        case 'low-priority':
+          desc =
+            'All tasks that has a low priority. Past and soon tasks are on top.';
+          break;
+        case 'done':
+          desc = 'All tasks that are done. Past and soon tasks are on top.';
+          break;
+        case 'wip':
+          desc =
+            'All tasks that are in progress. Past and soon tasks are on top.';
+          break;
+        case 'abandoned':
+          desc =
+            'All tasks that are abandoned. Past and soon tasks are on top.';
+          break;
       }
       _projectH2.textContent = generalTabName;
       _projectDesc.textContent = desc;

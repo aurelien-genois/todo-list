@@ -1,7 +1,7 @@
 import { manageProjects } from '../projects-manager.js';
 import { domRenderTasks } from './render-tasks.js';
 import { domRenderProjects } from './render-projects.js';
-import { isToday, isThisWeek } from 'date-fns';
+import { isToday, isPast, isThisWeek } from 'date-fns';
 
 const domRenderGeneralTabs = ((doc) => {
   const _projectsUl = doc.querySelector('#projects-tabs');
@@ -27,6 +27,9 @@ const domRenderGeneralTabs = ((doc) => {
     let allTasks = manageProjects.getAllProjectsTasks();
     let allTasksFiltered = [];
     switch (tabId) {
+      case 'all-tasks':
+        allTasksFiltered = [...allTasks];
+        break;
       case 'today':
         allTasksFiltered = allTasks.filter((task) =>
           isToday(task.getDueDate()),
@@ -37,13 +40,42 @@ const domRenderGeneralTabs = ((doc) => {
           isThisWeek(task.getDueDate()),
         );
         break;
+      case 'late':
+        allTasksFiltered = allTasks.filter((task) => {
+          if (isToday(task.getDueDate()) || task.getState() === 'Done') {
+            return;
+          }
+          return isPast(task.getDueDate());
+        });
+        break;
       case 'high-priority':
         allTasksFiltered = allTasks.filter(
           (task) => task.getPriority() === 'High',
         );
         break;
-      case 'all-tasks':
-        allTasksFiltered = [...allTasks];
+      case 'medium-priority':
+        allTasksFiltered = allTasks.filter(
+          (task) => task.getPriority() === 'Medium',
+        );
+        break;
+      case 'low-priority':
+        allTasksFiltered = allTasks.filter(
+          (task) => task.getPriority() === 'Low',
+        );
+        break;
+      case 'done':
+        allTasksFiltered = allTasks.filter(
+          (task) => task.getState() === 'Done',
+        );
+        break;
+      case 'wip':
+        allTasksFiltered = allTasks.filter((task) => task.getState() === 'WIP');
+        break;
+      case 'abandoned':
+        allTasksFiltered = allTasks.filter(
+          (task) => task.getState() === 'Abandoned',
+        );
+        break;
     }
     domRenderTasks.renderTasks(allTasksFiltered);
   };
