@@ -2,7 +2,6 @@ import { manageProjects } from '../projects-manager.js';
 import { domRenderTasks } from './render-tasks.js';
 import { domRenderProjects } from './render-projects.js';
 import { isToday, isPast, isThisWeek } from 'date-fns';
-import { project } from '../projects-class.js';
 
 const domRenderGeneralTabs = ((doc) => {
   const _projectsUl = doc.querySelector('#projects-tabs');
