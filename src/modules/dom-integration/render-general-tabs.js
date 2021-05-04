@@ -2,6 +2,7 @@ import { manageProjects } from '../projects-manager.js';
 import { domRenderTasks } from './render-tasks.js';
 import { domRenderProjects } from './render-projects.js';
 import { isToday, isPast, isThisWeek } from 'date-fns';
+import { project } from '../projects-class.js';
 
 const domRenderGeneralTabs = ((doc) => {
   const _projectsUl = doc.querySelector('#projects-tabs');
@@ -17,9 +18,11 @@ const domRenderGeneralTabs = ((doc) => {
   };
 
   const initPageLoadTasks = () => {
-    let allTasks = manageProjects.getAllProjectsTasks();
+    const allTasks = manageProjects.getAllProjectsTasks();
     // close all tasks
     allTasks.forEach((task) => task.setIsExpand(false));
+    const allprojects = manageProjects.getProjects();
+    domRenderProjects.renderProjectsTabs(allprojects);
     domRenderTasks.renderTasks(allTasks);
   };
 

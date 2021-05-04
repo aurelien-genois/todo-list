@@ -216,7 +216,7 @@ body {
   margin: 0.5rem auto;
 }
 #projects-tabs {
-  height: 40rem;
+  max-height: 40rem;
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
@@ -438,6 +438,7 @@ body {
   text-rendering: auto;
   font-size: 2rem;
   border-radius: 50%;
+  color: var(--global-text-color);
 }
 .task-check-state:checked:before {
   background: var(--black-text-color);
@@ -557,8 +558,11 @@ body {
 }
 #edit-task-duedate,
 .popup-inputs-date {
-  width: 11rem;
+  width: min-content;
   height: 3rem;
+}
+input[type='date']::-webkit-inner-spin-button {
+  display: none;
 }
 .edit-task-state-label {
   justify-self: right;
@@ -731,10 +735,10 @@ body {
 /* ******* responsive ******* */
 /* ************************** */
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   /* close the tabs menu (drop-down) */
   html {
-    font-size: 1.4vw;
+    font-size: 1.2vw;
   }
   .popup-containers {
     transform: scale(1.5, 1.5);

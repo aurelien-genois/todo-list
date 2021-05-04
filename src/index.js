@@ -27,7 +27,6 @@ if (allProjects.length === 0) {
     });
   });
   manageProjects.setProjects(allProjects);
-  domRenderProjects.renderProjectsTabs(allProjects);
 }
 
 domRenderGeneralTabs.initPageLoadTasks();
