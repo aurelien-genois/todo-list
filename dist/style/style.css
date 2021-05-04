@@ -267,6 +267,7 @@ body {
   visibility: collapse;
 }
 
+/* collapse btn: open state (cross) */
 .tabs-list-btn {
   position: absolute;
   right: 0;
@@ -279,11 +280,11 @@ body {
   justify-content: center;
   align-items: center;
   transition: transform 1s;
+  transform: rotate(0);
 }
-/* open state (cross) */
-.tabs-list-btn-top,
-.tabs-list-btn-middle,
-.tabs-list-btn-bottom {
+.tabs-list-btn .tabs-list-btn-top,
+.tabs-list-btn .tabs-list-btn-middle,
+.tabs-list-btn .tabs-list-btn-bottom {
   width: 2.8rem;
   height: 0.4rem;
   margin-left: 0.2rem;
@@ -293,20 +294,20 @@ body {
   transition: transform 1s, width 1s, opacity 1s;
   transform-origin: right;
 }
-.tabs-list-btn-top {
+.tabs-list-btn .tabs-list-btn-top {
   transform: rotate(-45deg) translate(-0.25rem, -0.5rem);
 }
-.tabs-list-btn-bottom {
+.tabs-list-btn .tabs-list-btn-bottom {
   transform: rotate(45deg) translate(-0.25rem, 0.5rem);
 }
-.tabs-list-btn-middle {
+.tabs-list-btn .tabs-list-btn-middle {
   margin-top: 0.4rem;
   margin-bottom: 0.4rem;
   margin-left: 0;
   opacity: 0;
   width: 2rem;
 }
-/* hover and closed state */
+/* collapse btn: hover and closed state */
 .tabs-list-btn:hover .tabs-list-btn-top,
 .tabs-list-btn:hover .tabs-list-btn-bottom,
 .tabs-list-btn.closed .tabs-list-btn-top,
@@ -319,9 +320,63 @@ body {
 .tabs-list-btn.closed .tabs-list-btn-middle {
   opacity: 1;
 }
-/* close hover state */
+/* collapse btn: close hover state */
 .tabs-list-btn.closed:hover {
   transform: rotate(90deg);
+}
+/* reset focus state for touch devices */
+/* (by default, focus style is understand as a hover style) */
+@media (hover: none) {
+  /* collapse btn: open state (cross) */
+  .tabs-list-btn.closed:focus {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 3rem;
+    width: 3rem;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 1s;
+    transform: rotate(0);
+  }
+  .tabs-list-btn:focus .tabs-list-btn-top,
+  .tabs-list-btn:focus .tabs-list-btn-middle,
+  .tabs-list-btn:focus .tabs-list-btn-bottom {
+    width: 2.8rem;
+    height: 0.4rem;
+    margin-left: 0.2rem;
+    background-color: var(--global-text-color);
+    border-radius: 0.3rem;
+    text-align: center;
+    transition: transform 1s, width 1s, opacity 1s;
+    transform-origin: right;
+  }
+  .tabs-list-btn:focus .tabs-list-btn-top {
+    transform: rotate(-45deg) translate(-0.25rem, -0.5rem);
+  }
+  .tabs-list-btn:focus .tabs-list-btn-bottom {
+    transform: rotate(45deg) translate(-0.25rem, 0.5rem);
+  }
+  .tabs-list-btn:focus .tabs-list-btn-middle {
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    margin-left: 0;
+    opacity: 0;
+    width: 2rem;
+  }
+  /* collapse btn: closed state */
+  .tabs-list-btn.closed:focus .tabs-list-btn-top,
+  .tabs-list-btn.closed:focus .tabs-list-btn-bottom {
+    width: 2rem;
+    margin-left: 0;
+    transform: rotate(0deg) translate(0, 0);
+  }
+  .tabs-list-btn.closed:focus .tabs-list-btn-middle {
+    opacity: 1;
+  }
 }
 
 /* ************************** */
@@ -740,7 +795,7 @@ input[type='date']::-webkit-inner-spin-button {
 @media screen and (max-width: 800px) {
   /* close the tabs menu (drop-down) */
   html {
-    font-size: 1.2vw;
+    font-size: 1.4vw;
   }
   .popup-containers {
     transform: scale(1.5, 1.5);
