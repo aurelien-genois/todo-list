@@ -48,3 +48,6 @@ A second goal was to use external modules with webpack like Babel and FormData()
 I implemented two popups forms for project/task creation (by mixing JS, CSS and HTML) and two "in-place" forms for project/task editing (by matching the same layout).
 
 For a better mobile UI, I implemented a collapsible tabs menu for small width screens, with a button to open and close it, animated with CSS (burger shape to cross shape).
+
+<p align="center">
+<img src="screenshot-4.gif" alt="screenshot-4" width="80%"/></p>
