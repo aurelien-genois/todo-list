@@ -50,4 +50,4 @@ I implemented two popups forms for project/task creation (by mixing JS, CSS and 
 For a better mobile UI, I implemented a collapsible tabs menu for small width screens, with a button to open and close it, animated with CSS (burger shape to cross shape).
 
 <p align="center">
-<img src="screenshot-4.gif" alt="screenshot-4" width="80%"/></p>
+<img src="screenshot-4-bis.gif" alt="screenshot-4" width="80%"/></p>
