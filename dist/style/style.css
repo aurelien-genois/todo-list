@@ -111,6 +111,8 @@ body {
   justify-content: center;
   align-self: end;
   position: fixed;
+  bottom: 0;
+  z-index: 2;
 }
 #footer p {
   text-align: center;
