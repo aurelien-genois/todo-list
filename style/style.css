@@ -209,24 +209,23 @@ body {
 #general-tabs .tabs {
   color: var(--highlight-general-color);
 }
-#projects-tabs::before {
-  content: '';
-  position: absolute;
-  top: 1rem;
-  left: 3rem;
+.tabs-separator {
   height: 0.3rem;
   width: 16rem;
   background-color: var(--tabs-separator-color);
+  margin: 0.5rem auto;
+}
+#projects-tabs {
+  height: 40rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
 }
 #tabs-list .selected {
   color: var(--select-color);
 }
 .tabs:hover {
   text-shadow: 0 0 0.3rem var(--highlight-general-color);
-}
-#projects-tabs {
-  position: relative;
-  padding-top: 2rem;
 }
 @keyframes menuVisible {
   from {
@@ -239,6 +238,7 @@ body {
   }
 }
 #tabs-list #general-tabs,
+#tabs-list .tabs-separator,
 #tabs-list #projects-tabs,
 #tabs-list #new-project-btn {
   animation: menuVisible 0.5s cubic-bezier(0.95, 0.01, 0.59, 0.93);
@@ -258,6 +258,7 @@ body {
   white-space: nowrap;
 }
 #tabs-list.closed #general-tabs,
+#tabs-list.closed .tabs-separator,
 #tabs-list.closed #projects-tabs,
 #tabs-list.closed #new-project-btn {
   animation: menuCollapse 0.5s ease;
