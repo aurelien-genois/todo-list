@@ -196,6 +196,7 @@ const domRenderTasks = ((doc) => {
     if (thisTask.getState() === 'Done') {
       checkState.checked = true;
     }
+
     checkState.addEventListener(
       'change',
       manageTasks.toggleStateDoneTodo.bind(

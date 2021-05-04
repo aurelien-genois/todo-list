@@ -130,8 +130,8 @@ const domRenderProjects = ((doc) => {
         const thisProjectTasks = thisProject.getTasks();
         // close all tasks for this project
         thisProjectTasks.forEach((task) => task.setIsExpand(false));
-        domRenderTasks.renderTasks(thisProject.getTasks());
         renderProjectDetails(thisProject);
+        domRenderTasks.renderTasks(thisProject.getTasks());
       }),
     );
     while (_projectsUl.firstChild) {

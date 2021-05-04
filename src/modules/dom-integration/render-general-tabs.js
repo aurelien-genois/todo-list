@@ -58,8 +58,8 @@ const domRenderGeneralTabs = ((doc) => {
       manageProjects
         .getAllProjectsTasks()
         .forEach((task) => task.setIsExpand(false));
-      renderGeneralTabsTasks(whichTab);
       domRenderProjects.renderProjectDetails(whichTab, tabTitle);
+      renderGeneralTabsTasks(whichTab);
     }),
   );
 
