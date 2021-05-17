@@ -43,7 +43,7 @@ The [eighth Odin project](https://www.theodinproject.com/paths/full-stack-javasc
 ## Challenges
 This project's goal is to review and pratice OOP by applying its important principles (single responsability, loosely coupled objects, SOLID principles), so this bring me to think deeply how to organize methods and modules.
 
-A second goal was to use external modules with webpack like Babel and FormData() for manipulate dates and manage their format.
+A second goal was to use external modules with webpack like Babel and date-fn for manipulate dates and manage their format.
 
 I implemented two popups forms for project/task creation (by mixing JS, CSS and HTML) and two "in-place" forms for project/task editing (by matching the same layout).
 
