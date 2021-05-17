@@ -41,7 +41,7 @@ The [eighth Odin project](https://www.theodinproject.com/paths/full-stack-javasc
 - Color and icons with tooltips (for today and late tasks) informs on the current task's state
 
 ## Challenges
-This project's goal is to review and pratice OOP by applying its important principles (single responsability, loosely coupled objects, SOLID principles), so this bring me to think deeply how to organize methods and modules.
+This project's goal was to review and pratice OOP by applying its important principles (single responsability, loosely coupled objects, SOLID principles), so this bring me to think deeply how to organize methods and modules.
 
 A second goal was to use external modules with webpack like Babel and date-fn for manipulate dates and manage their format.
 
